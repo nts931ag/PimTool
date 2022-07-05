@@ -17,7 +17,7 @@ public class AppUI extends Application {
 
     @Override
     public void init() throws Exception {
-        applicationContext = new SpringApplicationBuilder(ClientApplication.class).run();
+        applicationContext = new SpringApplicationBuilder(PimToolClientApplication.class).run();
     }
 
     @Override
