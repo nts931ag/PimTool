@@ -82,7 +82,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
         if (connection.isConnected()) {
 
-            Dimension2D dimension2D = Util.getCenterSceneDim(this.stage, 2, 1.5);
+            Dimension2D dimension2D = Util.getCenterSceneDim(this.stage, 1, 1);
             Scene root = new Scene(fxWeaver.loadView(DashboardController.class), dimension2D.getWidth(), dimension2D.getHeight());
             root.setFill(Color.TRANSPARENT);
             this.stage.setScene(root);
