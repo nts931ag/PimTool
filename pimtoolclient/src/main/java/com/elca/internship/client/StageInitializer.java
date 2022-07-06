@@ -37,6 +37,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
 
     private FxControllerAndView<LoadingPageController, Node> loadingPageCV;
+    private FxControllerAndView<DashboardController, Node> dashboardPageCV;
 
 
     @Autowired
@@ -52,7 +53,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.initStyle(StageStyle.TRANSPARENT);
 
-        Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 2, 1.5);
+        /*Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 2, 1.5);
         loadingPageCV = fxWeaver.load(LoadingPageController.class);
         loadingPageCV.getView().ifPresent(view -> {
             Scene loadScene = new Scene(fxWeaver.loadView(LoadingPageController.class), dimension2DLoading.getWidth(), dimension2DLoading.getHeight());
@@ -74,6 +75,23 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             });
             new Thread(sleeper).start();
         });
+
+        stage.show();*/
+
+        loadDashboardIgnoreConnection();
+    }
+
+    public void loadDashboardIgnoreConnection(){
+        Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 1, 1);
+        dashboardPageCV = fxWeaver.load(DashboardController.class);
+        dashboardPageCV.getView().ifPresent(view -> {
+            Scene loadScene = new Scene(fxWeaver.loadView(DashboardController.class)
+                    , dimension2DLoading.getWidth()
+                    , dimension2DLoading.getHeight());
+            loadScene.setFill(Color.TRANSPARENT);
+            stage.setScene(loadScene);
+        });
+
         stage.show();
     }
 

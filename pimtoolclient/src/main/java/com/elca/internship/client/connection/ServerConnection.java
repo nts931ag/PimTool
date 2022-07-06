@@ -28,30 +28,13 @@ public class ServerConnection {
         return isConnected;
     }
 
-    public boolean retry(){
-        if(retryCount > 60){
-            // Information dialog
-            AlertDialog alertDialog = new AlertDialog("Error","Connection Timed Out: Error Connecting ...","Try relaunching ther application! Exiting....", Alert.AlertType.ERROR);
-            alertDialog.showInformationDialog();
-            Platform.exit();
-        }
-        try {
-            Thread.sleep(3000);
-            System.out.println("Retrying to connect.....");
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        retryCount++;
-        return connect();
-    }
 
     public boolean connect(){
         try {
             System.out.println("Connecting to server at...." + PORT);
-            String uri = BASE_URI + "/connect";
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
+            var uri = BASE_URI + "/connect";
+            var restTemplate = new RestTemplate();
+            var responseEntity = restTemplate.getForEntity(uri, String.class);
 
             // Find customer successful
             if (responseEntity.getStatusCode() == HttpStatus.OK) {
@@ -65,7 +48,7 @@ public class ServerConnection {
             // Connection not found
             this.status = "Connection refused !";
             this.isConnected = false;
-            String errMsg = "Connection not found at: " + PORT;
+            var errMsg = "Connection not found at: " + PORT;
             System.out.println(errMsg);
             return this.isConnected;
         }
@@ -73,10 +56,10 @@ public class ServerConnection {
             // Connection Error
             this.status = "Error Connecting....";
             this.isConnected = false;
-            String errMsg = "Connection Error";
+            var errMsg = "Connection Error";
             System.out.println(errMsg);
             // Information dialog
-            AlertDialog alertDialog = new AlertDialog("Error",errMsg,e.getMessage(), Alert.AlertType.ERROR);
+            var alertDialog = new AlertDialog("Error",errMsg,e.getMessage(), Alert.AlertType.ERROR);
             alertDialog.showErrorDialog(e);
             return this.isConnected;
         }

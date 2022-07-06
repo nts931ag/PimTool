@@ -5,6 +5,7 @@ import com.elca.internship.client.Utils.NavigationHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -23,6 +24,9 @@ public class DashboardController implements Initializable, ApplicationListener<S
     public static NavigationHandler navigationHandler;
 
     private FxControllerAndView<TabProjectListController, Node> tabProjectListCV;
+
+    @FXML
+    private Pane contentContainer;
 
 
     @Override
@@ -53,6 +57,5 @@ public class DashboardController implements Initializable, ApplicationListener<S
         tabProjectListCV.getView().ifPresent(view ->{
             contentContainer.getChildren().add(view);
         });
-
     }
 }
