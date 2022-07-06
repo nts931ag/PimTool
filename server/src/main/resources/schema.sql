@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
-  `id` decimal(19,0) NOT NULL auto_increment,
+  `id` INT NOT NULL auto_increment,
   `visa` varchar(3) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
@@ -12,8 +12,8 @@ CREATE TABLE `employee` (
 
 DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
-  `id` decimal(19,0) NOT NULL auto_increment,
-  `team_id` decimal(19,0) NOT NULL,
+  `id` INT NOT NULL auto_increment,
+  `team_id` INT NOT NULL,
   `project_number` decimal(4,0) NOT NULL,
   `name` varchar(50) NOT NULL,
   `customer` varchar(50) NOT NULL,
@@ -30,8 +30,8 @@ CREATE TABLE `project` (
 
 DROP TABLE IF EXISTS `project_employee`;
 CREATE TABLE `project_employee` (
-  `project_id` decimal(19,0) NOT NULL,
-  `employee_id` decimal(19,0) NOT NULL,
+  `project_id` INT NOT NULL,
+  `employee_id` INT NOT NULL,
   PRIMARY KEY (`project_id`,`employee_id`)
 --  KEY `fk_employee_id_idx` (`employee_id`),
 --  CONSTRAINT `fk_employee_id` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`),
@@ -41,8 +41,8 @@ CREATE TABLE `project_employee` (
 
 DROP TABLE IF EXISTS `team`;
 CREATE TABLE `team` (
-  `id` decimal(19,0) NOT NULL auto_increment,
-  `team_leader_id` decimal(19,0) NOT NULL,
+  `id` INT NOT NULL auto_increment,
+  `team_leader_id` INT NOT NULL,
   `version` decimal(10,0) NOT NULL,
   PRIMARY KEY (`id`)
 --  KEY `fk_group_leader_id_idx` (`team_leader_id`),
