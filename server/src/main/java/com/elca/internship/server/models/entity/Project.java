@@ -8,8 +8,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Project {
-    private long id;
+public class Project extends BaseEntity{
     private long groupId;
     private Integer projectNumber;
     private String name;
@@ -17,7 +16,6 @@ public class Project {
     private Status status;
     private LocalDate startDate;
     private LocalDate endDate;
-    private int version;
 
     public Project(long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
         this.groupId = groupId;
@@ -27,7 +25,7 @@ public class Project {
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.version = version;
+        super.setVersion(version);
     }
 
     public enum Status{
