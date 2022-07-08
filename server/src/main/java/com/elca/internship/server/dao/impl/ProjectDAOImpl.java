@@ -62,7 +62,7 @@ public class ProjectDAOImpl implements ProjectDAO {
                 .addValue("status", project.getStatus())
                 .addValue("start_date", Date.valueOf(project.getStartDate()))
                 .addValue("end_date", Date.valueOf(project.getEndDate()))
-                .addValue("version", project.getVersion());
+                .addValue("version", 1);
 
         return simpleJdbcInsert.executeAndReturnKey(params).longValue();
     }

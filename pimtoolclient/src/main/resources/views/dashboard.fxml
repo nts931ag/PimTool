@@ -10,9 +10,10 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="850.0" stylesheets="@css/main.css" fx:controller="com.elca.internship.client.controllers.DashboardController" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+
+<BorderPane stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
    <top>
-      <HBox alignment="CENTER_LEFT">
+      <HBox fx:id="headerContainer" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
             <ImageView fitHeight="83.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -22,78 +23,87 @@
                   <Insets left="25.0" />
                </HBox.margin>
             </ImageView>
-            <Label text="Project Infomation Management">
+            <Label styleClass="h1" stylesheets="@css/main.css" text="Project Infomation Management">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
             </Label>
-            <Label text="EN">
-               <HBox.margin>
-                  <Insets left="100.0" />
-               </HBox.margin>
-            </Label>
-            <Label text="|" />
-            <Label text="FR" />
-            <Label text="Help">
-               <HBox.margin>
-                  <Insets left="100.0" />
-               </HBox.margin>
-            </Label>
-            <Label text="Log out">
-               <HBox.margin>
-                  <Insets left="25.0" />
-               </HBox.margin>
-            </Label>
+            <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+               <children>
+                  <Button mnemonicParsing="false" styleClass="btn-menu" stylesheets="@css/main.css" text="EN" />
+                  <Label text="|" />
+                  <Button mnemonicParsing="false" styleClass="btn-menu" stylesheets="@css/main.css" text="FR">
+                     <HBox.margin>
+                        <Insets right="75.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" styleClass="btn-menu" stylesheets="@css/main.css" text="Help">
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#onBtnLogout" styleClass="btn-menu" stylesheets="@css/main.css" text="Log out">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
       </HBox>
    </top>
    <left>
-      <VBox prefHeight="317.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <Pane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
          <children>
-            <Label maxWidth="1.7976931348623157E308" text="Project list">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Label>
-            <Label maxWidth="1.7976931348623157E308" text="New">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </Label>
-            <Label maxWidth="1.7976931348623157E308" text="Project">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Label>
-            <Label maxWidth="1.7976931348623157E308" text="Customer">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Label>
-            <Label maxWidth="1.7976931348623157E308" text="Supplier">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </Label>
-            <Button mnemonicParsing="false" onAction="#showTabProjectList" text="Button" />
+            <VBox fx:id="sideBarContainer">
+               <children>
+                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="h4" text="Project list">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Button mnemonicParsing="false" onAction="#showTabCreateProject" prefWidth="200.0" styleClass="btn-menu" stylesheets="@css/main.css" text="New" />
+                  <Button mnemonicParsing="false" onAction="#showTabProjectList" prefWidth="200.0" styleClass="btn-menu" stylesheets="@css/main.css" text="Project" />
+                  <Button mnemonicParsing="false" prefWidth="200.0" styleClass="btn-menu" stylesheets="@css/main.css" text="Customer" />
+                  <Button mnemonicParsing="false" prefWidth="200.0" styleClass="btn-menu" stylesheets="@css/main.css" text="Supplier" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
          </children>
-         <padding>
-            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-         </padding>
-      </VBox>
+      </Pane>
    </left>
    <center>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <BorderPane BorderPane.alignment="CENTER">
          <top>
             <VBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="470.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Title of each tab" />
+                  <Label fx:id="lbHeaderOfTab" styleClass="h3" text="Title of each tab" />
                </children>
             </VBox>
          </top>
          <center>
-            <Pane fx:id="contentContainer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <Pane fx:id="contentContainer" prefHeight="200.0" prefWidth="200.0" />
          </center>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
       </BorderPane>
    </center>
 </BorderPane>

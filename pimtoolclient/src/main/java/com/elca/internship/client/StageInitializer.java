@@ -2,14 +2,12 @@ package com.elca.internship.client;
 
 import com.elca.internship.client.Utils.AlertDialog;
 import com.elca.internship.client.Utils.Util;
-import com.elca.internship.client.connection.ServerConnection;
+import com.elca.internship.client.config.connection.ServerConnection;
 import com.elca.internship.client.controllers.DashboardController;
 import com.elca.internship.client.controllers.LoadingPageController;
 import javafx.concurrent.Task;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
@@ -18,13 +16,9 @@ import javafx.stage.StageStyle;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.sql.Connection;
 import java.util.concurrent.TimeUnit;
 
 
@@ -52,7 +46,6 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
         stage = event.getStage();
         stage.initStyle(StageStyle.UNDECORATED);
         stage.initStyle(StageStyle.TRANSPARENT);
-
         /*Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 2, 1.5);
         loadingPageCV = fxWeaver.load(LoadingPageController.class);
         loadingPageCV.getView().ifPresent(view -> {
@@ -82,7 +75,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     }
 
     public void loadDashboardIgnoreConnection(){
-        Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 1, 1);
+        Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 1.5, 1.5);
         dashboardPageCV = fxWeaver.load(DashboardController.class);
         dashboardPageCV.getView().ifPresent(view -> {
             Scene loadScene = new Scene(fxWeaver.loadView(DashboardController.class)
@@ -129,8 +122,8 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
                     System.out.println("Retry Count: " + retryCount);
                     retryCount++;
                     return getConnection();
-                } catch (NullPointerException e) {
-                    System.out.println(e.getMessage());
+                } catch (NullPointerException npe) {
+                    System.out.println(npe.getMessage());
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }

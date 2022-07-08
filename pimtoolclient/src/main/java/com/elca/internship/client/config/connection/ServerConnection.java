@@ -1,16 +1,11 @@
-package com.elca.internship.client.connection;
+package com.elca.internship.client.config.connection;
 
 import com.elca.internship.client.Utils.AlertDialog;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
-
-import static com.elca.internship.client.connection.Rest.BASE_URI;
-import static com.elca.internship.client.connection.Rest.PORT;
 
 @Data
 public class ServerConnection {
@@ -31,8 +26,8 @@ public class ServerConnection {
 
     public boolean connect(){
         try {
-            System.out.println("Connecting to server at...." + PORT);
-            var uri = BASE_URI + "/connect";
+            System.out.println("Connecting to server at...." + Rest.PORT);
+            var uri = Rest.BASE_URI + "/connect";
             var restTemplate = new RestTemplate();
             var responseEntity = restTemplate.getForEntity(uri, String.class);
 
@@ -48,7 +43,7 @@ public class ServerConnection {
             // Connection not found
             this.status = "Connection refused !";
             this.isConnected = false;
-            var errMsg = "Connection not found at: " + PORT;
+            var errMsg = "Connection not found at: " + Rest.PORT;
             System.out.println(errMsg);
             return this.isConnected;
         }

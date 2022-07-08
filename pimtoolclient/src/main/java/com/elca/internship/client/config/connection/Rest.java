@@ -1,4 +1,4 @@
-package com.elca.internship.client.connection;
+package com.elca.internship.client.config.connection;
 
 public class Rest {
     public static final int PORT = 8080;
