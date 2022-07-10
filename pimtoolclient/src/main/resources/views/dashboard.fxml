@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,10 +9,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
+<BorderPane stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
    <top>
-      <HBox fx:id="headerContainer" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+      <HBox fx:id="headerContainer" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="border-bottom" stylesheets="@css/main.css">
          <children>
             <ImageView fitHeight="83.0" fitWidth="116.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -30,23 +28,19 @@
             </Label>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
-                  <Button mnemonicParsing="false" styleClass="btn-menu" stylesheets="@css/main.css" text="EN" />
+                  <Label styleClass="label-menu-button" text="EN" />
                   <Label text="|" />
-                  <Button mnemonicParsing="false" styleClass="btn-menu" stylesheets="@css/main.css" text="FR">
+                  <Label styleClass="label-menu-button" text="FR">
                      <HBox.margin>
-                        <Insets right="75.0" />
+                        <Insets right="50.0" />
                      </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" styleClass="btn-menu" stylesheets="@css/main.css" text="Help">
+                  </Label>
+                  <Label styleClass="label-menu-button" text="Help">
                      <HBox.margin>
                         <Insets right="25.0" />
                      </HBox.margin>
-                  </Button>
-                  <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#onBtnLogout" styleClass="btn-menu" stylesheets="@css/main.css" text="Log out">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Button>
+                  </Label>
+                  <Label styleClass="label-menu-button" text="Log out" />
                </children>
             </HBox>
          </children>
@@ -59,22 +53,34 @@
       </HBox>
    </top>
    <left>
-      <Pane BorderPane.alignment="CENTER">
+      <Pane styleClass="border-right" stylesheets="@css/main.css" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin>
          <children>
-            <VBox fx:id="sideBarContainer">
+            <VBox fx:id="sideBarContainer" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="h4" text="Project list">
+                  <Label maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="h4" text="Project list">
                      <VBox.margin>
-                        <Insets top="5.0" />
+                        <Insets left="40.0" />
                      </VBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#showTabCreateProject" prefWidth="200.0" styleClass="btn-menu" stylesheets="@css/main.css" text="New" />
-                  <Button mnemonicParsing="false" onAction="#showTabProjectList" prefWidth="200.0" styleClass="btn-menu" stylesheets="@css/main.css" text="Project" />
-                  <Button mnemonicParsing="false" prefWidth="200.0" styleClass="btn-menu" stylesheets="@css/main.css" text="Customer" />
-                  <Button mnemonicParsing="false" prefWidth="200.0" styleClass="btn-menu" stylesheets="@css/main.css" text="Supplier" />
+                  <Label fx:id="lbMenuNew" onMouseClicked="#onLbNewClicked" styleClass="label-menu-button" text="New">
+                     <VBox.margin>
+                        <Insets left="40.0" />
+                     </VBox.margin></Label>
+                  <Label fx:id="lbMenuProject" onMouseClicked="#onLbProjectClicked" styleClass="label-menu-button" text="Project">
+                     <VBox.margin>
+                        <Insets left="40.0" />
+                     </VBox.margin></Label>
+                  <Label styleClass="label-menu-button" text="Customer">
+                     <VBox.margin>
+                        <Insets left="40.0" />
+                     </VBox.margin></Label>
+                  <Label styleClass="label-menu-button" text="Supplier">
+                     <VBox.margin>
+                        <Insets left="40.0" />
+                     </VBox.margin></Label>
                </children>
                <opaqueInsets>
                   <Insets />

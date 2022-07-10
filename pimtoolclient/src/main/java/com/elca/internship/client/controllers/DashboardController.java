@@ -7,8 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -28,7 +28,8 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class DashboardController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
-    public Button btnLogout;
+    public Label lbMenuNew;
+    public Label lbMenuProject;
 
     private Stage stage;
     public static NavigationHandler navigationHandler;
@@ -51,25 +52,23 @@ public class DashboardController implements Initializable, ApplicationListener<S
         navigationHandler = new NavigationHandler() {
             @Override
             public void handleShowTabProjectList() {
-                showTabProjectList();
+                onLbProjectClicked();
             }
 
             @Override
             public void handleShowTabCreateProject() {
-                showTabCreateProject();
+                onLbNewClicked();
             }
         };
 
-        System.out.println("width: " + Util.getScreenWidth() + " height: " + Util.getScreenWidth());
-        contentContainer.setPrefWidth(Util.getScreenWidth()*90/100);
+        contentContainer.setPrefWidth(Util.getScreenWidth()*85/100);
         contentContainer.setPrefHeight(Util.getScreenHeight()*90/100);
-        sideBarContainer.setPrefWidth(Util.getScreenWidth()*10/100);
+        sideBarContainer.setPrefWidth(Util.getScreenWidth()*15/100);
         sideBarContainer.setPrefHeight(Util.getScreenHeight()*90/100);
         headerContainer.setPrefWidth(Util.getScreenWidth());
         headerContainer.setPrefHeight(Util.getScreenHeight()*10/100);
 
-
-        showTabCreateProject();
+        onLbNewClicked();
 
     }
 
@@ -79,9 +78,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
     }
 
 
-
     @FXML
-    public void showTabProjectList(){
+    public void onLbProjectClicked(){
         System.out.println("width: " + stage.getWidth() + " height: " + stage.getHeight());
 
         tabProjectListCV = fxWeaver.load(TabProjectListController.class);
@@ -94,17 +92,12 @@ public class DashboardController implements Initializable, ApplicationListener<S
     }
 
     @FXML
-    public void showTabCreateProject(){
+    public void onLbNewClicked() {
         tabCreateProjectCV = fxWeaver.load(TabCreateProjectController.class);
         tabCreateProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);
             lbHeaderOfTab.setText("New Project");
         });
-    }
-
-    @FXML
-    public void onBtnLogout() {
-        System.out.println("on button logout clicked");
     }
 }

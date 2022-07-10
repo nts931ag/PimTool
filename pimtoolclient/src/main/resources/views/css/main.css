@@ -95,10 +95,6 @@
     -fx-font-size:14;
 }
 
-.title-bar{
-    -fx-background-color: #ffffff;
-}
-
 .title-label{
         -fx-font-family: 'Poppins SemiBold', sans-serif;
         -fx-text-fill: #272635;
@@ -107,13 +103,37 @@
         /*-fx-padding: 5 5 5 30;*/
 }
 
-.btn-menu {
+/* Button */
+.btn-transprent {
     -fx-background-color: transparent;
     -fx-background-repeat: no-repeat;
     -fx-border: none;
     -fx-cursor: hand;
     -fx-overflow: hidden;
     -fx-outline: none;
-
+    -fx-border-radius: 5px;
 }
 
+.btn-transprent-create{
+    -fx-background-color: #1F51FF;
+    -fx-text-fill: #ffffff;
+}
+
+
+/* sidebar button */
+.label-menu-button:hover {
+    -fx-cursor: hand;
+    -fx-underline: true;
+}
+
+.border-bottom{
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-width: 1px;
+    -fx-border-color: #52515d;
+}
+
+.border-right{
+    -fx-border-style: hidden solid hidden hidden ;
+    -fx-border-width: 1px;
+    -fx-border-color: #52515d;
+}

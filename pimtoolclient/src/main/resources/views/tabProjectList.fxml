@@ -11,20 +11,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.TabProjectListController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.TabProjectListController">
    <children>
       <HBox prefHeight="60.0">
          <children>
             <TextField fx:id="tfSearch" promptText="Project number, name, customer name" HBox.hgrow="ALWAYS" />
-            <ComboBox fx:id="cbStatus" promptText="Project status">
+            <ComboBox fx:id="cbStatus" promptText="Project status" stylesheets="@css/main.css">
                <HBox.margin>
                   <Insets left="15.0" />
                </HBox.margin></ComboBox>
-            <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#onBtnSearch" styleClass="btn-menu" stylesheets="@css/main.css" text="Search Project">
+            <Button fx:id="btnSearch" mnemonicParsing="false" onAction="#onBtnSearch" styleClass="btn-transprent-create" stylesheets="@css/main.css" text="Search Project">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin></Button>
-            <Button fx:id="btnResetSearch" mnemonicParsing="false" onAction="#onBtnResetSearch" styleClass="btn-menu" stylesheets="@css/main.css" text="Reset Search">
+            <Button fx:id="btnResetSearch" mnemonicParsing="false" onAction="#onBtnResetSearch" styleClass="btn-transprent" stylesheets="@css/main.css" text="Reset Search">
                <HBox.margin>
                   <Insets left="30.0" />
                </HBox.margin></Button>

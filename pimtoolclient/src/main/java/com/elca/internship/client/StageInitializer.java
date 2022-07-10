@@ -75,7 +75,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     }
 
     public void loadDashboardIgnoreConnection(){
-        Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 1.5, 1.5);
+        Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 1, 1);
         dashboardPageCV = fxWeaver.load(DashboardController.class);
         dashboardPageCV.getView().ifPresent(view -> {
             Scene loadScene = new Scene(fxWeaver.loadView(DashboardController.class)
