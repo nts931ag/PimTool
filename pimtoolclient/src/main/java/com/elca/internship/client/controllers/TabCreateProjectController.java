@@ -12,9 +12,11 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
@@ -104,11 +106,9 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
         fillDefaultValueForInputForm();
 
         projectFormValidation = new FormValidation();
-        projectFormValidation.getFormFields().put("proNum", false);
-        projectFormValidation.getFormFields().put("proName", false);
+        projectFormValidation.getFormFields().put("proNum", true);
+        projectFormValidation.getFormFields().put("proName", true);
         projectFormValidation.getFormFields().put("proCustomer", true);
-        projectFormValidation.getFormFields().put("proGroup", true);
-        projectFormValidation.getFormFields().put("proStatus", true);
         projectFormValidation.getFormFields().put("proStartDate", true);
         projectFormValidation.getFormFields().put("proEndDate", true);
 
@@ -153,7 +153,7 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
                     startDate,
                     lbValidateProDate
             ).isValid();
-            projectFormValidation.getFormFields().put("proCustomer", valid);
+            projectFormValidation.getFormFields().put("proEndDate", valid);
 
             this.validateFrom();
         });
@@ -162,15 +162,15 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
     private boolean validateFrom() {
 
         if (projectFormValidation.getFormFields().containsValue(false)) {
-            var node = fxWeaver.loadView(AlertDangerController.class);
+            var node =(GridPane) fxWeaver.loadView(AlertDangerController.class);
+            node.setPrefWidth(800.0);
+            node.setPadding(new Insets(0,0,0,25));
             gpCreateProjectTab.add(node, 0, 1, 4, 1);
-            //            adminRegisterBtn.setDisable(true);
+            btnCreate.setDisable(true);
             return false;
         } else {
-            System.out.println(gpCreateProjectTab.getChildren().get(2).getClass());
             gpCreateProjectTab.getRowConstraints().get(1).setPrefHeight(0);
-//            gpCreateProjectTab.getChildren().removeIf(node -> GridPane.getRowIndex(node) == 1);
-            //            adminRegisterBtn.setDisable(false);
+            btnCreate.setDisable(false);
             return true;
         }
     }
@@ -182,7 +182,7 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
 
         var colsConstraints = gpCreateProjectTab.getColumnConstraints();
         colsConstraints.forEach(c -> c.setPrefWidth(200));
-        gpCreateProjectTab.getColumnConstraints().get(4).setPrefWidth(500);
+        gpCreateProjectTab.getColumnConstraints().get(4).setPrefWidth(800);
 
     }
 
@@ -212,36 +212,28 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
             var map = new HashMap<String, Object>();
             map.put("project", project);
             map.put("listMember", listMember);
+
             try {
                 var msg = objectMapper.writeValueAsString(map);
+                var uri = BASE_URI + "/projects/save";
+                var headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
 
+                var httpEntity = new HttpEntity<>(msg, headers);
+                System.out.println(httpEntity.getBody());
+                var responseEntity = restTemplate.exchange(
+                        uri
+                        , HttpMethod.POST
+                        , httpEntity
+                        , String.class);
+
+                if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                    System.out.println("Connection status : " + responseEntity.getStatusCode());
+
+                }
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
-
-            // using RestTemplate to consuming REST API
-        /*var jsonData = new JSONObject();
-        var projectJson = new JSONObject(project);
-        jsonData.put("project", projectJson);
-        jsonData.put("listMember", listMember);
-
-        var uri = BASE_URI + "/projects/save";
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        var httpEntity = new HttpEntity<>(jsonData.toString(),headers);
-        System.out.println(httpEntity.getBody());*/
-
-
-        /*var responseEntity = restTemplate.exchange(
-                uri
-                , HttpMethod.POST
-                , httpEntity
-                , String.class);
-
-        if (responseEntity.getStatusCode() == HttpStatus.OK) {
-            System.out.println("Connection status : " + responseEntity.getStatusCode());
-        }*/
         }
     }
 
