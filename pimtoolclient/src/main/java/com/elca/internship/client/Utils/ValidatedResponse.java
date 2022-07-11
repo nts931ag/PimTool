@@ -5,9 +5,11 @@ import lombok.Data;
 
 @Data
 public class ValidatedResponse {
-    private boolean isValid;
     private Label responseLabel;
+    private boolean isValid;
 
-    public ValidatedResponse(Label responseLabel, boolean b) {
+    public ValidatedResponse(Label responseLabel, boolean isValid) {
+        this.responseLabel = responseLabel;
+        this.isValid = isValid;
     }
 }

@@ -5,6 +5,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.lang.management.MemoryManagerMXBean;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,17 +21,53 @@ public class FormValidation {
 
     public static int iconSize;
 
-    public static ValidatedResponse isName(String name, Label responseLabel){
-        var valid = false;
-        if(name == null){
+    public static ValidatedResponse isProNumExisted(String val, Label responseLabel ) {
+        boolean valid;
+        if(val == null){
             valid = false;
+        } else{
+            String exp = "\\d+";
+            valid = val.matches(exp);
         }
-        else {
-            var exp = "^[A-Za-z\\s]+$";
-            valid = name.matches(exp);
+        var msg = "Please enter a valid number project";
+        return validationResponse(responseLabel, valid, msg);
+    }
+
+    public static ValidatedResponse isProjectName(String val, Label responseLabel) {
+        boolean valid;
+        if(val == null){
+            valid = false;
+        } else{
+            String exp = "^[A-Za-z][A-Za-z0-9_]{0,49}$";
+            valid = val.matches(exp);
+
         }
-        var msg = "Only alphabets and spaces allowed";
-        return validationResponse(responseLabel,valid,msg);
+        var msg = "Only alphabets, numbers and underscore is allowed. Char Limit: Min-1, Max-50";
+        return validationResponse(responseLabel, valid, msg);
+    }
+
+    public static ValidatedResponse isProjectCustomer(String val, Label responseLabel) {
+        boolean valid;
+        if(val == null){
+            valid = false;
+        } else{
+            String exp = "^[A-Za-z][A-Za-z0-9_]{0,49}$";
+            valid = val.matches(exp);
+
+        }
+        var msg = "Only alphabets, numbers and underscore is allowed. Char Limit: Min-1, Max-50";
+        return validationResponse(responseLabel, valid, msg);
+    }
+
+    public static ValidatedResponse isValidatedEndDate(LocalDate endVal, LocalDate startVal, Label responseLabel) {
+        boolean valid;
+        if(startVal == null || endVal == null){
+            valid = false;
+        } else{
+            valid = startVal.isBefore(endVal);
+        }
+        var msg = "End date must be less than start date";
+        return validationResponse(responseLabel, valid, msg);
     }
 
     public static ValidatedResponse validationResponse(Label responseLabel, boolean valid,String msg){
@@ -65,5 +103,7 @@ public class FormValidation {
             return new ValidatedResponse(responseLabel,false);
         }
     }
+
+
 
 }

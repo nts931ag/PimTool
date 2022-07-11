@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gpCreateProjectTab" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.TabCreateProjectController">
+<GridPane fx:id="gpCreateProjectTab" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.TabCreateProjectController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -40,7 +40,7 @@
             <Insets left="20.0" />
          </padding></Label>
       <TextField fx:id="tfProNum" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label fx:id="lbValidateProNum" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+      <Label fx:id="lbValidateProNum" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <Label text="Project Name" GridPane.rowIndex="3">
          <padding>
             <Insets left="20.0" />

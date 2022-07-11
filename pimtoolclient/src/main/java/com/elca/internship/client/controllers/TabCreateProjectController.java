@@ -1,11 +1,16 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
+import com.elca.internship.client.Utils.FormValidation;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
@@ -15,7 +20,6 @@ import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.json.JSONObject;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -23,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 
@@ -87,51 +91,136 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
     @FXML
     private TextField tfProNum;
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        gpCreateProjectTab.setVgap(20);
-        gpCreateProjectTab.setHgap(5);
-
-        var colsConstraints = gpCreateProjectTab.getColumnConstraints();
-        colsConstraints.forEach(c -> {
-            c.setPrefWidth(200);
-        });
-
-
-        var listStatus = FXCollections.observableArrayList("New", "Planned", "In progress", "Finished");
-        cbProStatus.setItems(listStatus);
-        cbProStatus.getSelectionModel().select(0);
-        var listGroups = FXCollections.observableArrayList(1,2,3);
-        cbProGroup.setItems(listGroups);
-        cbProGroup.getSelectionModel().select(0);
-        var curDate = LocalDate.now();
-        pickerEndDate.setValue(curDate);
-        pickerStartDate.setValue(curDate);
-    }
+    public FormValidation projectFormValidation;
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
         this.stage = event.getStage();
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        initLayout();
+        fillDefaultValueForInputForm();
+
+        projectFormValidation = new FormValidation();
+        projectFormValidation.getFormFields().put("proNum", false);
+        projectFormValidation.getFormFields().put("proName", false);
+        projectFormValidation.getFormFields().put("proCustomer", true);
+        projectFormValidation.getFormFields().put("proGroup", true);
+        projectFormValidation.getFormFields().put("proStatus", true);
+        projectFormValidation.getFormFields().put("proStartDate", true);
+        projectFormValidation.getFormFields().put("proEndDate", true);
+
+        this.addEventListeners();
+    }
+
+    private void addEventListeners() {
+        tfProNum.textProperty().addListener((observableValue, oldVal, newVal) -> {
+            var valid = FormValidation.isProNumExisted(
+                    newVal,
+                    lbValidateProNum
+            ).isValid();
+            projectFormValidation.getFormFields().put("proNum", valid);
+
+            this.validateFrom();
+        });
+
+        tfProName.textProperty().addListener((observableValue, oldVal, newVal) -> {
+            var valid = FormValidation.isProjectName(
+                    newVal,
+                    lbValidateProName
+            ).isValid();
+            projectFormValidation.getFormFields().put("proName", valid);
+
+            this.validateFrom();
+        });
+
+        tfProCustomer.textProperty().addListener((observableValue, oldVal, newVal) -> {
+            var valid = FormValidation.isProjectCustomer(
+                    newVal,
+                    lbValidateProCustomer
+            ).isValid();
+            projectFormValidation.getFormFields().put("proCustomer", valid);
+
+            this.validateFrom();
+        });
+
+        pickerEndDate.valueProperty().addListener((observableValue, oldVal, newVal) -> {
+            var startDate = pickerStartDate.getValue();
+            var valid = FormValidation.isValidatedEndDate(
+                    newVal,
+                    startDate,
+                    lbValidateProDate
+            ).isValid();
+            projectFormValidation.getFormFields().put("proCustomer", valid);
+
+            this.validateFrom();
+        });
+    }
+
+    private boolean validateFrom() {
+
+        if (projectFormValidation.getFormFields().containsValue(false)) {
+            var node = fxWeaver.loadView(AlertDangerController.class);
+            gpCreateProjectTab.add(node, 0, 1, 4, 1);
+            //            adminRegisterBtn.setDisable(true);
+            return false;
+        } else {
+            System.out.println(gpCreateProjectTab.getChildren().get(2).getClass());
+            gpCreateProjectTab.getRowConstraints().get(1).setPrefHeight(0);
+//            gpCreateProjectTab.getChildren().removeIf(node -> GridPane.getRowIndex(node) == 1);
+            //            adminRegisterBtn.setDisable(false);
+            return true;
+        }
+    }
+
+    public void initLayout() {
+        gpCreateProjectTab.setVgap(20);
+        gpCreateProjectTab.setHgap(5);
+
+
+        var colsConstraints = gpCreateProjectTab.getColumnConstraints();
+        colsConstraints.forEach(c -> c.setPrefWidth(200));
+        gpCreateProjectTab.getColumnConstraints().get(4).setPrefWidth(500);
+
+    }
+
+    public void fillDefaultValueForInputForm() {
+        var listStatus = FXCollections.observableArrayList("New", "Planned", "In progress", "Finished");
+        cbProStatus.setItems(listStatus);
+        cbProStatus.getSelectionModel().select(0);
+
+        var listGroups = FXCollections.observableArrayList(1, 2, 3);
+        cbProGroup.setItems(listGroups);
+        cbProGroup.getSelectionModel().select(0);
+
+        var curDate = LocalDate.now();
+        pickerEndDate.setValue(curDate);
+        pickerStartDate.setValue(curDate);
+    }
 
     @FXML
     public void onCreateProjectBtn() {
-        var proNum = tfProNum.getText();
-        var proName = tfProName.getText();
-        var customer = tfProCustomer.getText();
-        var groupId = cbProGroup.getSelectionModel().getSelectedItem();
-        var members = tfProMember.getText();
-        var status = cbProStatus.getSelectionModel().getSelectedItem();
-        var startDate = pickerStartDate.getValue();
-        var endDate = pickerEndDate.getValue();
 
-        var project = new Project(groupId, Integer.parseInt(proNum), proName, customer, Status.getStatus(status), startDate, endDate);
-        var listMember = members.split(",");
-        var jsonData = new JSONObject();
-        // using RestTemplate to consuming REST API
+        if(validateFrom()) {
+            var project = getProjectInputForm();
+            var listMember = getMemberInputForm();
+
+            var objectMapper = new ObjectMapper();
+            objectMapper.findAndRegisterModules();
+            var map = new HashMap<String, Object>();
+            map.put("project", project);
+            map.put("listMember", listMember);
+            try {
+                var msg = objectMapper.writeValueAsString(map);
+
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+            // using RestTemplate to consuming REST API
+        /*var jsonData = new JSONObject();
         var projectJson = new JSONObject(project);
         jsonData.put("project", projectJson);
         jsonData.put("listMember", listMember);
@@ -141,8 +230,10 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         var httpEntity = new HttpEntity<>(jsonData.toString(),headers);
-        System.out.println(httpEntity.getBody());
-        var responseEntity = restTemplate.exchange(
+        System.out.println(httpEntity.getBody());*/
+
+
+        /*var responseEntity = restTemplate.exchange(
                 uri
                 , HttpMethod.POST
                 , httpEntity
@@ -150,9 +241,24 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
 
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
             System.out.println("Connection status : " + responseEntity.getStatusCode());
+        }*/
         }
+    }
 
+    public Project getProjectInputForm() {
+        var proNum = tfProNum.getText();
+        var proName = tfProName.getText();
+        var customer = tfProCustomer.getText();
+        var groupId = cbProGroup.getSelectionModel().getSelectedItem();
+        var status = cbProStatus.getSelectionModel().getSelectedItem();
+        var startDate = pickerStartDate.getValue();
+        var endDate = pickerEndDate.getValue();
+        return new Project(groupId, Integer.parseInt(proNum), proName, customer, Status.getStatus(status), startDate, endDate);
+    }
 
+    public List<String> getMemberInputForm() {
+        var members = tfProMember.getText();
+        return Arrays.stream(members.split(", ")).toList();
     }
 
 
