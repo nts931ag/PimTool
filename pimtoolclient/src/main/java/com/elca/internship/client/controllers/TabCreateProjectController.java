@@ -13,13 +13,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
+import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
@@ -94,6 +93,8 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
     private TextField tfProNum;
 
     public FormValidation projectFormValidation;
+    private FxControllerAndView<TabProjectListController, Node> tabProjectListCV;
+
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
@@ -229,12 +230,25 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
 
                 if (responseEntity.getStatusCode() == HttpStatus.OK) {
                     System.out.println("Connection status : " + responseEntity.getStatusCode());
-
+                    navigateToTabListProject();
                 }
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private void navigateToTabListProject() {
+        // get and set contentContainer
+        var borderPane = (BorderPane) stage.getScene().getRoot().getChildrenUnmodifiable().get(2);
+        var titleContentContainer =  (Label)borderPane.getChildren().get(1);
+        var contentContainer = (Pane) borderPane.getChildren().get(0);
+        tabProjectListCV = fxWeaver.load(TabProjectListController.class);
+        tabProjectListCV.getView().ifPresent(view ->{
+            contentContainer.getChildren().clear();
+            contentContainer.getChildren().add(view);
+        });
+        titleContentContainer.setText("Projects list");
     }
 
     public Project getProjectInputForm() {
@@ -256,6 +270,6 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
 
     @FXML
     public void onCancelProjectBtn() {
-
+        navigateToTabListProject();
     }
 }

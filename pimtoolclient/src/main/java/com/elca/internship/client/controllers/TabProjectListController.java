@@ -7,10 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxControllerAndView;
@@ -112,21 +114,11 @@ public class TabProjectListController implements Initializable, ApplicationListe
     public void onBtnSearch() {
         System.out.println("on btn search clicked");
     }
+
+    private FxControllerAndView<DashboardController, Node> dashboardPageCV;
+
     @FXML
     public void onBtnResetSearch() {
-        System.out.println("on btn search clicked");
 
-
-        /* get and set contentContainer */
-        /*
-        var borderPane = (BorderPane) stage.getScene().getRoot().getChildrenUnmodifiable().get(2);
-        var contentContainer = (Pane) borderPane.getChildren().get(1);
-        tabCreateProjectCV = fxWeaver.load(TabCreateProjectController.class);
-        tabCreateProjectCV.getView().ifPresent(view ->{
-            contentContainer.getChildren().clear();
-            contentContainer.getChildren().add(view);
-
-        });
-        */
     }
 }

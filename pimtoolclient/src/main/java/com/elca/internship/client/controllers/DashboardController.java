@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -30,6 +31,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
     private final FxWeaver fxWeaver;
     public Label lbMenuNew;
     public Label lbMenuProject;
+    public BorderPane bodyContainer;
 
     private Stage stage;
     public static NavigationHandler navigationHandler;
