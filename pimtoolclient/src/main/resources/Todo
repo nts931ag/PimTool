@@ -1,0 +1,4 @@
+- Webtemplate/ RestTemplate/ OpenFeign
+- String regex
+- caching at client side
+- fill value for gui from sever side

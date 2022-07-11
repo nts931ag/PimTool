@@ -11,9 +11,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.TabProjectListController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.TabProjectListController">
    <children>
-      <HBox prefHeight="60.0">
+      <HBox prefHeight="60.0" styleClass="border-top" stylesheets="@css/main.css">
          <children>
             <TextField fx:id="tfSearch" promptText="Project number, name, customer name" HBox.hgrow="ALWAYS" />
             <ComboBox fx:id="cbStatus" promptText="Project status" stylesheets="@css/main.css">
@@ -29,6 +29,12 @@
                   <Insets left="30.0" />
                </HBox.margin></Button>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets top="15.0" />
+         </padding>
       </HBox>
       <AnchorPane VBox.vgrow="ALWAYS">
          <children>
