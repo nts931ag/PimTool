@@ -82,6 +82,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
                     , dimension2DLoading.getWidth()
                     , dimension2DLoading.getHeight());
             loadScene.setFill(Color.TRANSPARENT);
+            loadScene.getStylesheets().add(getClass().getResource("/views/css/main.css").toExternalForm());
             stage.setScene(loadScene);
         });
 

@@ -1,5 +1,6 @@
 package com.elca.internship.client.Utils;
 
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
@@ -7,6 +8,8 @@ import javafx.scene.text.Font;
 
 import java.lang.management.MemoryManagerMXBean;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +17,8 @@ public class FormValidation {
     private Map<String, Boolean> formFields;
 
     public FormValidation(){formFields = new HashMap<>();}
+
+
 
     public Map<String, Boolean> getFormFields(){
         return formFields;
@@ -67,6 +72,29 @@ public class FormValidation {
             valid = startVal.isBefore(endVal);
         }
         var msg = "End date must be less than start date";
+        return validationResponse(responseLabel, valid, msg);
+    }
+
+    public static ValidatedResponse isMemberValidated(String newValue, ObservableList<String> listCurMember, Label responseLabel) {
+        boolean valid = true;
+        var listInvalidVisa = new ArrayList<String>();
+
+        if(newValue == null){
+            valid = false;
+        } else{
+            var regex = "[A-Z+]{3}$";
+            var listVisa = newValue.split(", ");
+            for(int i=0;i<listVisa.length;++i){
+                if(!listCurMember.contains(listVisa[i]) || !listVisa[i].matches(regex)){
+                    listInvalidVisa.add(listVisa[i]);
+                    valid = false;
+                }
+            }
+            if(listInvalidVisa.isEmpty()){
+                valid = true;
+            }
+        }
+        var msg = "The following visas do not exist: " + listInvalidVisa.toString();
         return validationResponse(responseLabel, valid, msg);
     }
 

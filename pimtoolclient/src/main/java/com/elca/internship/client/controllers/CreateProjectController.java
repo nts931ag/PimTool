@@ -113,7 +113,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proCustomer", true);
         projectFormValidation.getFormFields().put("proStartDate", true);
         projectFormValidation.getFormFields().put("proEndDate", true);
-
+        projectFormValidation.getFormFields().put("proMember", true);
         this.addEventListeners();
     }
 
@@ -148,7 +148,15 @@ public class CreateProjectController implements Initializable, ApplicationListen
             this.validateFrom();
         });
 
-
+        tfProMember.textProperty().addListener(((observable, oldValue, newValue) -> {
+            var valid = FormValidation.isMemberValidated(
+                    newValue,
+                    listMembers,
+                    lbValidateProMember
+            ).isValid();
+            projectFormValidation.getFormFields().put("proMember", valid);
+            this.validateFrom();
+        }));
 
         pickerEndDate.valueProperty().addListener((observableValue, oldVal, newVal) -> {
             var startDate = pickerStartDate.getValue();
@@ -164,16 +172,16 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     private boolean validateFrom() {
+        var node =(GridPane) fxWeaver.loadView(AlertDangerController.class);
 
         if (projectFormValidation.getFormFields().containsValue(false)) {
-            var node =(GridPane) fxWeaver.loadView(AlertDangerController.class);
             node.setPrefWidth(800.0);
             node.setPadding(new Insets(0,0,0,25));
             gpCreateProjectTab.add(node, 0, 1, 4, 1);
             btnCreate.setDisable(true);
             return false;
         } else {
-            gpCreateProjectTab.getRowConstraints().get(1).setPrefHeight(0);
+            node.setVisible(false);
             btnCreate.setDisable(false);
             return true;
         }
@@ -230,7 +238,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
             try {
                 var msg = objectMapper.writeValueAsString(map);
-                var uri = BASE_URI + "/projects/save";
+                var uri = BASE_URI + "/api/projects/save";
                 var headers = new HttpHeaders();
                 headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -278,17 +286,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     public List<String> getMemberInputForm() {
         var members = tfProMember.getText();
-        var listMemberExist = new ArrayList<String>();
-        var listMemberNonExist = new ArrayList<String>();
-        var listMember = Arrays.stream(members.split(", ")).toList();
-        listMember.forEach(e->{
-            if(listMembers.contains(e)){
-                listMemberExist.add(e);
-            }else{
-                listMemberNonExist.add(e);
-            }
-        });
-        return listMemberExist;
+        return Arrays.stream(members.split(", ")).toList();
     }
 
 

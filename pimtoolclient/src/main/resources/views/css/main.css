@@ -91,7 +91,7 @@
 
 .root{
     -fx-font-family: "Poppins";
-    -fx-text-fill: #17252A;
+    -fx-text-fill: #666666;
     -fx-font-size:14;
 }
 
@@ -115,7 +115,7 @@
 }
 
 .btn-transprent-create{
-    -fx-background-color: #1F51FF;
+    -fx-background-color: #2f85fa;
     -fx-text-fill: #ffffff;
 }
 
@@ -130,17 +130,17 @@
 .border-top{
     -fx-border-style: solid hidden hidden hidden;
     -fx-border-width: 1px;
-    -fx-border-color: #52515d;
+    -fx-border-color: #dcdcdc;
 }
 
 .border-bottom{
     -fx-border-style: hidden hidden solid hidden;
     -fx-border-width: 1px;
-    -fx-border-color: #52515d;
+    -fx-border-color: #dcdcdc;
 }
 
 .border-right{
     -fx-border-style: hidden solid hidden hidden ;
     -fx-border-width: 1px;
-    -fx-border-color: #52515d;
+    -fx-border-color: #dcdcdc;
 }
