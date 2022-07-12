@@ -1,6 +1,8 @@
 package com.elca.internship.server.dao.impl;
 
 import com.elca.internship.server.dao.EmployeeDAO;
+import com.elca.internship.server.models.entity.Employee;
+import com.elca.internship.server.utils.EmployeeRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -24,5 +26,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 parameters,
                 (rs, rowNum) -> rs.getLong("id")
         );
+    }
+
+    @Override
+    public List<Employee> findAll()
+    {
+        var query = "SELECT * FROM EMPLOYEE";
+        return jdbcTemplate.query(query, new EmployeeRowMapper());
     }
 }
