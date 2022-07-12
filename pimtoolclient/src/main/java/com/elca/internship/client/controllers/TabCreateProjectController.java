@@ -2,6 +2,8 @@ package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.Utils.FormValidation;
+import com.elca.internship.client.config.connection.Rest;
+import com.elca.internship.client.models.entity.Group;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,6 +31,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 
@@ -48,7 +51,7 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
     private Button btnCreate;
 
     @FXML
-    private ComboBox<Integer> cbProGroup;
+    private ComboBox<Long> cbProGroup;
 
     @FXML
     private ComboBox<String> cbProStatus;
@@ -188,11 +191,16 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
     }
 
     public void fillDefaultValueForInputForm() {
+
+
         var listStatus = FXCollections.observableArrayList("New", "Planned", "In progress", "Finished");
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
 
-        var listGroups = FXCollections.observableArrayList(1, 2, 3);
+        var response = restTemplate.getForEntity(BASE_URI + "/api/groups", Group[].class);
+        var group = response.getBody();
+//        var listGroups = FXCollections.observableArrayList(1, 2, 3);
+        var listGroups = FXCollections.observableArrayList(Arrays.stream(group).map(Group::getId).collect(Collectors.toList()));
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
 
