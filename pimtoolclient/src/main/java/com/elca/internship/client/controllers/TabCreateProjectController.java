@@ -3,6 +3,7 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.Utils.FormValidation;
 import com.elca.internship.client.config.connection.Rest;
+import com.elca.internship.client.models.entity.Employee;
 import com.elca.internship.client.models.entity.Group;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -190,6 +192,9 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
 
     }
 
+    private ObservableList<Long> listGroups;
+    private ObservableList<String> listMembers;
+
     public void fillDefaultValueForInputForm() {
 
 
@@ -197,12 +202,16 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
 
-        var response = restTemplate.getForEntity(BASE_URI + "/api/groups", Group[].class);
-        var group = response.getBody();
+        var responseForGroups = restTemplate.getForEntity(BASE_URI + "/api/groups", Group[].class);
+        var groups = responseForGroups.getBody();
 //        var listGroups = FXCollections.observableArrayList(1, 2, 3);
-        var listGroups = FXCollections.observableArrayList(Arrays.stream(group).map(Group::getId).collect(Collectors.toList()));
+        listGroups = FXCollections.observableArrayList(Arrays.stream(groups).map(Group::getId).collect(Collectors.toList()));
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
+
+        var responseForMembers = restTemplate.getForEntity(BASE_URI + "/api/employees", Employee[].class);
+        var members = responseForMembers.getBody();
+        listMembers = FXCollections.observableArrayList(Arrays.stream(members).map(Employee::getVisa).collect(Collectors.toList()));
 
         var curDate = LocalDate.now();
         pickerEndDate.setValue(curDate);
