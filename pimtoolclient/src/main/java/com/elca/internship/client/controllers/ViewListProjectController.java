@@ -3,38 +3,31 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.models.entity.Project;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 @Component
-@FxmlView("/views/tabProjectList.fxml")
+@FxmlView("/views/viewListProject.fxml")
 @RequiredArgsConstructor
-public class TabProjectListController implements Initializable, ApplicationListener<StageReadyEvent> {
+public class ViewListProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
     private Stage stage;
 
-    private FxControllerAndView<TabCreateProjectController, Node> tabCreateProjectCV;
+    private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
 
 
     @FXML

@@ -2,24 +2,19 @@ package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.Utils.FormValidation;
-import com.elca.internship.client.config.connection.Rest;
 import com.elca.internship.client.models.entity.Employee;
 import com.elca.internship.client.models.entity.Group;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
@@ -38,10 +33,10 @@ import java.util.stream.Collectors;
 
 import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 
-@FxmlView("/views/tabCreateProject.fxml")
+@FxmlView("/views/createProject.fxml")
 @Component
 @RequiredArgsConstructor
-public class TabCreateProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
+public class CreateProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
     private final RestTemplate restTemplate;
     public GridPane gpCreateProjectTab;
@@ -99,7 +94,7 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
     private TextField tfProNum;
 
     public FormValidation projectFormValidation;
-    private FxControllerAndView<TabProjectListController, Node> tabProjectListCV;
+    private FxControllerAndView<ViewListProjectController, Node> tabProjectListCV;
 
 
     @Override
@@ -262,7 +257,7 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
         var borderPane = (BorderPane) stage.getScene().getRoot().getChildrenUnmodifiable().get(2);
         var titleContentContainer =  (Label)borderPane.getChildren().get(1);
         var contentContainer = (Pane) borderPane.getChildren().get(0);
-        tabProjectListCV = fxWeaver.load(TabProjectListController.class);
+        tabProjectListCV = fxWeaver.load(ViewListProjectController.class);
         tabProjectListCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);

@@ -3,12 +3,10 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.Utils.NavigationHandler;
 import com.elca.internship.client.Utils.Util;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -28,16 +26,13 @@ import java.util.ResourceBundle;
 @FxmlView("/views/dashboard.fxml")
 @RequiredArgsConstructor
 public class DashboardController implements Initializable, ApplicationListener<StageReadyEvent> {
-    private final FxWeaver fxWeaver;
-    public Label lbMenuNew;
-    public Label lbMenuProject;
-    public BorderPane bodyContainer;
 
+    private final FxWeaver fxWeaver;
     private Stage stage;
     public static NavigationHandler navigationHandler;
 
-    private FxControllerAndView<TabProjectListController, Node> tabProjectListCV;
-    private FxControllerAndView<TabCreateProjectController, Node> tabCreateProjectCV;
+    private FxControllerAndView<ViewListProjectController, Node> tabProjectListCV;
+    private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
 
     @FXML
     private Pane contentContainer;
@@ -47,7 +42,12 @@ public class DashboardController implements Initializable, ApplicationListener<S
     public VBox sideBarContainer;
     @FXML
     private Label lbHeaderOfTab;
-
+    @FXML
+    public Label lbMenuNew;
+    @FXML
+    public Label lbMenuProject;
+    @FXML
+    public BorderPane bodyContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -82,9 +82,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbProjectClicked(){
-        System.out.println("width: " + stage.getWidth() + " height: " + stage.getHeight());
 
-        tabProjectListCV = fxWeaver.load(TabProjectListController.class);
+        tabProjectListCV = fxWeaver.load(ViewListProjectController.class);
         tabProjectListCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);
@@ -95,7 +94,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbNewClicked() {
-        tabCreateProjectCV = fxWeaver.load(TabCreateProjectController.class);
+        tabCreateProjectCV = fxWeaver.load(CreateProjectController.class);
         tabCreateProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);
