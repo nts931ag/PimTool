@@ -17,7 +17,8 @@ public class Project extends BaseEntity{
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public Project(long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
+    public Project(long id, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
+        super(id, version);
         this.groupId = groupId;
         this.projectNumber = projectNumber;
         this.name = name;
@@ -25,7 +26,6 @@ public class Project extends BaseEntity{
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
-        super.setVersion(version);
     }
 
     public enum Status{
