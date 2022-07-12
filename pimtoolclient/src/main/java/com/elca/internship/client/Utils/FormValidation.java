@@ -26,7 +26,7 @@ public class FormValidation {
         if(val == null){
             valid = false;
         } else{
-            String exp = "\\d+";
+            String exp = "[\\d+]{0,19}";
             valid = val.matches(exp);
         }
         var msg = "Please enter a valid number project";
@@ -38,7 +38,7 @@ public class FormValidation {
         if(val == null){
             valid = false;
         } else{
-            String exp = "^[A-Za-z][A-Za-z0-9_]{0,49}$";
+            String exp = "^[A-Za-z][A-Za-z0-9_]{0,50}$";
             valid = val.matches(exp);
 
         }
@@ -51,7 +51,7 @@ public class FormValidation {
         if(val == null){
             valid = false;
         } else{
-            String exp = "^[A-Za-z][A-Za-z0-9_]{0,49}$";
+            String exp = "^[A-Za-z][A-Za-z0-9_]{0,50}$";
             valid = val.matches(exp);
 
         }

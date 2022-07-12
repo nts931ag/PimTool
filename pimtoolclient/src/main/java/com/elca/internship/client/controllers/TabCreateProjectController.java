@@ -19,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.skin.TextFieldSkin;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
@@ -152,6 +153,8 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
             this.validateFrom();
         });
 
+
+
         pickerEndDate.valueProperty().addListener((observableValue, oldVal, newVal) -> {
             var startDate = pickerStartDate.getValue();
             var valid = FormValidation.isValidatedEndDate(
@@ -212,7 +215,6 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
         var responseForMembers = restTemplate.getForEntity(BASE_URI + "/api/employees", Employee[].class);
         var members = responseForMembers.getBody();
         listMembers = FXCollections.observableArrayList(Arrays.stream(members).map(Employee::getVisa).collect(Collectors.toList()));
-
         var curDate = LocalDate.now();
         pickerEndDate.setValue(curDate);
         pickerStartDate.setValue(curDate);
@@ -281,7 +283,17 @@ public class TabCreateProjectController implements Initializable, ApplicationLis
 
     public List<String> getMemberInputForm() {
         var members = tfProMember.getText();
-        return Arrays.stream(members.split(", ")).toList();
+        var listMemberExist = new ArrayList<String>();
+        var listMemberNonExist = new ArrayList<String>();
+        var listMember = Arrays.stream(members.split(", ")).toList();
+        listMember.forEach(e->{
+            if(listMembers.contains(e)){
+                listMemberExist.add(e);
+            }else{
+                listMemberNonExist.add(e);
+            }
+        });
+        return listMemberExist;
     }
 
 

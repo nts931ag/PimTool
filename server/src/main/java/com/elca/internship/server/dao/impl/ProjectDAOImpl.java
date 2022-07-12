@@ -4,11 +4,7 @@ import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.utils.ProjectRowMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -77,9 +73,6 @@ public class ProjectDAOImpl implements ProjectDAO {
     @Override
     public List<Project> findAll() {
         final var sql = "SELECT * FROM project";
-
-
-
         return jdbcTemplate.query(sql, new ProjectRowMapper());
     }
 }
