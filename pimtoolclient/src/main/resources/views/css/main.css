@@ -1,106 +1,19 @@
-/*Colors used:
-1. #17252A - dark blue
-2. #3AAFA9 - sea green
-3. #DEF2F1 - light sea green
-4. #272635 - dark blue 2
-5. #52515d - grey
-6.  #D4B9A2 -sandy
-7. #a4dbf4 -sky blue
-*/
-
-@font-face{
-    font-family: "Poppins";
-    src: url("fonts/Poppins-Regular.ttf");
-}
-
-@font-face{
-    font-family: "Poppins Medium";
-    src: url("fonts/Poppins-Medium.ttf");
-}
-
-@font-face{
-    font-family: "Poppins SemiBold";
-    src: url("fonts/Poppins-SemiBold.ttf");
-}
-
-@font-face{
-    font-family: "Poppins";
-    src: url("fonts/Poppins-Bold.ttf");
-}
-
-/* Headings */
-
-
-.h1{
-    -fx-font-family: 'Poppins SemiBold', sans-serif;
-    -fx-font-size: 22;
-    -fx-font-weight:bold;
-    -fx-tex-fill: #17252A;
-    -fx-font-smoothing-type: lcd;
-}
-
-.h2{
-    -fx-font-family: 'Poppins SemiBold', sans-serif;
-    -fx-font-size: 20;
-    -fx-font-weight:bold;
-    -fx-tex-fill: #17252A;
-    -fx-font-smoothing-type: lcd;
-}
-
-.h3{
- -fx-font-family: 'Poppins SemiBold', sans-serif;
-    -fx-font-size: 18;
-    -fx-font-weight:bold;
-    -fx-tex-fill: #17252A;
-    -fx-font-smoothing-type: lcd;
-}
-
-.h4{
- -fx-font-family: 'Poppins SemiBold', sans-serif;
-     -fx-font-size: 16;
-        -fx-font-weight:700;
-        -fx-tex-fill: #17252A;
-        -fx-font-smoothing-type: lcd;
-}
-
-.h5{
-    -fx-font-family: 'Poppins', sans-serif;
-     -fx-font-size: 14;
-        -fx-font-weight:700;
-        -fx-tex-fill: #17252A;
-        -fx-font-smoothing-type: lcd;
-}
-
-.h6{
- -fx-font-family: 'Poppins', sans-serif;
- -fx-font-size: 12;
-    -fx-font-weight:700;
-    -fx-tex-fill: #17252A;
-    -fx-font-smoothing-type: lcd;
-}
-
-.big-text{
-    -fx-font-family: 'Poppins', sans-serif;
-    -fx-font-size: 18;
-    -fx-font-weight:400;
-    -fx-tex-fill: #17252A;
-    -fx-font-smoothing-type: lcd;
-}
-
-/* Margin Bottom */
-
 .root{
     -fx-font-family: "Poppins";
     -fx-text-fill: #666666;
-    -fx-font-size:14;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
 }
 
-.title-label{
-        -fx-font-family: 'Poppins SemiBold', sans-serif;
-        -fx-text-fill: #272635;
-        -fx-font-size: 28;
-        -fx-font-weight: bold;
-        /*-fx-padding: 5 5 5 30;*/
+/* Text */
+.lb-name-application {
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+}
+
+.lb-side-bar{
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
 }
 
 /* Button */
@@ -115,12 +28,17 @@
 }
 
 .btn-transprent-create{
+
     -fx-background-color: #2f85fa;
     -fx-text-fill: #ffffff;
 }
 
 
 /* sidebar button */
+.label-menu-button{
+    -fx-font-size: 16px;
+}
+
 .label-menu-button:hover {
     -fx-cursor: hand;
     -fx-underline: true;
@@ -143,4 +61,16 @@
     -fx-border-style: hidden solid hidden hidden ;
     -fx-border-width: 1px;
     -fx-border-color: #dcdcdc;
+}
+
+.alert-danger{
+    -fx-background-color: #FAA0A0;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+    -fx-opacity: 0.5;
+}
+
+.alert-danger .label{
+    -fx-text-fill: red;
+    -fx-font-weight: 600;
 }

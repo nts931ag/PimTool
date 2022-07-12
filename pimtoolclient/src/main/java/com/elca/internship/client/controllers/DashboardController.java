@@ -88,7 +88,6 @@ public class DashboardController implements Initializable, ApplicationListener<S
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);
             lbHeaderOfTab.setText("Project List");
-
         });
     }
 

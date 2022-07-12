@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
+<BorderPane stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
    <top>
       <HBox fx:id="headerContainer" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="border-bottom" stylesheets="@css/main.css">
          <children>
@@ -21,7 +21,7 @@
                   <Insets left="25.0" />
                </HBox.margin>
             </ImageView>
-            <Label styleClass="h1" stylesheets="@css/main.css" text="Project Infomation Management">
+            <Label styleClass="lb-name-application" stylesheets="@css/main.css" text="Project Infomation Management">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
@@ -40,7 +40,10 @@
                         <Insets right="25.0" />
                      </HBox.margin>
                   </Label>
-                  <Label styleClass="label-menu-button" text="Log out" />
+                  <Label styleClass="label-menu-button" text="Log out">
+                     <HBox.margin>
+                        <Insets right="75.0" />
+                     </HBox.margin></Label>
                </children>
             </HBox>
          </children>
@@ -53,44 +56,41 @@
       </HBox>
    </top>
    <left>
-      <Pane fx:id="sidebarContainer" styleClass="border-right" stylesheets="@css/main.css" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
+      <VBox fx:id="sideBarContainer" prefWidth="200.0" spacing="5.0" styleClass="border-right">
          <children>
-            <VBox fx:id="sideBarContainer" prefWidth="200.0">
-               <children>
-                  <Label maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="h4" text="Project list">
-                     <VBox.margin>
-                        <Insets left="40.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label fx:id="lbMenuNew" onMouseClicked="#onLbNewClicked" styleClass="label-menu-button" text="New">
-                     <VBox.margin>
-                        <Insets left="40.0" />
-                     </VBox.margin></Label>
-                  <Label fx:id="lbMenuProject" onMouseClicked="#onLbProjectClicked" styleClass="label-menu-button" text="Project">
-                     <VBox.margin>
-                        <Insets left="40.0" />
-                     </VBox.margin></Label>
-                  <Label styleClass="label-menu-button" text="Customer">
-                     <VBox.margin>
-                        <Insets left="40.0" />
-                     </VBox.margin></Label>
-                  <Label styleClass="label-menu-button" text="Supplier">
-                     <VBox.margin>
-                        <Insets left="40.0" />
-                     </VBox.margin></Label>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </padding>
-            </VBox>
+            <Label maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="lb-side-bar" text="Projects list">
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="lbMenuNew" onMouseClicked="#onLbNewClicked" styleClass="label-menu-button" text="New">
+               <VBox.margin>
+                  <Insets left="40.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="lbMenuProject" onMouseClicked="#onLbProjectClicked" styleClass="label-menu-button" text="Project">
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </Label>
+            <Label styleClass="label-menu-button" text="Customer">
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </Label>
+            <Label styleClass="label-menu-button" text="Supplier">
+               <VBox.margin>
+                  <Insets left="40.0" />
+               </VBox.margin>
+            </Label>
          </children>
-      </Pane>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </VBox>
    </left>
    <center>
       <BorderPane fx:id="bodyContainer" BorderPane.alignment="CENTER">
@@ -104,7 +104,7 @@
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
          <top>
-            <Label fx:id="lbHeaderOfTab" styleClass="h3" text="Title of each tab" BorderPane.alignment="CENTER_LEFT" />
+            <Label fx:id="lbHeaderOfTab" styleClass="lb-side-bar" text="Title of each tab" BorderPane.alignment="CENTER_LEFT" />
          </top>
       </BorderPane>
    </center>

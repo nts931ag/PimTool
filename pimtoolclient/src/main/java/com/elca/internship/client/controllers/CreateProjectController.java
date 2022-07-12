@@ -95,6 +95,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     public FormValidation projectFormValidation;
     private FxControllerAndView<ViewListProjectController, Node> tabProjectListCV;
+    private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
 
 
     @Override
@@ -172,12 +173,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     private boolean validateFrom() {
-        var node =(GridPane) fxWeaver.loadView(AlertDangerController.class);
-
+        var node = (HBox) alertDangerCV.getView().get();
         if (projectFormValidation.getFormFields().containsValue(false)) {
-            node.setPrefWidth(800.0);
-            node.setPadding(new Insets(0,0,0,25));
-            gpCreateProjectTab.add(node, 0, 1, 4, 1);
+            node.setVisible(true);
             btnCreate.setDisable(true);
             return false;
         } else {
@@ -188,13 +186,32 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     public void initLayout() {
-        gpCreateProjectTab.setVgap(20);
-        gpCreateProjectTab.setHgap(5);
 
-
+        gpCreateProjectTab.setVgap(15);
+        gpCreateProjectTab.setHgap(10);
         var colsConstraints = gpCreateProjectTab.getColumnConstraints();
-        colsConstraints.forEach(c -> c.setPrefWidth(200));
-        gpCreateProjectTab.getColumnConstraints().get(4).setPrefWidth(800);
+        colsConstraints.get(0).setPercentWidth(8);
+        colsConstraints.get(1).setPercentWidth(14);
+        colsConstraints.get(2).setPercentWidth(14);
+        colsConstraints.get(3).setPercentWidth(14);
+        colsConstraints.get(4).setPercentWidth(50);
+        cbProGroup.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        cbProStatus.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        pickerEndDate.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+        pickerStartDate.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
+        var rowsContraints = gpCreateProjectTab.getRowConstraints();
+        rowsContraints.get(0).setPrefHeight(1);
+        for(var i = 1; i< rowsContraints.size();++i){
+            rowsContraints.get(i).setPrefHeight(35);
+        }
+        alertDangerCV = fxWeaver.load(AlertDangerController.class);
+
+        var node = (HBox) alertDangerCV.getView().get();
+        gpCreateProjectTab.add(node,0,1,4,1);
+        node.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        node.setVisible(false);
+
+
 
     }
 
