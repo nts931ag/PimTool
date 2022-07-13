@@ -125,6 +125,10 @@
     -fx-alignment: CENTER;
 }
 
+.table-row-cell{
+    -fx-background-color: transparent;
+}
+
 /* pagination */
 .pagination {
     -fx-page-information-visible:false;

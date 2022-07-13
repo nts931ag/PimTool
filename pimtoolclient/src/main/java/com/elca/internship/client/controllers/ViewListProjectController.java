@@ -2,6 +2,7 @@ package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.entity.ProjectTable;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
+import jiconfont.javafx.IconFontFX;
+import jiconfont.javafx.IconNode;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -43,21 +47,21 @@ public class ViewListProjectController implements Initializable, ApplicationList
     @FXML
     public Pagination paginationTableProject;
     @FXML
-    public TableColumn<Project,CheckBox> colCheck;
+    public TableColumn<ProjectTable,CheckBox> colCheck;
     @FXML
-    public TableColumn<Project,Integer> colProNum;
+    public TableColumn<ProjectTable,Integer> colProNum;
     @FXML
-    public TableColumn<Project,String> colProName;
+    public TableColumn<ProjectTable,String> colProName;
     @FXML
-    public TableColumn<Project, String> colProStatus;
+    public TableColumn<ProjectTable, String> colProStatus;
     @FXML
-    public TableColumn<Project,String> colProCustomer;
+    public TableColumn<ProjectTable,String> colProCustomer;
     @FXML
-    public TableColumn<Project, String> colProStart;
+    public TableColumn<ProjectTable, String> colProStart;
     @FXML
-    public TableColumn<Project,?> colProDel;
+    public TableColumn<ProjectTable, IconNode> colProDel;
     @FXML
-    public TableView<Project> tbProject;
+    public TableView<ProjectTable> tbProject;
     @FXML
     public TextField tfSearch;
     @FXML
@@ -96,7 +100,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colCheck.getStyleClass().add("table-column-align-center");
         colProDel.getStyleClass().add("table-column-align-center");
         colProNum.getStyleClass().add("table-column-align-right");
-        System.out.println(tbProject.getWidth() + " " + tbProject.getHeight());
     }
 
     private void fillValueToLayout() {
@@ -111,7 +114,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public void createTableProject(){
         var startDate = LocalDate.now();
         var endDate = startDate.plusYears(1);
-        var dataProjects = FXCollections.observableArrayList(
+        /*var dataProjects = FXCollections.observableArrayList(
                 new Project(1, 1111,"firstProject", "Elca1", Project.Status.NEW, startDate, endDate, 1),
                 new Project(2, 2222,"secondProject", "Elca2", Project.Status.NEW, startDate, endDate, 1),
                 new Project(3, 3333,"thirdProject", "Elca3", Project.Status.NEW, startDate, endDate, 1),
@@ -119,9 +122,21 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 new Project(5, 5555,"fiveProject", "Elca5", Project.Status.NEW, startDate, endDate, 1),
                 new Project(6, 6666,"sixProject", "Elca6", Project.Status.NEW, startDate, endDate, 1),
                 new Project(7, 7777,"sevenProject", "Elca7", Project.Status.NEW, startDate, endDate, 1)
+        );*/
+        IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
+        var dataProjects = FXCollections.observableArrayList(
+                new ProjectTable(new CheckBox(), 1, 1111,"firstProject", "Elca1", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
+                new ProjectTable(new CheckBox(), 2, 2222,"secondProject", "Elca2", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
+                new ProjectTable(new CheckBox(), 3, 3333,"thirdProject", "Elca3", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
+                new ProjectTable(new CheckBox(), 4, 4444,"fourProject", "Elca4", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
+                new ProjectTable(new CheckBox(), 5, 5555,"fiveProject", "Elca5", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
+                new ProjectTable(new CheckBox(), 6, 6666,"sixProject", "Elca6", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
+                new ProjectTable(new CheckBox(), 7, 7777,"sevenProject", "Elca7", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE))
         );
 
 
+        colCheck.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
+        colProDel.setCellValueFactory(new PropertyValueFactory<>("icDelete"));
         colProNum.setCellValueFactory(new PropertyValueFactory<>("projectNumber"));
         colProName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colProCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
