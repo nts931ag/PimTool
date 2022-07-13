@@ -86,7 +86,6 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             stage.setScene(loadScene);
         });
 
-        System.out.println(dashboardPageCV.getView().hashCode() + " " + dashboardPageCV.getController().hashCode());
 
         stage.show();
     }

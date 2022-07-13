@@ -24,6 +24,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URL;
@@ -109,12 +110,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
         fillDefaultValueForInputForm();
 
         projectFormValidation = new FormValidation();
-        projectFormValidation.getFormFields().put("proNum", true);
-        projectFormValidation.getFormFields().put("proName", true);
-        projectFormValidation.getFormFields().put("proCustomer", true);
+        projectFormValidation.getFormFields().put("proNum", false);
+        projectFormValidation.getFormFields().put("proName", false);
+        projectFormValidation.getFormFields().put("proCustomer", false);
         projectFormValidation.getFormFields().put("proStartDate", true);
-        projectFormValidation.getFormFields().put("proEndDate", true);
-        projectFormValidation.getFormFields().put("proMember", true);
+        projectFormValidation.getFormFields().put("proEndDate", false);
+        projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
     }
 
@@ -126,7 +127,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
             ).isValid();
             projectFormValidation.getFormFields().put("proNum", valid);
 
-            this.validateFrom();
         });
 
         tfProName.textProperty().addListener((observableValue, oldVal, newVal) -> {
@@ -136,7 +136,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
             ).isValid();
             projectFormValidation.getFormFields().put("proName", valid);
 
-            this.validateFrom();
         });
 
         tfProCustomer.textProperty().addListener((observableValue, oldVal, newVal) -> {
@@ -146,7 +145,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
             ).isValid();
             projectFormValidation.getFormFields().put("proCustomer", valid);
 
-            this.validateFrom();
         });
 
         tfProMember.textProperty().addListener(((observable, oldValue, newValue) -> {
@@ -156,7 +154,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     lbValidateProMember
             ).isValid();
             projectFormValidation.getFormFields().put("proMember", valid);
-            this.validateFrom();
         }));
 
         pickerEndDate.valueProperty().addListener((observableValue, oldVal, newVal) -> {
@@ -167,8 +164,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     lbValidateProDate
             ).isValid();
             projectFormValidation.getFormFields().put("proEndDate", valid);
-
-            this.validateFrom();
         });
     }
 
@@ -176,11 +171,11 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var node = (HBox) alertDangerCV.getView().get();
         if (projectFormValidation.getFormFields().containsValue(false)) {
             node.setVisible(true);
-            btnCreate.setDisable(true);
+//            btnCreate.setDisable(true);
             return false;
         } else {
             node.setVisible(false);
-            btnCreate.setDisable(false);
+//            btnCreate.setDisable(false);
             return true;
         }
     }
@@ -227,7 +222,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
         var responseForGroups = restTemplate.getForEntity(BASE_URI + "/api/groups", Group[].class);
         var groups = responseForGroups.getBody();
-//        var listGroups = FXCollections.observableArrayList(1, 2, 3);
         listGroups = FXCollections.observableArrayList(Arrays.stream(groups).map(Group::getId).collect(Collectors.toList()));
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
@@ -242,6 +236,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     @FXML
     public void onCreateProjectBtn() {
+        System.out.println(projectFormValidation.getFormFields().toString());
 
         if(validateFrom()) {
             var project = getProjectInputForm();
@@ -271,8 +266,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     System.out.println("Connection status : " + responseEntity.getStatusCode());
                     navigateToTabListProject();
                 }
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+            } catch (JsonProcessingException | ResourceAccessException jpe) {
+                navigateToErrorPage(jpe.getMessage());
             }
         }
     }
@@ -309,6 +304,21 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     @FXML
     public void onCancelProjectBtn() {
-        navigateToTabListProject();
+        /*tfProNum.setText("");
+        tfProName.setText("");
+        tfProCustomer.setText("");
+        tfProCustomer.setText("");
+        cbProGroup.getSelectionModel().select(0);
+        cbProStatus.getSelectionModel().select(0);*/
+        navigateToErrorPage("msgError");
+    }
+
+    private void navigateToErrorPage(String msgError) {
+        var nodeBorderPane = (BorderPane) stage.getScene().getRoot();
+        nodeBorderPane.setLeft(null);
+        var errorPageCV = fxWeaver.load(ErrorPageController.class);
+        errorPageCV.getView().ifPresent(nodeBorderPane::setCenter);
+        var errorPageController = errorPageCV.getController();
+        errorPageController.setMsgError(msgError);
     }
 }

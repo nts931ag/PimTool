@@ -17,8 +17,7 @@
 }
 
 /* Button */
-.btn-transprent {
-    -fx-background-color: transparent;
+.btn-transparent {
     -fx-background-repeat: no-repeat;
     -fx-border: none;
     -fx-cursor: hand;
@@ -27,7 +26,7 @@
     -fx-border-radius: 5px;
 }
 
-.btn-transprent-create{
+.btn-transparent-create{
 
     -fx-background-color: #2f85fa;
     -fx-text-fill: #ffffff;
@@ -73,4 +72,15 @@
 .alert-danger .label{
     -fx-text-fill: red;
     -fx-font-weight: 600;
+}
+
+.validate-err{
+    -fx-text-fill: #8c2c20;
+    -fx-font-size: 12px;
+}
+
+.validate-success{
+      -fx-text-fill: #002B00;
+      -fx-font-size: 12px;
+      -fx-font-weight:bold;
 }
