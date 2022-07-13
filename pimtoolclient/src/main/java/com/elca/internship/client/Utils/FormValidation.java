@@ -5,6 +5,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
+import jiconfont.javafx.IconFontFX;
+import jiconfont.javafx.IconNode;
 
 import java.lang.management.MemoryManagerMXBean;
 import java.time.LocalDate;
@@ -26,66 +29,88 @@ public class FormValidation {
 
     public static int iconSize;
 
-    public static ValidatedResponse isProNumExisted(String val, Label responseLabel ) {
+    public static ValidatedResponse isProNumValid(String val, ObservableList<Long> listCurProNum, Label responseLabel ) {
         boolean valid;
+        var msg = "";
         if(val == null){
             valid = false;
+        } else if (val.isBlank()){
+            valid = false;
+            msg = "This field can't be blank.";
         } else{
             String exp = "[\\d+]{0,19}";
             valid = val.matches(exp);
+            if(!valid){
+                msg = "Only numbers is allowed. Length limit: Min-1, Max-19.";
+            }else{
+                valid = !listCurProNum.contains(Long.parseLong(val));
+                msg = "The project number already existed. Please select a different project number.";
+            }
         }
-        var msg = "Please enter a valid number project";
         return validationResponse(responseLabel, valid, msg);
     }
 
-    public static ValidatedResponse isProjectName(String val, Label responseLabel) {
+    public static ValidatedResponse isProNameValid(String val, Label responseLabel) {
         boolean valid;
+        var msg = "";
         if(val == null){
             valid = false;
-        } else{
-            String exp = "^[A-Za-z][A-Za-z0-9_]{0,50}$";
-            valid = val.matches(exp);
-
+        } else if (val.isBlank()) {
+            valid = false;
+            msg = "This field can't be blank.";
         }
-        var msg = "Only alphabets, numbers and underscore is allowed. Char Limit: Min-1, Max-50";
+        else{
+            String exp = "^[A-Za-z][A-Za-z\\d_\s+]{0,50}$";
+            valid = val.matches(exp);
+            msg = "Begin with alphabets. Numbers, underscore and whitespace is allowed. Length Limit: Min-1, Max-50.";
+        }
         return validationResponse(responseLabel, valid, msg);
     }
 
-    public static ValidatedResponse isProjectCustomer(String val, Label responseLabel) {
+    public static ValidatedResponse isProCustomerValid(String val, Label responseLabel) {
         boolean valid;
+        var msg = "";
         if(val == null){
             valid = false;
+        } else if (val.isBlank()) {
+            valid = false;
+            msg = "This field can't be blank.";
         } else{
-            String exp = "^[A-Za-z][A-Za-z0-9_]{0,50}$";
+            String exp = "^[A-Za-z][A-Za-z\\d_\s+]{0,50}$";
             valid = val.matches(exp);
-
+            msg = "Begin with alphabets. Numbers, underscore and whitespace is allowed. Length Limit: Min-1, Max-50.";
         }
-        var msg = "Only alphabets, numbers and underscore is allowed. Char Limit: Min-1, Max-50";
         return validationResponse(responseLabel, valid, msg);
     }
 
-    public static ValidatedResponse isValidatedEndDate(LocalDate endVal, LocalDate startVal, Label responseLabel) {
+    public static ValidatedResponse isDateValid(LocalDate endVal, LocalDate startVal, Label responseLabel) {
         boolean valid;
+        var msg = "";
         if(startVal == null || endVal == null){
             valid = false;
+            msg = "End date or Start date must not be empty.";
         } else{
-            valid = startVal.isBefore(endVal);
+            if(endVal.isBefore(startVal)){
+                msg = "End date must be less than start date.";
+                valid = false;
+            }else{
+                valid = true;
+            }
         }
-        var msg = "End date must be less than start date";
         return validationResponse(responseLabel, valid, msg);
     }
 
-    public static ValidatedResponse isMemberValidated(String newValue, ObservableList<String> listCurMember, Label responseLabel) {
+    public static ValidatedResponse isProMemberValid(String newValue, ObservableList<String> listCurProMember, Label responseLabel) {
         boolean valid = true;
         var listInvalidVisa = new ArrayList<String>();
 
         if(newValue == null){
             valid = false;
         } else{
-            var regex = "[A-Z+]{3}$";
+//            var regex = "[A-Z+]{3}$";
             var listVisa = newValue.split(", ");
             for(int i=0;i<listVisa.length;++i){
-                if(!listCurMember.contains(listVisa[i]) || !listVisa[i].matches(regex)){
+                if(!listCurProMember.contains(listVisa[i])){
                     listInvalidVisa.add(listVisa[i]);
                     valid = false;
                 }
@@ -100,7 +125,7 @@ public class FormValidation {
 
     public static ValidatedResponse validationResponse(Label responseLabel, boolean valid,String msg){
         FormValidation.iconSize = 24;
-//        IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
+        IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
 
         responseLabel.setText("");
         responseLabel.setGraphic(null);
@@ -109,25 +134,27 @@ public class FormValidation {
 
         if(valid){
             responseLabel.setText("");
-//            IconNode correctIcon = new IconNode(GoogleMaterialDesignIcons.CHECK_CIRCLE);
-//            correctIcon.setIconSize(iconSize);
-//            correctIcon.setFill(Color.web("#152769"));
-//            responseLabel.setGraphic(correctIcon);
+
+            IconNode correctIcon = new IconNode(GoogleMaterialDesignIcons.CHECK_CIRCLE);
+            correctIcon.setIconSize(iconSize);
+            correctIcon.setFill(Color.web("#152769"));
+
+            responseLabel.setGraphic(correctIcon);
             responseLabel.getStyleClass().add("validate-success");
             responseLabel.setTooltip(new Tooltip(msg));
-            responseLabel.setWrapText(true);
             return new ValidatedResponse(responseLabel,true);
         }
         else{
             responseLabel.setFont(new Font(responseLabel.getPrefHeight() * 0.50));
+
             responseLabel.setText(msg);
-//            IconNode wrongIcon = new IconNode(GoogleMaterialDesignIcons.HIGHLIGHT_OFF);
-//            wrongIcon.setIconSize(iconSize);
-//            wrongIcon.setFill(Color.web("#8c2c20"));
-//            responseLabel.setGraphic(wrongIcon);
+            IconNode wrongIcon = new IconNode(GoogleMaterialDesignIcons.HIGHLIGHT_OFF);
+            wrongIcon.setIconSize(iconSize);
+            wrongIcon.setFill(Color.web("#8c2c20"));
+            responseLabel.setGraphic(wrongIcon);
+
             responseLabel.getStyleClass().add("validate-err");
             responseLabel.setTooltip(new Tooltip(msg));
-            responseLabel.setWrapText(true);
             return new ValidatedResponse(responseLabel,false);
         }
     }

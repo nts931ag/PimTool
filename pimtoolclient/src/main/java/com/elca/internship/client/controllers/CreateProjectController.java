@@ -114,15 +114,18 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proName", false);
         projectFormValidation.getFormFields().put("proCustomer", false);
         projectFormValidation.getFormFields().put("proStartDate", true);
-        projectFormValidation.getFormFields().put("proEndDate", false);
+        projectFormValidation.getFormFields().put("proEndDate", true);
         projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
     }
 
     private void addEventListeners() {
+        listCurProNum = FXCollections.observableArrayList(1L,2L,3L,4L,5L);
+
         tfProNum.textProperty().addListener((observableValue, oldVal, newVal) -> {
-            var valid = FormValidation.isProNumExisted(
+            var valid = FormValidation.isProNumValid(
                     newVal,
+                    listCurProNum,
                     lbValidateProNum
             ).isValid();
             projectFormValidation.getFormFields().put("proNum", valid);
@@ -130,7 +133,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         });
 
         tfProName.textProperty().addListener((observableValue, oldVal, newVal) -> {
-            var valid = FormValidation.isProjectName(
+            var valid = FormValidation.isProNameValid(
                     newVal,
                     lbValidateProName
             ).isValid();
@@ -139,7 +142,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         });
 
         tfProCustomer.textProperty().addListener((observableValue, oldVal, newVal) -> {
-            var valid = FormValidation.isProjectCustomer(
+            var valid = FormValidation.isProCustomerValid(
                     newVal,
                     lbValidateProCustomer
             ).isValid();
@@ -148,7 +151,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         });
 
         tfProMember.textProperty().addListener(((observable, oldValue, newValue) -> {
-            var valid = FormValidation.isMemberValidated(
+            var valid = FormValidation.isProMemberValid(
                     newValue,
                     listMembers,
                     lbValidateProMember
@@ -156,9 +159,19 @@ public class CreateProjectController implements Initializable, ApplicationListen
             projectFormValidation.getFormFields().put("proMember", valid);
         }));
 
+        pickerStartDate.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            var endDate = pickerEndDate.getValue();
+            var valid = FormValidation.isDateValid(
+                    endDate,
+                    newValue,
+                    lbValidateProDate
+            ).isValid();
+            projectFormValidation.getFormFields().put("proStartDate", valid);
+        }));
+
         pickerEndDate.valueProperty().addListener((observableValue, oldVal, newVal) -> {
             var startDate = pickerStartDate.getValue();
-            var valid = FormValidation.isValidatedEndDate(
+            var valid = FormValidation.isDateValid(
                     newVal,
                     startDate,
                     lbValidateProDate
@@ -212,6 +225,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     private ObservableList<Long> listGroups;
     private ObservableList<String> listMembers;
+    private ObservableList<Long> listCurProNum;
 
     public void fillDefaultValueForInputForm() {
 
