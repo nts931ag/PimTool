@@ -108,7 +108,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initLayout();
         fillDefaultValueForInputForm();
-
         projectFormValidation = new FormValidation();
         projectFormValidation.getFormFields().put("proNum", false);
         projectFormValidation.getFormFields().put("proName", false);
@@ -120,7 +119,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     private void addEventListeners() {
-        listCurProNum = FXCollections.observableArrayList(1L,2L,3L,4L,5L);
 
         tfProNum.textProperty().addListener((observableValue, oldVal, newVal) -> {
             var valid = FormValidation.isProNumValid(
@@ -184,11 +182,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var node = (HBox) alertDangerCV.getView().get();
         if (projectFormValidation.getFormFields().containsValue(false)) {
             node.setVisible(true);
-//            btnCreate.setDisable(true);
             return false;
         } else {
             node.setVisible(false);
-//            btnCreate.setDisable(false);
             return true;
         }
     }
@@ -243,6 +239,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var responseForMembers = restTemplate.getForEntity(BASE_URI + "/api/employees", Employee[].class);
         var members = responseForMembers.getBody();
         listMembers = FXCollections.observableArrayList(Arrays.stream(members).map(Employee::getVisa).collect(Collectors.toList()));
+
+        var responseForProjects = restTemplate.getForEntity(BASE_URI + "/api/projects", Project[].class);
+        var projects = responseForProjects.getBody();
+        listCurProNum = FXCollections.observableArrayList(Arrays.stream(projects).map(Project::getId).collect(Collectors.toList()));
+
+
         var curDate = LocalDate.now();
         pickerEndDate.setValue(curDate);
         pickerStartDate.setValue(curDate);

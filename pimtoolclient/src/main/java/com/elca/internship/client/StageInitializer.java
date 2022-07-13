@@ -8,6 +8,7 @@ import com.elca.internship.client.controllers.LoadingPageController;
 import javafx.concurrent.Task;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
@@ -78,7 +79,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
         Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 1, 1);
         dashboardPageCV = fxWeaver.load(DashboardController.class);
         dashboardPageCV.getView().ifPresent(view -> {
-            Scene loadScene = new Scene(fxWeaver.loadView(DashboardController.class)
+            Scene loadScene = new Scene((Parent) view
                     , dimension2DLoading.getWidth()
                     , dimension2DLoading.getHeight());
             loadScene.setFill(Color.TRANSPARENT);
