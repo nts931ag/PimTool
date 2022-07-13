@@ -82,6 +82,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     private void initLayout() {
         hbFilterListProject.setPadding(new Insets(25,0,25,0));
+        cbStatus.setPrefWidth(200);
+        btnSearch.setPrefWidth(200);
 
         colCheck.setPrefWidth(30);
         colProDel.setPrefWidth(70);
@@ -100,6 +102,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private void fillValueToLayout() {
         var listStatus = FXCollections.observableArrayList("New", "Planned", "In progress", "Finished");
         cbStatus.setItems(listStatus);
+        cbStatus.setPromptText("Project status");
         cbStatus.getSelectionModel().select(0);
 
         createTableProject();

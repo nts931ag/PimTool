@@ -1,5 +1,4 @@
 .root{
-    -fx-font-family: "Poppins";
     -fx-text-fill: #666666;
     -fx-font-size: 14px;
     -fx-font-weight: 600;
@@ -7,13 +6,17 @@
 
 /* Text */
 .lb-name-application {
-    -fx-font-size: 20px;
+    -fx-font-size: 26px;
     -fx-font-weight: 800;
+    -fx-text-fill: #666666;
+
 }
 
 .lb-side-bar{
-    -fx-font-size: 18px;
-    -fx-font-weight: 600;
+    -fx-font-size: 20px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #666666;
+
 }
 
 /* Button */
@@ -36,6 +39,8 @@
 /* sidebar button */
 .label-menu-button{
     -fx-font-size: 16px;
+    -fx-text-fill: #666666;
+
 }
 
 .label-menu-button:hover {
@@ -97,21 +102,26 @@
 
 /* table view */
 
-#tbProject .column-header .label{
+.table-view .label{
+    -fx-text-fill: #666666;
+    -fx-font-weight: 700;
+}
+
+.table-view .column-header .label{
     -fx-alignment:CENTER-LEFT;
     -fx-padding: 10px 5px 10px 5px;
 }
 
-#tbProject .table-column{
+.table-view .table-column{
     -fx-alignment: CENTER-LEFT;
     -fx-padding: 10px 5px 10px 5px;
 }
 
-#tbProject .table-column-align-right{
+.table-view .table-column-align-right{
     -fx-alignment: CENTER-RIGHT;
 }
 
-#tbProject .table-column-align-center{
+.table-view .table-column-align-center{
     -fx-alignment: CENTER;
 }
 
@@ -155,5 +165,15 @@
     -fx-background-insets: 0;
     -fx-background-color: #dcdcdc;
     -fx-text-fill: #666666;
+}
+
+/* combo box */
+
+.combo-box {
+    -fx-border-width: 1px;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 5px;
+    -fx-background-border-radius: 5px;
+    -fx-background-color: #ffffff;
 }
 
