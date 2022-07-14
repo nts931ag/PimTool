@@ -252,7 +252,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     @FXML
     public void onCreateProjectBtn() {
-        System.out.println(projectFormValidation.getFormFields().toString());
 
         if(validateFrom()) {
             var project = getProjectInputForm();
@@ -309,7 +308,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var status = cbProStatus.getSelectionModel().getSelectedItem();
         var startDate = pickerStartDate.getValue();
         var endDate = pickerEndDate.getValue();
-        return new Project(groupId, Integer.parseInt(proNum), proName, customer, Status.getStatus(status), startDate, endDate);
+        return new Project(groupId, Integer.parseInt(proNum), proName, customer, Status.getStatus(status), startDate, endDate,1);
     }
 
     public List<String> getMemberInputForm() {

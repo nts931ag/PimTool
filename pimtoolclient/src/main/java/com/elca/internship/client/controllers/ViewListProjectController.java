@@ -3,6 +3,8 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +29,9 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.imageio.stream.MemoryCacheImageOutputStream;
@@ -116,7 +120,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         var listStatus = FXCollections.observableArrayList("New", "Planned", "In progress", "Finished");
         cbStatus.setItems(listStatus);
         cbStatus.setPromptText("Project status");
-        cbStatus.getSelectionModel().select(0);
 
         createTableProject();
     }
@@ -147,7 +150,42 @@ public class ViewListProjectController implements Initializable, ApplicationList
         for(var dataProject: dataProjects){
             dataProject.getIcDelete().getStyleClass().add("icon-node");
             dataProject.getIcDelete().setOnMouseClicked(event -> {
-                dataProjects.remove(tbProject.getSelectionModel().getSelectedIndex());
+                var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
+                dataProjects.remove(projectTableDeleted);
+                var projectDeleted = new Project(
+                        projectTableDeleted.getId(),
+                        projectTableDeleted.getGroupId(),
+                        projectTableDeleted.getProjectNumber(),
+                        projectTableDeleted.getName(),
+                        projectTableDeleted.getCustomer(),
+                        projectTableDeleted.getStatus(),
+                        projectTableDeleted.getStartDate(),
+                        projectTableDeleted.getEndDate(),
+                        projectTableDeleted.getVersion()
+                );
+                var objectMapper = new ObjectMapper();
+                objectMapper.findAndRegisterModules();
+                try {
+                    var msg = objectMapper.writeValueAsString(projectDeleted);
+                    var uri = BASE_URI + "/api/projects/delete/" + projectDeleted.getId();
+                    var headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+
+                    var httpEntity = new HttpEntity<>(msg, headers);
+                    var responseEntity = restTemplate.exchange(
+                            uri
+                            , HttpMethod.POST
+                            , httpEntity
+                            , String.class);
+
+                    if (responseEntity.getStatusCode() == HttpStatus.OK) {
+                        System.out.println("Connection status : " + responseEntity.getStatusCode());
+//                        navigateToTabListProject();
+                    }
+                } catch (JsonProcessingException | ResourceAccessException jpe) {
+//                    navigateToErrorPage(jpe.getMessage());
+//                    System.out.println("haha");
+                }
             });
         }
 
@@ -177,6 +215,11 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     @FXML
     public void onLbBtnResetSearchClicked(MouseEvent mouseEvent) {
+        tfSearch.clear();
+        cbStatus.getSelectionModel().clearSelection();
+        cbStatus.setPromptText("Project status");
+
+        createTableProject();
 
     }
 

@@ -1,34 +1,23 @@
 package com.elca.internship.client.models.entity;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.CheckBox;
-import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 
 @Data
-@AllArgsConstructor
-public class ProjectTable{
+
+public class ProjectTable extends Project{
 
     private CheckBox checkBox;
-    private long groupId;
-    private Integer projectNumber;
-    private String name;
-    private String customer;
-    private Project.Status status;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private int version;
     private IconNode icDelete;
 
-
-
-
+    public ProjectTable( CheckBox checkBox, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version, IconNode icDelete) {
+        super(groupId, projectNumber,name, customer,status,startDate,endDate,version);
+        this.checkBox = checkBox;
+        this.icDelete = icDelete;
+    }
 
 }
