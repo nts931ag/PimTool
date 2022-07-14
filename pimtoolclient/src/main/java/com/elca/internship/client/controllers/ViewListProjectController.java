@@ -4,7 +4,9 @@ import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -15,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
 import jiconfont.javafx.IconFontFX;
@@ -25,10 +28,16 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+
+import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 
 @Component
 @FxmlView("/views/viewListProject.fxml")
@@ -38,12 +47,11 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private Stage stage;
 
     private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
+    private final RestTemplate restTemplate;
     @FXML
     public VBox vbListProject;
     @FXML
     public HBox hbFilterListProject;
-    @FXML
-    public AnchorPane apContentTableListProject;
     @FXML
     public Pagination paginationTableProject;
     @FXML
@@ -102,6 +110,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProNum.getStyleClass().add("table-column-align-right");
     }
 
+    private ObservableList<ProjectTable> dataProjects;
+
     private void fillValueToLayout() {
         var listStatus = FXCollections.observableArrayList("New", "Planned", "In progress", "Finished");
         cbStatus.setItems(listStatus);
@@ -112,28 +122,34 @@ public class ViewListProjectController implements Initializable, ApplicationList
     }
 
     public void createTableProject(){
-        var startDate = LocalDate.now();
-        var endDate = startDate.plusYears(1);
-        /*var dataProjects = FXCollections.observableArrayList(
-                new Project(1, 1111,"firstProject", "Elca1", Project.Status.NEW, startDate, endDate, 1),
-                new Project(2, 2222,"secondProject", "Elca2", Project.Status.NEW, startDate, endDate, 1),
-                new Project(3, 3333,"thirdProject", "Elca3", Project.Status.NEW, startDate, endDate, 1),
-                new Project(4, 4444,"fourProject", "Elca4", Project.Status.NEW, startDate, endDate, 1),
-                new Project(5, 5555,"fiveProject", "Elca5", Project.Status.NEW, startDate, endDate, 1),
-                new Project(6, 6666,"sixProject", "Elca6", Project.Status.NEW, startDate, endDate, 1),
-                new Project(7, 7777,"sevenProject", "Elca7", Project.Status.NEW, startDate, endDate, 1)
-        );*/
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
-        var dataProjects = FXCollections.observableArrayList(
-                new ProjectTable(new CheckBox(), 1, 1111,"firstProject", "Elca1", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
-                new ProjectTable(new CheckBox(), 2, 2222,"secondProject", "Elca2", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
-                new ProjectTable(new CheckBox(), 3, 3333,"thirdProject", "Elca3", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
-                new ProjectTable(new CheckBox(), 4, 4444,"fourProject", "Elca4", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
-                new ProjectTable(new CheckBox(), 5, 5555,"fiveProject", "Elca5", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
-                new ProjectTable(new CheckBox(), 6, 6666,"sixProject", "Elca6", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE)),
-                new ProjectTable(new CheckBox(), 7, 7777,"sevenProject", "Elca7", Project.Status.NEW, startDate, endDate, 1, new IconNode(GoogleMaterialDesignIcons.DELETE))
-        );
+        var responseForProjects = restTemplate.getForEntity(BASE_URI + "/api/projects", Project[].class);
+        var projects = responseForProjects.getBody();
+        dataProjects = FXCollections.observableArrayList(Arrays
+                                                            .stream(projects)
+                                                            .map(e ->
+                                                                new ProjectTable(
+                                                                        new CheckBox(),
+                                                                        e.getGroupId(),
+                                                                        e.getProjectNumber(),
+                                                                        e.getName(),
+                                                                        e.getCustomer(),
+                                                                        e.getStatus(),
+                                                                        e.getStartDate(),
+                                                                        e.getEndDate(),
+                                                                        e.getVersion(),
+                                                                        new IconNode(GoogleMaterialDesignIcons.DELETE)
+                                                                )
+                                                            )
+                                                            .collect(Collectors.toList()));
 
+
+        for(var dataProject: dataProjects){
+            dataProject.getIcDelete().getStyleClass().add("icon-node");
+            dataProject.getIcDelete().setOnMouseClicked(event -> {
+                dataProjects.remove(tbProject.getSelectionModel().getSelectedIndex());
+            });
+        }
 
         colCheck.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
         colProDel.setCellValueFactory(new PropertyValueFactory<>("icDelete"));
@@ -144,20 +160,35 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 
         tbProject.setItems(dataProjects);
-
-
-
+        tbProject.setFocusTraversable(false);
+        tbProject.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tbProject.getSelectionModel().setCellSelectionEnabled(true);
 
     }
+
 
 
 
     private FxControllerAndView<DashboardController, Node> dashboardPageCV;
 
-
+    @FXML
     public void onBtnSearchClicked(ActionEvent actionEvent) {
     }
 
+    @FXML
     public void onLbBtnResetSearchClicked(MouseEvent mouseEvent) {
+
+    }
+
+    @FXML
+    public void displaySelected(MouseEvent mouseEvent) {
+        var project = tbProject.getSelectionModel().getSelectedCells();
+//        System.out.println(project);
+//        System.out.println(project.get(0).getColumn());
+        /*if(project == null){
+            System.out.println("Nothing Selected");
+        }else{
+            System.out.println(project);
+        }*/
     }
 }

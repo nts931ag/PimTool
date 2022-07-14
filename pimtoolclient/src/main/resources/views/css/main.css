@@ -89,6 +89,12 @@
     -fx-font-weight: 600;
 }
 
+.icon-node {
+    -fx-fill: #8c2c20;
+    -fx-cursor: hand;
+    -fx-padding: 8px;
+}
+
 .validate-err{
     -fx-text-fill: #8c2c20;
     -fx-font-size: 12px;
@@ -123,11 +129,11 @@
 
 .table-view .table-column-align-center{
     -fx-alignment: CENTER;
+
 }
 
-.table-row-cell{
-    -fx-background-color: transparent;
-}
+
+
 
 /* pagination */
 .pagination {
