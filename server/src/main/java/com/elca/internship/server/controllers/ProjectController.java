@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,23 +51,10 @@ public class ProjectController {
         }
     }
 
-    @PostMapping(value = "/delete/{id}", consumes = "application/json")
-    public ResponseEntity deleteProject(@RequestBody String jsonObject){
-        var objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules();
-        try {
-            var jsonNode = objectMapper.readTree(jsonObject);
-            var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
-            var listEmployee = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
-            var listEmployeeId = employeeService.getIdsByListVisa(listEmployee);
-            long newProjectId = projectService.createNewProject(project);
-            projectEmployeeService.saveAllEmployeeToNewProject(newProjectId, listEmployeeId);
-
-            return new ResponseEntity<Response>(HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            System.out.println("can't parse json to object");
-            return new ResponseEntity<Response>(HttpStatus.BAD_REQUEST);
-        }
+    @DeleteMapping(value = "/delete/{id}")
+    public void deleteProject(@PathVariable(value = "id") long id){
+        var project = projectService.getProject(id);
+        projectService.deleteProject(project);
     }
 
     @GetMapping()

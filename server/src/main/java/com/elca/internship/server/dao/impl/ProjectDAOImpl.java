@@ -75,4 +75,11 @@ public class ProjectDAOImpl implements ProjectDAO {
         final var sql = "SELECT * FROM project";
         return jdbcTemplate.query(sql, new ProjectRowMapper());
     }
+
+    @Override
+    public void deleteById(long id) {
+        final var sql = "DELETE FROM project WHERE id = :id";
+        var namedParameters = new MapSqlParameterSource().addValue("id", id);
+        namedParameterJdbcTemplate.update(sql, namedParameters);
+    }
 }

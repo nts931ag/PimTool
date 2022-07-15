@@ -2,6 +2,7 @@ package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.Utils.FormValidation;
+import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Employee;
 import com.elca.internship.client.models.entity.Group;
 import com.elca.internship.client.models.entity.Project;
@@ -39,7 +40,6 @@ import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 @RequiredArgsConstructor
 public class CreateProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
-    private final RestTemplate restTemplate;
     public GridPane gpCreateProjectTab;
     private Stage stage;
 
@@ -97,6 +97,10 @@ public class CreateProjectController implements Initializable, ApplicationListen
     public FormValidation projectFormValidation;
     private FxControllerAndView<ViewListProjectController, Node> tabProjectListCV;
     private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
+    private ObservableList<Long> listGroups;
+    private ObservableList<String> listMembers;
+    private ObservableList<Integer> listCurProNum;
+    private final RestTemplateConsume restTemplateConsume;
 
 
     @Override
@@ -219,10 +223,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     }
 
-    private ObservableList<Long> listGroups;
-    private ObservableList<String> listMembers;
-    private ObservableList<Long> listCurProNum;
-
     public void fillDefaultValueForInputForm() {
 
 
@@ -230,19 +230,13 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
 
-        var responseForGroups = restTemplate.getForEntity(BASE_URI + "/api/groups", Group[].class);
-        var groups = responseForGroups.getBody();
-        listGroups = FXCollections.observableArrayList(Arrays.stream(groups).map(Group::getId).collect(Collectors.toList()));
+        listGroups = restTemplateConsume.getAllGroupId();
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
 
-        var responseForMembers = restTemplate.getForEntity(BASE_URI + "/api/employees", Employee[].class);
-        var members = responseForMembers.getBody();
-        listMembers = FXCollections.observableArrayList(Arrays.stream(members).map(Employee::getVisa).collect(Collectors.toList()));
+        listMembers = restTemplateConsume.getAllEmployeeVisa();
 
-        var responseForProjects = restTemplate.getForEntity(BASE_URI + "/api/projects", Project[].class);
-        var projects = responseForProjects.getBody();
-        listCurProNum = FXCollections.observableArrayList(Arrays.stream(projects).map(Project::getId).collect(Collectors.toList()));
+        listCurProNum = restTemplateConsume.getAllProjectNumber();
 
 
         var curDate = LocalDate.now();
@@ -256,33 +250,14 @@ public class CreateProjectController implements Initializable, ApplicationListen
         if(validateFrom()) {
             var project = getProjectInputForm();
             var listMember = getMemberInputForm();
-
-            var objectMapper = new ObjectMapper();
-            objectMapper.findAndRegisterModules();
-            var map = new HashMap<String, Object>();
-            map.put("project", project);
-            map.put("listMember", listMember);
-
             try {
-                var msg = objectMapper.writeValueAsString(map);
-                var uri = BASE_URI + "/api/projects/save";
-                var headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-
-                var httpEntity = new HttpEntity<>(msg, headers);
-                System.out.println(httpEntity.getBody());
-                var responseEntity = restTemplate.exchange(
-                        uri
-                        , HttpMethod.POST
-                        , httpEntity
-                        , String.class);
-
-                if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                    System.out.println("Connection status : " + responseEntity.getStatusCode());
+                var response = restTemplateConsume.saveNewProject(project, listMember);
+                if (response.getStatusCode() == HttpStatus.OK) {
+                    System.out.println("Connection status : " + response.getStatusCode());
                     navigateToTabListProject();
                 }
-            } catch (JsonProcessingException | ResourceAccessException jpe) {
-                navigateToErrorPage(jpe.getMessage());
+            } catch (JsonProcessingException e) {
+                navigateToErrorPage(e.getMessage());
             }
         }
     }

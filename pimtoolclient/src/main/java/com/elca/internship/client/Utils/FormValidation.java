@@ -29,7 +29,7 @@ public class FormValidation {
 
     public static int iconSize;
 
-    public static ValidatedResponse isProNumValid(String val, ObservableList<Long> listCurProNum, Label responseLabel ) {
+    public static ValidatedResponse isProNumValid(String val, ObservableList<Integer> listCurProNum, Label responseLabel ) {
         boolean valid;
         var msg = "";
         if(val == null){

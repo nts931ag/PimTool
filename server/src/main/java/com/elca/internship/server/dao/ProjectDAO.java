@@ -16,4 +16,5 @@ public interface ProjectDAO {
 
     List<Project> findAll();
 
+    void deleteById(long id);
 }

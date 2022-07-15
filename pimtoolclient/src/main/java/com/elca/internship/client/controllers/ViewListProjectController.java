@@ -1,6 +1,7 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
+import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,6 +39,7 @@ import javax.imageio.stream.MemoryCacheImageOutputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -51,7 +53,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private Stage stage;
 
     private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
-    private final RestTemplate restTemplate;
+    private final RestTemplateConsume restTemplateConsume;
     @FXML
     public VBox vbListProject;
     @FXML
@@ -121,13 +123,16 @@ public class ViewListProjectController implements Initializable, ApplicationList
         cbStatus.setItems(listStatus);
         cbStatus.setPromptText("Project status");
 
+        tbProject.setFocusTraversable(false);
+        tbProject.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tbProject.getSelectionModel().setCellSelectionEnabled(true);
+
         createTableProject();
     }
 
     public void createTableProject(){
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
-        var responseForProjects = restTemplate.getForEntity(BASE_URI + "/api/projects", Project[].class);
-        var projects = responseForProjects.getBody();
+        var projects = restTemplateConsume.getAllProject();
         dataProjects = FXCollections.observableArrayList(Arrays
                                                             .stream(projects)
                                                             .map(e ->
@@ -152,37 +157,13 @@ public class ViewListProjectController implements Initializable, ApplicationList
             dataProject.getIcDelete().setOnMouseClicked(event -> {
                 var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
                 dataProjects.remove(projectTableDeleted);
-                var projectDeleted = new Project(
-                        projectTableDeleted.getId(),
-                        projectTableDeleted.getGroupId(),
-                        projectTableDeleted.getProjectNumber(),
-                        projectTableDeleted.getName(),
-                        projectTableDeleted.getCustomer(),
-                        projectTableDeleted.getStatus(),
-                        projectTableDeleted.getStartDate(),
-                        projectTableDeleted.getEndDate(),
-                        projectTableDeleted.getVersion()
-                );
-                var objectMapper = new ObjectMapper();
-                objectMapper.findAndRegisterModules();
+
                 try {
-                    var msg = objectMapper.writeValueAsString(projectDeleted);
-                    var uri = BASE_URI + "/api/projects/delete/" + projectDeleted.getId();
-                    var headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_JSON);
-
-                    var httpEntity = new HttpEntity<>(msg, headers);
-                    var responseEntity = restTemplate.exchange(
-                            uri
-                            , HttpMethod.POST
-                            , httpEntity
-                            , String.class);
-
-                    if (responseEntity.getStatusCode() == HttpStatus.OK) {
-                        System.out.println("Connection status : " + responseEntity.getStatusCode());
-//                        navigateToTabListProject();
-                    }
-                } catch (JsonProcessingException | ResourceAccessException jpe) {
+                    var uri = BASE_URI + "/api/projects/delete";
+//                    var params = new HashMap<String,Long>();
+//                    params.put("id",projectTableDeleted.getId());
+//                    restTemplate.delete(uri, uri + "/" + projectTableDeleted.getId());
+                } catch ( ResourceAccessException jpe) {
 //                    navigateToErrorPage(jpe.getMessage());
 //                    System.out.println("haha");
                 }
@@ -198,9 +179,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 
         tbProject.setItems(dataProjects);
-        tbProject.setFocusTraversable(false);
-        tbProject.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        tbProject.getSelectionModel().setCellSelectionEnabled(true);
+
 
     }
 
@@ -211,6 +190,21 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     @FXML
     public void onBtnSearchClicked(ActionEvent actionEvent) {
+        var tfSearchValue = tfSearch.getText();
+        var cbStatusValue = cbStatus.getValue();
+        if(tfSearchValue.isBlank() && cbStatusValue == null){
+            createTableProject();
+        }else{
+            if(tfSearchValue.isBlank()){
+                System.out.println(2);
+            }else{
+                if(cbStatusValue == null){
+                    System.out.println(3);
+                }else{
+                    System.out.println(4);
+                }
+            }
+        }
     }
 
     @FXML
@@ -218,7 +212,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         tfSearch.clear();
         cbStatus.getSelectionModel().clearSelection();
         cbStatus.setPromptText("Project status");
-
         createTableProject();
 
     }
