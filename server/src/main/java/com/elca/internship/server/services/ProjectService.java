@@ -14,4 +14,6 @@ public interface ProjectService {
     List<Project> getAllProject();
 
     void deleteProject(Project project);
+
+    List<Project> getProjectByCriterial(String proName, String proStatus);
 }

@@ -12,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,5 +60,11 @@ public class ProjectController {
     @GetMapping()
     public List<Project> getAllProject(){
         return projectService.getAllProject();
+    }
+
+    @GetMapping(value = "/search")
+    public List<Project> searchProjectCriterialSpecified(@RequestParam(value = "proName") String proName, @RequestParam(value = "proStatus") String proStatus){
+
+        return projectService.getProjectByCriterial(proName, proStatus);
     }
 }

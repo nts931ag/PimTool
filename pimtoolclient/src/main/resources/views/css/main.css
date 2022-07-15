@@ -187,3 +187,6 @@
     -fx-background-color: #ffffff;
 }
 
+.lb-super-link {
+    -fx-cursor: hand;
+}

@@ -102,6 +102,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private ObservableList<Integer> listCurProNum;
     private final RestTemplateConsume restTemplateConsume;
 
+    private boolean isEditMode;
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
@@ -116,8 +117,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proNum", false);
         projectFormValidation.getFormFields().put("proName", false);
         projectFormValidation.getFormFields().put("proCustomer", false);
-        projectFormValidation.getFormFields().put("proStartDate", true);
-        projectFormValidation.getFormFields().put("proEndDate", true);
+        projectFormValidation.getFormFields().put("proStartDate", false);
+        projectFormValidation.getFormFields().put("proEndDate", false);
         projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
     }
@@ -140,7 +141,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     lbValidateProName
             ).isValid();
             projectFormValidation.getFormFields().put("proName", valid);
-
         });
 
         tfProCustomer.textProperty().addListener((observableValue, oldVal, newVal) -> {
@@ -168,7 +168,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     newValue,
                     lbValidateProDate
             ).isValid();
+            System.out.println(valid);
             projectFormValidation.getFormFields().put("proStartDate", valid);
+            projectFormValidation.getFormFields().put("proEndDate", valid);
         }));
 
         pickerEndDate.valueProperty().addListener((observableValue, oldVal, newVal) -> {
@@ -178,6 +180,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     startDate,
                     lbValidateProDate
             ).isValid();
+            System.out.println(valid);
+            projectFormValidation.getFormFields().put("proStartDate", valid);
             projectFormValidation.getFormFields().put("proEndDate", valid);
         });
     }
@@ -194,7 +198,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     public void initLayout() {
-
+        isEditMode = false;
         gpCreateProjectTab.setVgap(15);
         gpCreateProjectTab.setHgap(10);
         var colsConstraints = gpCreateProjectTab.getColumnConstraints();
@@ -223,6 +227,19 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     }
 
+    public void initEditProjectLayout(Project project){
+        tfProNum.setText(String.valueOf(project.getProjectNumber()));
+        tfProNum.setDisable(true);
+        tfProName.setText(project.getName());
+        tfProCustomer.setText(project.getCustomer());
+        cbProGroup.getSelectionModel().select(project.getGroupId());
+        cbProStatus.getSelectionModel().select(String.valueOf(project.getStatus()));
+        pickerStartDate.setValue(project.getStartDate());
+        pickerEndDate.setValue(project.getEndDate());
+        var listMemberOfcurrentProject = restTemplateConsume.getAllEmployeeVisaByProjectId(project.getId());
+        isEditMode = true;
+    }
+
     public void fillDefaultValueForInputForm() {
 
 
@@ -247,17 +264,19 @@ public class CreateProjectController implements Initializable, ApplicationListen
     @FXML
     public void onCreateProjectBtn() {
 
-        if(validateFrom()) {
-            var project = getProjectInputForm();
-            var listMember = getMemberInputForm();
-            try {
-                var response = restTemplateConsume.saveNewProject(project, listMember);
-                if (response.getStatusCode() == HttpStatus.OK) {
-                    System.out.println("Connection status : " + response.getStatusCode());
-                    navigateToTabListProject();
+        if(!isEditMode){
+            if(validateFrom()) {
+                var project = getProjectInputForm();
+                var listMember = getMemberInputForm();
+                try {
+                    var response = restTemplateConsume.saveNewProject(project, listMember);
+                    if (response.getStatusCode() == HttpStatus.OK) {
+                        System.out.println("Connection status : " + response.getStatusCode());
+                        navigateToTabListProject();
+                    }
+                } catch (JsonProcessingException e) {
+                    navigateToErrorPage(e.getMessage());
                 }
-            } catch (JsonProcessingException e) {
-                navigateToErrorPage(e.getMessage());
             }
         }
     }
@@ -294,13 +313,18 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     @FXML
     public void onCancelProjectBtn() {
-        /*tfProNum.setText("");
-        tfProName.setText("");
-        tfProCustomer.setText("");
-        tfProCustomer.setText("");
-        cbProGroup.getSelectionModel().select(0);
-        cbProStatus.getSelectionModel().select(0);*/
-        navigateToErrorPage("msgError");
+        if(!isEditMode){
+            tfProNum.setText("");
+            tfProName.setText("");
+            tfProCustomer.setText("");
+            tfProCustomer.setText("");
+            cbProGroup.getSelectionModel().select(0);
+            cbProStatus.getSelectionModel().select(0);
+        }else{
+            // navigationBackToProjectList;
+        }
+
+
     }
 
     private void navigateToErrorPage(String msgError) {

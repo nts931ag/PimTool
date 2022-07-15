@@ -5,11 +5,9 @@ import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -17,10 +15,10 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
 import jiconfont.javafx.IconFontFX;
@@ -30,18 +28,11 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
-
-import javax.imageio.stream.MemoryCacheImageOutputStream;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 
@@ -63,7 +54,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     @FXML
     public TableColumn<ProjectTable,CheckBox> colCheck;
     @FXML
-    public TableColumn<ProjectTable,Integer> colProNum;
+    public TableColumn<ProjectTable,Label> colProNum;
     @FXML
     public TableColumn<ProjectTable,String> colProName;
     @FXML
@@ -149,7 +140,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                                                                         new IconNode(GoogleMaterialDesignIcons.DELETE)
                                                                 )
                                                             )
-                                                            .collect(Collectors.toList()));
+                                                            .toList());
 
 
         for(var dataProject: dataProjects){
@@ -157,30 +148,38 @@ public class ViewListProjectController implements Initializable, ApplicationList
             dataProject.getIcDelete().setOnMouseClicked(event -> {
                 var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
                 dataProjects.remove(projectTableDeleted);
-
-                try {
-                    var uri = BASE_URI + "/api/projects/delete";
-//                    var params = new HashMap<String,Long>();
-//                    params.put("id",projectTableDeleted.getId());
-//                    restTemplate.delete(uri, uri + "/" + projectTableDeleted.getId());
-                } catch ( ResourceAccessException jpe) {
-//                    navigateToErrorPage(jpe.getMessage());
-//                    System.out.println("haha");
-                }
+            });
+            dataProject.getLbProNumLink().getStyleClass().add("lb-super-link");
+            dataProject.getLbProNumLink().setOnMouseClicked(event -> {
+                navigateToTabEditProject(dataProject);
             });
         }
 
         colCheck.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
         colProDel.setCellValueFactory(new PropertyValueFactory<>("icDelete"));
-        colProNum.setCellValueFactory(new PropertyValueFactory<>("projectNumber"));
+        colProNum.setCellValueFactory(new PropertyValueFactory<>("lbProNumLink"));
         colProName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colProCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
         colProStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 
         tbProject.setItems(dataProjects);
+    }
 
 
+
+    private void navigateToTabEditProject(Project dataProject) {
+        // get and set contentContainer
+        var borderPane = (BorderPane) stage.getScene().getRoot().getChildrenUnmodifiable().get(2);
+        var titleContentContainer =  (Label)borderPane.getChildren().get(1);
+        var contentContainer = (Pane) borderPane.getChildren().get(0);
+        tabCreateProjectCV = fxWeaver.load(CreateProjectController.class);
+        tabCreateProjectCV.getView().ifPresent(view ->{
+            contentContainer.getChildren().clear();
+            contentContainer.getChildren().add(view);
+        });
+        tabCreateProjectCV.getController().initEditProjectLayout(dataProject);
+        titleContentContainer.setText("Edit project screen");
     }
 
 
@@ -196,14 +195,16 @@ public class ViewListProjectController implements Initializable, ApplicationList
             createTableProject();
         }else{
             if(tfSearchValue.isBlank()){
-                System.out.println(2);
+                tfSearchValue = "all";
             }else{
                 if(cbStatusValue == null){
-                    System.out.println(3);
-                }else{
-                    System.out.println(4);
+                    cbStatusValue = "all";
                 }
             }
+
+            var listProject = restTemplateConsume.searchProjectByCriteria(tfSearchValue, cbStatusValue);
+            System.out.println(listProject);
+
         }
     }
 
@@ -218,13 +219,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     @FXML
     public void displaySelected(MouseEvent mouseEvent) {
-        var project = tbProject.getSelectionModel().getSelectedCells();
-//        System.out.println(project);
-//        System.out.println(project.get(0).getColumn());
-        /*if(project == null){
-            System.out.println("Nothing Selected");
-        }else{
-            System.out.println(project);
-        }*/
+
     }
 }

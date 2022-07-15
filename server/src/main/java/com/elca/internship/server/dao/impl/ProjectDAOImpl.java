@@ -82,4 +82,29 @@ public class ProjectDAOImpl implements ProjectDAO {
         var namedParameters = new MapSqlParameterSource().addValue("id", id);
         namedParameterJdbcTemplate.update(sql, namedParameters);
     }
+
+    @Override
+    public List<Project> findByProNameAndProStatus(String proName, String proStatus) {
+        final var sql = "SELECT DISTINCT * FROM project where name like :proName and status like :proStatus";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue("proName", proName)
+                .addValue("proStatus", proStatus);
+        return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
+    }
+
+    @Override
+    public List<Project> findByStatus(String proStatus) {
+        final var sql = "SELECT DISTINCT * FROM project where status like :proStatus";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue("proStatus", proStatus);
+        return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
+    }
+
+    @Override
+    public List<Project> findByProName(String proName) {
+        final var sql = "SELECT DISTINCT * FROM project where name like :proName";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue("proName", proName);
+        return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
+    }
 }

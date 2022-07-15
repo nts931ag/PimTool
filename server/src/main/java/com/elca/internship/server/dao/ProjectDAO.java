@@ -17,4 +17,10 @@ public interface ProjectDAO {
     List<Project> findAll();
 
     void deleteById(long id);
+
+    List<Project> findByProNameAndProStatus(String proName, String proStatus);
+
+    List<Project> findByStatus(String proStatus);
+
+    List<Project> findByProName(String proName);
 }

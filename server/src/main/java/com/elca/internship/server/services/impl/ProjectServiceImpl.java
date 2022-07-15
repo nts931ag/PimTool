@@ -43,4 +43,20 @@ public class ProjectServiceImpl implements ProjectService {
         projectDAO.deleteById(project.getId());
     }
 
+    @Override
+    public List<Project> getProjectByCriterial(String proName, String proStatus) {
+        if(proName.isBlank() && proStatus.isBlank()){
+            return projectDAO.findAll();
+        }else if(!proName.isBlank() && !proStatus.isBlank()){
+            return projectDAO.findByProNameAndProStatus(proName, proStatus);
+        }
+        else {
+            if(proName.isBlank()){
+                return projectDAO.findByStatus(proStatus);
+            }else{
+                return projectDAO.findByProName(proName);
+            }
+        }
+    }
+
 }
