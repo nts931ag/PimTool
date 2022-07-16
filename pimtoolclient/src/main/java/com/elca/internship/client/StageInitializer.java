@@ -5,7 +5,8 @@ import com.elca.internship.client.Utils.Util;
 import com.elca.internship.client.config.connection.ServerConnection;
 import com.elca.internship.client.controllers.DashboardController;
 import com.elca.internship.client.controllers.LoadingPageController;
-import javafx.concurrent.Task;
+import com.elca.internship.client.i18n.I18nManager;
+import com.elca.internship.client.i18n.SupportedLocale;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -28,6 +29,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
     private int retryCount;
     private final FxWeaver fxWeaver;
+    private final I18nManager i18nManager;
     private Stage stage;
 
 
@@ -36,9 +38,10 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
 
     @Autowired
-    public StageInitializer(FxWeaver fxWeaver){
+    public StageInitializer(FxWeaver fxWeaver, I18nManager i18nManager){
         this.fxWeaver = fxWeaver;
         this.retryCount = 0;
+        this.i18nManager = i18nManager;
     }
 
 
@@ -71,13 +74,15 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
         });
 
         stage.show();*/
-
         loadDashboardIgnoreConnection();
     }
 
     public void loadDashboardIgnoreConnection(){
         Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 1, 1);
-        dashboardPageCV = fxWeaver.load(DashboardController.class);
+        SupportedLocale locale = SupportedLocale.DEFAULT_LOCALE;
+        i18nManager.setupLocale(locale);
+        var bundle = i18nManager.bundle();
+        dashboardPageCV = fxWeaver.load(DashboardController.class, bundle);
         dashboardPageCV.getView().ifPresent(view -> {
             Scene loadScene = new Scene((Parent) view
                     , dimension2DLoading.getWidth()

@@ -3,6 +3,8 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.Utils.NavigationHandler;
 import com.elca.internship.client.Utils.Util;
+import com.elca.internship.client.i18n.I18nKey;
+import com.elca.internship.client.i18n.I18nManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -30,7 +32,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
     private final FxWeaver fxWeaver;
     private Stage stage;
     public static NavigationHandler navigationHandler;
-
+    private final I18nManager i18nManager;
     private FxControllerAndView<ViewListProjectController, Node> tabProjectListCV;
     private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
 
@@ -82,22 +84,25 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbProjectClicked(){
-
-        tabProjectListCV = fxWeaver.load(ViewListProjectController.class);
+        var currentBundle = i18nManager.bundle();
+        tabProjectListCV = fxWeaver.load(ViewListProjectController.class, currentBundle);
         tabProjectListCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);
-            lbHeaderOfTab.setText("Project List");
+//            lbHeaderOfTab.setText("Project List");
+            lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
         });
     }
 
     @FXML
     public void onLbNewClicked() {
-        tabCreateProjectCV = fxWeaver.load(CreateProjectController.class);
+        var currentBundle = i18nManager.bundle();
+        tabCreateProjectCV = fxWeaver.load(CreateProjectController.class, currentBundle);
         tabCreateProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);
-            lbHeaderOfTab.setText("New Project");
+//            lbHeaderOfTab.setText("New Project");
+            lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
         });
     }
 }

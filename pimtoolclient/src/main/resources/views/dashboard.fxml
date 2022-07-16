@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
+<BorderPane stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
    <top>
       <HBox fx:id="headerContainer" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="border-bottom" stylesheets="@css/main.css">
          <children>
@@ -21,26 +21,26 @@
                   <Insets left="25.0" />
                </HBox.margin>
             </ImageView>
-            <Label styleClass="lb-name-application" stylesheets="@css/main.css" text="Project Infomation Management">
+            <Label styleClass="lb-name-application" stylesheets="@css/main.css" text="%dashboard.title">
                <HBox.margin>
                   <Insets left="50.0" />
                </HBox.margin>
             </Label>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
-                  <Label styleClass="label-menu-button" text="EN" />
+                  <Label styleClass="label-menu-button" text="%dashboard.menu.language.en" />
                   <Label text="|" />
-                  <Label styleClass="label-menu-button" text="FR">
+                  <Label styleClass="label-menu-button" text="%dashboard.menu.language.fr">
                      <HBox.margin>
                         <Insets right="50.0" />
                      </HBox.margin>
                   </Label>
-                  <Label styleClass="label-menu-button" text="Help">
+                  <Label styleClass="label-menu-button" text="%dashboard.menu.help">
                      <HBox.margin>
                         <Insets right="25.0" />
                      </HBox.margin>
                   </Label>
-                  <Label styleClass="label-menu-button" text="Log out">
+                  <Label styleClass="label-menu-button" text="%dashboard.menu.logout">
                      <HBox.margin>
                         <Insets right="75.0" />
                      </HBox.margin></Label>
@@ -58,27 +58,27 @@
    <left>
       <VBox fx:id="sideBarContainer" prefWidth="200.0" spacing="5.0" styleClass="border-right">
          <children>
-            <Label maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="lb-side-bar" text="Projects list">
+            <Label maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="lb-side-bar" text="%dashboard.menu">
                <VBox.margin>
                   <Insets left="40.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="lbMenuNew" onMouseClicked="#onLbNewClicked" styleClass="label-menu-button" text="New">
+            <Label fx:id="lbMenuNew" onMouseClicked="#onLbNewClicked" styleClass="label-menu-button" text="%dashboard.menu.create.project">
                <VBox.margin>
                   <Insets left="40.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="lbMenuProject" onMouseClicked="#onLbProjectClicked" styleClass="label-menu-button" text="Project">
+            <Label fx:id="lbMenuProject" onMouseClicked="#onLbProjectClicked" styleClass="label-menu-button" text="%dashboard.menu.list.project">
                <VBox.margin>
                   <Insets left="40.0" />
                </VBox.margin>
             </Label>
-            <Label styleClass="label-menu-button" text="Customer">
+            <Label styleClass="label-menu-button" text="%dashboard.menu.customer">
                <VBox.margin>
                   <Insets left="40.0" />
                </VBox.margin>
             </Label>
-            <Label styleClass="label-menu-button" text="Supplier">
+            <Label styleClass="label-menu-button" text="%dashboard.menu.supplier">
                <VBox.margin>
                   <Insets left="40.0" />
                </VBox.margin>
