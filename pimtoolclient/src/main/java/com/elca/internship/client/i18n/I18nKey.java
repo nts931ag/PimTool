@@ -9,6 +9,7 @@ public enum I18nKey {
     DASHBOARD_MENU_LIST_PROJECT_TITLE("dashboard.menu.list.project.title"),
     DASHBOARD_MENU_CREATE_PROJECT("dashboard.menu.create.project"),
     DASHBOARD_MENU_CREATE_PROJECT_TITLE("dashboard.menu.create.project.title"),
+    DASHBOARD_MENU_EDIT_PROJECT_TITLE("dashboard.menu.edit.project.title"),
     DASHBOARD_MENU_CUSTOMER("dashboard.menu.customer"),
     DASHBOARD_MENU_SUPPLIER("dashboard.menu.supplier"),
     DASHBOARD_HEADER_LANGUAGE_EN("dashboard.menu.language.en"),

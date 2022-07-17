@@ -192,7 +192,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
             contentContainer.getChildren().add(view);
         });
         tabCreateProjectCV.getController().initEditProjectLayout(dataProject);
-        titleContentContainer.setText("Edit project screen");
+        titleContentContainer.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
     }
 
 
