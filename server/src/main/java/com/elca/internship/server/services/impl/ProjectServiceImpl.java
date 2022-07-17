@@ -44,7 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getProjectByCriterial(String proName, String proStatus) {
+    public List<Project> getProjectByCriteria(String proName, String proStatus) {
         if(proName.isBlank() && proStatus.isBlank()){
             return projectDAO.findAll();
         }else if(!proName.isBlank() && !proStatus.isBlank()){

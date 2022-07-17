@@ -67,13 +67,9 @@ public class ProjectController {
         }
     }
 
-    @PutMapping(value = "/update")
-
-
-
     @GetMapping(value = "/search")
-    public List<Project> searchProjectCriterialSpecified(@RequestParam(value = "proName") String proName, @RequestParam(value = "proStatus") String proStatus){
+    public List<Project> searchProjectCriteriaSpecified(@RequestParam(value = "proName") String proName, @RequestParam(value = "proStatus") String proStatus){
 
-        return projectService.getProjectByCriterial(proName, proStatus);
+        return projectService.getProjectByCriteria(proName, proStatus);
     }
 }

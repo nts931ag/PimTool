@@ -4,5 +4,5 @@ import javafx.collections.ObservableList;
 
 public interface ProjectEmployeeConsume {
 
-    ObservableList<String> retrieveAllEmployeeVisaByProjectId(Long id);
+    ObservableList<String> retrieveAllEmployeeVisasByProjectId(Long id);
 }

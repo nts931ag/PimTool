@@ -235,7 +235,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
 //        var listMemberOfcurrentProject = restTemplateConsume.getAllEmployeeVisaByProjectId(project.getId());
-        var listMemberOfcurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisaByProjectId(project.getId());
+        var listMemberOfcurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
         listMemberOfcurrentProject.forEach(System.out::println);
 
         isEditMode = true;
@@ -293,7 +293,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var borderPane = (BorderPane) stage.getScene().getRoot().getChildrenUnmodifiable().get(2);
         var titleContentContainer =  (Label)borderPane.getChildren().get(1);
         var contentContainer = (Pane) borderPane.getChildren().get(0);
-        tabProjectListCV = fxWeaver.load(ViewListProjectController.class);
+        tabProjectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
         tabProjectListCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);

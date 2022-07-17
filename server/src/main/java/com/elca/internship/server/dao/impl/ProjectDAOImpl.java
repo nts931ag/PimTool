@@ -48,7 +48,9 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     @Override
     public Long insert(Project project) {
-        simpleJdbcInsert.withTableName("project").usingGeneratedKeyColumns("id");
+        if(simpleJdbcInsert.isCompiled() == false){
+            simpleJdbcInsert.withTableName("project").usingGeneratedKeyColumns("id");
+        }
 
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("team_id", project.getGroupId())

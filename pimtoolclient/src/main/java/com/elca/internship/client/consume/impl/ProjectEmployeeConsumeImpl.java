@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class ProjectEmployeeConsumeImpl implements ProjectEmployeeConsume {
     private final ProjectEmployeeRestClient projectEmployeeRestClient;
     @Override
-    public ObservableList<String> retrieveAllEmployeeVisaByProjectId(Long projectId) {
+    public ObservableList<String> retrieveAllEmployeeVisasByProjectId(Long projectId) {
         return FXCollections.observableArrayList(projectEmployeeRestClient.getAllEmployeeVisaByProjectId(projectId));
     }
 }

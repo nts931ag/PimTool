@@ -17,13 +17,14 @@ import java.util.List;
 public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
 
 
-    private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
     public void saveProjectEmployee(Long idProject, List<Long> listMember) {
-        simpleJdbcInsert.withTableName("PROJECT_EMPLOYEE");
+        if(simpleJdbcInsert.isCompiled() == false){
+            simpleJdbcInsert.withTableName("PROJECT_EMPLOYEE");
+        }
         List<MapSqlParameterSource> entries = new ArrayList<>();
         for(var i = 0; i < listMember.size(); ++i){
             entries.add(new MapSqlParameterSource()

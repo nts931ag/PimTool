@@ -51,5 +51,12 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
         System.out.println(response);
     }
 
+    @Override
+    public ObservableList<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
+        return FXCollections.observableArrayList(
+                projectRestClient.getAllProjectsByCriteriaSpecified(tfSearchValue, cbStatusValue)
+        );
+    }
+
 
 }

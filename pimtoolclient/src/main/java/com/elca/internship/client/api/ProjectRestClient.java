@@ -20,7 +20,7 @@ public class ProjectRestClient {
     public static final String URI_GET_ALL_PROJECT = BASE_URI + "/api/projects";
     public static final String URI_GET_ALL_PROJECT_NUMBER = BASE_URI + "/api/projects/numbers";
     public static final String URI_SAVE_NEW_PROJECT = BASE_URI + "/api/project";
-    public static final String URI_GET_ALL_PROJECT_CRITERIAL_SPECIFIED = BASE_URI + "/api/projects/search?proName={proName}&proStatus={proStatus}";
+    public static final String URI_GET_ALL_PROJECT_CRITERIA_SPECIFIED = BASE_URI + "/api/projects/search";
     public static final String URI_DELETE_PROJECT_BY_ID = BASE_URI + "/api/projects/{id}";
     public static final String URI_GET_PROJECT_BY_ID = BASE_URI + "/api/projects/{id}";
     public static final String URI_UPDATE_PROJECT_CHANGE = BASE_URI + "/api/projects/update";
@@ -56,5 +56,18 @@ public class ProjectRestClient {
                 .body(BodyInserters.fromValue(jsonObject))
                 .retrieve()
                 .toBodilessEntity().block();
+    }
+
+    public List<Project> getAllProjectsByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
+        return webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(URI_GET_ALL_PROJECT_CRITERIA_SPECIFIED)
+                        .queryParam("proName", tfSearchValue)
+                        .queryParam("ProStatus", cbStatusValue)
+                        .build())
+                .retrieve()
+                .bodyToFlux(Project.class)
+                .collectList()
+                .block();
     }
 }

@@ -12,4 +12,6 @@ public interface ProjectRestConsume {
     String removeProjectById(Long projectId);
 
     void saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException;
+
+    ObservableList<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue);
 }
