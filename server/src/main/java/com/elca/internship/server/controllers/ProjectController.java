@@ -31,6 +31,10 @@ public class ProjectController {
     private final ProjectEmployeeService projectEmployeeService;
     private final EmployeeService employeeService;
 
+    @GetMapping()
+    public List<Project> getAllProject(){
+        return projectService.getAllProject();
+    }
 
     @PostMapping(value = "/save", consumes = "application/json")
     public ResponseEntity createNewProject(@RequestBody String jsonObject){
@@ -63,10 +67,9 @@ public class ProjectController {
         }
     }
 
-    @GetMapping()
-    public List<Project> getAllProject(){
-        return projectService.getAllProject();
-    }
+    @PutMapping(value = "/update")
+
+
 
     @GetMapping(value = "/search")
     public List<Project> searchProjectCriterialSpecified(@RequestParam(value = "proName") String proName, @RequestParam(value = "proStatus") String proStatus){

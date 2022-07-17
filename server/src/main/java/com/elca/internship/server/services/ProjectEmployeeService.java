@@ -7,4 +7,6 @@ public interface ProjectEmployeeService {
     void saveAllEmployeeToNewProject(Long newProjectId, List<Long> listEmployee);
 
     void removeProjectEmployeeByProjectId(Long id);
+
+    List<String> getAllEmployeeVisasByProjectId(Long projectId);
 }

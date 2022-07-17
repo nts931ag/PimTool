@@ -7,4 +7,6 @@ public interface ProjectEmployeeDAO {
     void saveProjectEmployee(Long idProject, List<Long> listMember);
 
     void deleteProjectEmployeeByProjectId(Long id);
+
+    List<String> findAllEmployeeVisaByProjectId(Long projectId);
 }

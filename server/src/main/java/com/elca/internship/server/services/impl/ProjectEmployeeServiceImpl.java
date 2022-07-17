@@ -21,4 +21,9 @@ public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
     public void removeProjectEmployeeByProjectId(Long id) {
         projectEmployeeDao.deleteProjectEmployeeByProjectId(id);
     }
+
+    @Override
+    public List<String> getAllEmployeeVisasByProjectId(Long projectId) {
+        return projectEmployeeDao.findAllEmployeeVisaByProjectId(projectId);
+    }
 }

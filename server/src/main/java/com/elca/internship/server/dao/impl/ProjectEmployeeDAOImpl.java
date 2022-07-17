@@ -41,4 +41,14 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
         var namedParameters = new MapSqlParameterSource().addValue("id", id);
         namedParameterJdbcTemplate.update(sql, namedParameters);
     }
+
+    @Override
+    public List<String> findAllEmployeeVisaByProjectId(Long projectId) {
+        final var sql = "SELECT visa " +
+                "FROM employee e join project_employee pe on e.id = pe.employee_id " +
+                "where pe.project_id = :projectId;";
+        var nameParameters = new MapSqlParameterSource().addValue("projectId", projectId);
+
+        return namedParameterJdbcTemplate.queryForList(sql, nameParameters, String.class);
+    }
 }

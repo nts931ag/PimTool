@@ -1,6 +1,8 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
+import com.elca.internship.client.consume.EmployeeRestConsume;
+import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.utils.FormValidation;
@@ -95,8 +97,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private ObservableList<String> listMembers;
     private ObservableList<Integer> listCurProNum;
     private final RestTemplateConsume restTemplateConsume;
-//    private final ProjectRestConsume projectRestConsume;
-
+    private final ProjectRestConsume projectRestConsume;
+    private final ProjectEmployeeConsume projectEmployeeConsume;
     private boolean isEditMode;
 
     @Override
@@ -112,8 +114,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proNum", false);
         projectFormValidation.getFormFields().put("proName", false);
         projectFormValidation.getFormFields().put("proCustomer", false);
-        projectFormValidation.getFormFields().put("proStartDate", false);
-        projectFormValidation.getFormFields().put("proEndDate", false);
+        projectFormValidation.getFormFields().put("proDate", false);
         projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
 
@@ -169,9 +170,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     newValue,
                     lbValidateProDate
             ).isValid();
-            System.out.println(valid);
-            projectFormValidation.getFormFields().put("proStartDate", valid);
-            projectFormValidation.getFormFields().put("proEndDate", valid);
+            projectFormValidation.getFormFields().put("proDate", valid);
         }));
 
         pickerEndDate.valueProperty().addListener((observableValue, oldVal, newVal) -> {
@@ -181,9 +180,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     startDate,
                     lbValidateProDate
             ).isValid();
-            System.out.println(valid);
-            projectFormValidation.getFormFields().put("proStartDate", valid);
-            projectFormValidation.getFormFields().put("proEndDate", valid);
+            projectFormValidation.getFormFields().put("proDate", valid);
         });
     }
 
@@ -238,6 +235,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
 //        var listMemberOfcurrentProject = restTemplateConsume.getAllEmployeeVisaByProjectId(project.getId());
+        var listMemberOfcurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisaByProjectId(project.getId());
+        listMemberOfcurrentProject.forEach(System.out::println);
+
         isEditMode = true;
     }
 
@@ -265,16 +265,22 @@ public class CreateProjectController implements Initializable, ApplicationListen
     @FXML
     public void onCreateProjectBtn() {
 
-        if(!isEditMode){
-            if(validateFrom()) {
-                var project = getProjectInputForm();
-                var listMember = getMemberInputForm();
+        if(validateFrom()) {
+            var project = getProjectInputForm();
+            var listMember = getMemberInputForm();
+            if(!isEditMode){
                 try {
                     var response = restTemplateConsume.saveNewProject(project, listMember);
                     if (response.getStatusCode() == HttpStatus.OK) {
                         System.out.println("Connection status : " + response.getStatusCode());
                         navigateToTabListProject();
                     }
+                } catch (JsonProcessingException e) {
+                    navigateToErrorPage(e.getMessage());
+                }
+            }else{
+                try {
+                    projectRestConsume.saveProjectChange(project, listMember);
                 } catch (JsonProcessingException e) {
                     navigateToErrorPage(e.getMessage());
                 }

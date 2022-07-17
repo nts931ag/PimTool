@@ -4,7 +4,10 @@ import com.elca.internship.client.models.entity.Project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -20,6 +23,7 @@ public class ProjectRestClient {
     public static final String URI_GET_ALL_PROJECT_CRITERIAL_SPECIFIED = BASE_URI + "/api/projects/search?proName={proName}&proStatus={proStatus}";
     public static final String URI_DELETE_PROJECT_BY_ID = BASE_URI + "/api/projects/{id}";
     public static final String URI_GET_PROJECT_BY_ID = BASE_URI + "/api/projects/{id}";
+    public static final String URI_UPDATE_PROJECT_CHANGE = BASE_URI + "/api/projects/update";
     private final WebClient webClient;
 
     public List<Project> getAllProjects() {
@@ -44,5 +48,13 @@ public class ProjectRestClient {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
+    }
+
+    public ResponseEntity updateProject(String jsonObject) {
+        return webClient.put().uri(URI_UPDATE_PROJECT_CHANGE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(jsonObject))
+                .retrieve()
+                .toBodilessEntity().block();
     }
 }
