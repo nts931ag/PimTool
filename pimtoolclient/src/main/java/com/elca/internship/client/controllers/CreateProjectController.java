@@ -4,6 +4,7 @@ import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.consume.EmployeeRestConsume;
 import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.utils.FormValidation;
 import com.elca.internship.client.api.RestTemplateConsume;
@@ -243,8 +244,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     public void fillDefaultValueForInputForm() {
 
-
-        var listStatus = FXCollections.observableArrayList("New", "Planned", "In progress", "Finished");
+        var listStatus = FXCollections.observableArrayList(
+                i18nManager.text(I18nKey.COMBOBOX_NEW_PROJECT_STATUS)
+                , i18nManager.text(I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS)
+                , i18nManager.text(I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS)
+                , i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS)
+        );
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
 
@@ -272,7 +277,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 try {
                     var response = restTemplateConsume.saveNewProject(project, listMember);
                     if (response.getStatusCode() == HttpStatus.OK) {
-                        System.out.println("Connection status : " + response.getStatusCode());
                         navigateToTabListProject();
                     }
                 } catch (JsonProcessingException e) {

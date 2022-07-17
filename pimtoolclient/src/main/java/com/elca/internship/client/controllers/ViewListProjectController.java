@@ -3,6 +3,7 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
@@ -113,9 +114,15 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private ObservableList<ProjectTable> dataProjects;
 
     private void fillValueToLayout() {
-        var listStatus = FXCollections.observableArrayList("New", "Planned", "In progress", "Finished");
+
+        var listStatus = FXCollections.observableArrayList(
+                i18nManager.text(I18nKey.COMBOBOX_PROJECT_STATUS)
+                , i18nManager.text(I18nKey.COMBOBOX_NEW_PROJECT_STATUS)
+                , i18nManager.text(I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS)
+                , i18nManager.text(I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS)
+                , i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS)
+        );
         cbStatus.setItems(listStatus);
-        cbStatus.setPromptText("Project status");
 
         tbProject.setFocusTraversable(false);
         tbProject.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -219,7 +226,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public void onLbBtnResetSearchClicked(MouseEvent mouseEvent) {
         tfSearch.clear();
         cbStatus.getSelectionModel().clearSelection();
-        cbStatus.setPromptText("Project status");
         createTableProject();
 
     }

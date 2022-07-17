@@ -41,6 +41,12 @@ public enum I18nKey {
     PROJECT_TABLE_COL_START_DATE("project.table.col.start.date"),
     PROJECT_TABLE_COL_DELTE("project.table.col.delete"),
 
+    /* Combobox status ui */
+    COMBOBOX_PROJECT_STATUS("combobox.project.status"),
+    COMBOBOX_NEW_PROJECT_STATUS("combobox.new.project.status"),
+    COMBOBOX_FINISHED_PROJECT_STATUS("combobox.finished.project.status"),
+    COMBOBOX_PLANNED_PROJECT_STATUS("combobox.planned.project.status"),
+    COMBOBOX_IN_PROGRESS_PROJECT_STATUS("combobox.in.progress.project.status"),
     ;
 
     private final String key;
