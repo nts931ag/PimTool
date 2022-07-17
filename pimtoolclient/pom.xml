@@ -72,7 +72,10 @@
             <artifactId>jiconfont-font_awesome</artifactId>
             <version>4.7.0.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
 
     </dependencies>
     <properties>

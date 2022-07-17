@@ -1,19 +1,17 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
-import com.elca.internship.client.Utils.FormValidation;
+import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.i18n.I18nManager;
+import com.elca.internship.client.utils.FormValidation;
 import com.elca.internship.client.api.RestTemplateConsume;
-import com.elca.internship.client.models.entity.Employee;
-import com.elca.internship.client.models.entity.Group;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -25,15 +23,10 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 
 @FxmlView("/views/createProject.fxml")
 @Component
@@ -41,6 +34,7 @@ import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 public class CreateProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
     public GridPane gpCreateProjectTab;
+    private final I18nManager i18nManager;
     private Stage stage;
 
     @FXML
@@ -101,6 +95,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private ObservableList<String> listMembers;
     private ObservableList<Integer> listCurProNum;
     private final RestTemplateConsume restTemplateConsume;
+//    private final ProjectRestConsume projectRestConsume;
 
     private boolean isEditMode;
 
@@ -121,6 +116,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proEndDate", false);
         projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
+
+        /*var listProjectTest = projectRestConsume.retrieveAllProjects();
+        listProjectTest.forEach(System.out::println);
+        var listProjectNumbersTest = projectRestConsume.retrieveAllProjectNumbers();
+        listProjectNumbersTest.forEach(System.out::println);*/
+
     }
 
     private void addEventListeners() {
@@ -236,7 +237,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.getSelectionModel().select(String.valueOf(project.getStatus()));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
-        var listMemberOfcurrentProject = restTemplateConsume.getAllEmployeeVisaByProjectId(project.getId());
+//        var listMemberOfcurrentProject = restTemplateConsume.getAllEmployeeVisaByProjectId(project.getId());
         isEditMode = true;
     }
 

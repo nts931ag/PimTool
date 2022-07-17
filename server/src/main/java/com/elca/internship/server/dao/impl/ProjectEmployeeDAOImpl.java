@@ -34,4 +34,11 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
         var array = entries.toArray(new MapSqlParameterSource[entries.size()]);
         simpleJdbcInsert.executeBatch(array);
     }
+
+    @Override
+    public void deleteProjectEmployeeByProjectId(Long id) {
+        final var sql = "DELETE FROM project_employee WHERE project_id IN (:id)";
+        var namedParameters = new MapSqlParameterSource().addValue("id", id);
+        namedParameterJdbcTemplate.update(sql, namedParameters);
+    }
 }

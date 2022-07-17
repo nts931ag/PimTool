@@ -24,16 +24,16 @@ public class RestTemplateConsume {
 
     public static final String URI_GET_ALL_PROJECT = BASE_URI + "/api/projects";
     public static final String URI_GET_ALL_GROUP = BASE_URI + "/api/groups";
-    public static final String uri_get_all_employee = BASE_URI + "/api/employees";
-    public static final String uri_save_new_project = BASE_URI + "/api/projects/save";
-    public static final String uri_get_all_project_criterial_specified = BASE_URI + "/api/projects/search?proName={proName}&proStatus={proStatus}";
-    public static final String uri_get_all_employee_of_project_id = BASE_URI + "/api/projects-employees/{id}";
+    public static final String URI_GET_ALL_EMPLOYEE = BASE_URI + "/api/employees";
+    public static final String URI_SAVE_NEW_PROJECT = BASE_URI + "/api/projects/save";
+    public static final String URI_GET_ALL_PROJECT_CRITERIAL_SPECIFIED = BASE_URI + "/api/projects/search?proName={proName}&proStatus={proStatus}";
+    public static final String URI_GET_ALL_EMPLOYEE_OF_PROJECT_ID = BASE_URI + "/api/projects-employees/{id}";
     private final RestTemplate restTemplate;
 
     public List<String> getAllEmployeeVisaByProjectId(long id){
         var param = new HashMap<>();
         param.put("id", id);
-        return restTemplate.getForObject(uri_get_all_employee_of_project_id, List.class, param);
+        return restTemplate.getForObject(URI_GET_ALL_EMPLOYEE_OF_PROJECT_ID, List.class, param);
     }
     public Project[] getAllProject(){
         var responseForGroups = restTemplate.getForEntity(URI_GET_ALL_PROJECT, Project[].class);
@@ -47,7 +47,7 @@ public class RestTemplateConsume {
     }
 
     public ObservableList<String> getAllEmployeeVisa(){
-        var responseForMembers = restTemplate.getForEntity(uri_get_all_employee, Employee[].class);
+        var responseForMembers = restTemplate.getForEntity(URI_GET_ALL_EMPLOYEE, Employee[].class);
         var members = responseForMembers.getBody();
         return FXCollections.observableArrayList(Arrays.stream(members).map(Employee::getVisa).toList());
     }
@@ -70,7 +70,7 @@ public class RestTemplateConsume {
 
         var httpEntity = new HttpEntity<>(msg, headers);
         return restTemplate.exchange(
-                uri_save_new_project
+                URI_SAVE_NEW_PROJECT
                 , HttpMethod.POST
                 , httpEntity
                 , String.class
@@ -85,7 +85,7 @@ public class RestTemplateConsume {
         uriVariables.put("proStatus", cbStatusValue);
 
         var response = restTemplate.exchange(
-                uri_get_all_project_criterial_specified,
+                URI_GET_ALL_PROJECT_CRITERIAL_SPECIFIED,
                 HttpMethod.GET,
                 requestEntity,
                 Project[].class, uriVariables

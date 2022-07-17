@@ -16,4 +16,9 @@ public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
     public void saveAllEmployeeToNewProject(Long newProjectId, List<Long> listEmployee) {
         projectEmployeeDao.saveProjectEmployee(newProjectId, listEmployee);
     }
+
+    @Override
+    public void removeProjectEmployeeByProjectId(Long id) {
+        projectEmployeeDao.deleteProjectEmployeeByProjectId(id);
+    }
 }

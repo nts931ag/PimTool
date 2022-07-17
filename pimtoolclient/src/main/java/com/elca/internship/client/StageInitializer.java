@@ -1,7 +1,7 @@
 package com.elca.internship.client;
 
-import com.elca.internship.client.Utils.AlertDialog;
-import com.elca.internship.client.Utils.Util;
+import com.elca.internship.client.common.AlertDialog;
+import com.elca.internship.client.utils.ScreenSize;
 import com.elca.internship.client.config.connection.ServerConnection;
 import com.elca.internship.client.controllers.DashboardController;
 import com.elca.internship.client.controllers.LoadingPageController;
@@ -78,7 +78,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     }
 
     public void loadDashboardIgnoreConnection(){
-        Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 1, 1);
+        Dimension2D dimension2DLoading = ScreenSize.getCenterSceneDim(stage, 1, 1);
         SupportedLocale locale = SupportedLocale.DEFAULT_LOCALE;
         i18nManager.setupLocale(locale);
         var bundle = i18nManager.bundle();
@@ -101,7 +101,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
         if (connection.isConnected()) {
 
-            Dimension2D dimension2D = Util.getCenterSceneDim(this.stage, 1, 1);
+            Dimension2D dimension2D = ScreenSize.getCenterSceneDim(this.stage, 1, 1);
             Scene root = new Scene(fxWeaver.loadView(DashboardController.class), dimension2D.getWidth(), dimension2D.getHeight());
             root.setFill(Color.TRANSPARENT);
             this.stage.setScene(root);

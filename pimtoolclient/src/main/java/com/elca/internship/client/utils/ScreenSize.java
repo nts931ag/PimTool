@@ -1,14 +1,12 @@
-package com.elca.internship.client.Utils;
+package com.elca.internship.client.utils;
 
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import static javafx.scene.control.Alert.AlertType.INFORMATION;
-
-public class Util {
-private static double titleLabelHeight = Util.getScreenHeight() * 0.05;
+public class ScreenSize {
+private static double titleLabelHeight = ScreenSize.getScreenHeight() * 0.05;
     // Screen bounds Getter
     // Note: getVisualBounds() uncovers the taskbar
     public static double getScreenWidth(){
@@ -31,18 +29,18 @@ private static double titleLabelHeight = Util.getScreenHeight() * 0.05;
 //    }
 
     public static double getContentAreaWidth(){
-        return Util.getScreenWidth() * 0.85;
+        return ScreenSize.getScreenWidth() * 0.85;
     }
 
     public static double getContentAreaHeight(){
-        return Util.getScreenHeight();
+        return ScreenSize.getScreenHeight();
     }
 
     public static Dimension2D getCenterSceneDim(Stage stage, double widthScale, double heightScale){
-        double width = Util.getScreenWidth() / widthScale;
-        double height = Util.getScreenHeight() / heightScale;
-        stage.setX((Util.getScreenWidth() - width) / 2);
-        stage.setY((Util.getScreenHeight() - height) / 2);
+        double width = ScreenSize.getScreenWidth() / widthScale;
+        double height = ScreenSize.getScreenHeight() / heightScale;
+        stage.setX((ScreenSize.getScreenWidth() - width) / 2);
+        stage.setY((ScreenSize.getScreenHeight() - height) / 2);
         return new Dimension2D(width,height);
     }
 

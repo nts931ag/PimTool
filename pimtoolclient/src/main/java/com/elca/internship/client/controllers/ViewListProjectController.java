@@ -2,6 +2,8 @@ package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.api.RestTemplateConsume;
+import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,8 +43,9 @@ import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 @RequiredArgsConstructor
 public class ViewListProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
+    private final ProjectRestConsume projectRestConsume;
     private Stage stage;
-
+    private final I18nManager i18nManager;
     private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
     private final RestTemplateConsume restTemplateConsume;
     @FXML
@@ -129,6 +132,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                                                             .map(e ->
                                                                 new ProjectTable(
                                                                         new CheckBox(),
+                                                                        e.getId(),
                                                                         e.getGroupId(),
                                                                         e.getProjectNumber(),
                                                                         e.getName(),
@@ -148,6 +152,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
             dataProject.getIcDelete().setOnMouseClicked(event -> {
                 var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
                 dataProjects.remove(projectTableDeleted);
+                projectRestConsume.removeProjectById(projectTableDeleted.getId());
             });
             dataProject.getLbProNumLink().getStyleClass().add("lb-super-link");
             dataProject.getLbProNumLink().setOnMouseClicked(event -> {
@@ -173,7 +178,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
         var borderPane = (BorderPane) stage.getScene().getRoot().getChildrenUnmodifiable().get(2);
         var titleContentContainer =  (Label)borderPane.getChildren().get(1);
         var contentContainer = (Pane) borderPane.getChildren().get(0);
-        tabCreateProjectCV = fxWeaver.load(CreateProjectController.class);
+
+        tabCreateProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
         tabCreateProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);

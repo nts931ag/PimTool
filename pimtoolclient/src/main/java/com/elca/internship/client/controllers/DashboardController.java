@@ -1,8 +1,8 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
-import com.elca.internship.client.Utils.NavigationHandler;
-import com.elca.internship.client.Utils.Util;
+import com.elca.internship.client.utils.NavigationHandler;
+import com.elca.internship.client.utils.ScreenSize;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import javafx.fxml.FXML;
@@ -65,12 +65,12 @@ public class DashboardController implements Initializable, ApplicationListener<S
             }
         };
 
-        contentContainer.setPrefWidth(Util.getScreenWidth()*85/100);
-        contentContainer.setPrefHeight(Util.getScreenHeight()*90/100);
-        sideBarContainer.setPrefWidth(Util.getScreenWidth()*15/100);
-        sideBarContainer.setPrefHeight(Util.getScreenHeight()*90/100);
-        headerContainer.setPrefWidth(Util.getScreenWidth());
-        headerContainer.setPrefHeight(Util.getScreenHeight()*10/100);
+        contentContainer.setPrefWidth(ScreenSize.getScreenWidth()*85/100);
+        contentContainer.setPrefHeight(ScreenSize.getScreenHeight()*90/100);
+        sideBarContainer.setPrefWidth(ScreenSize.getScreenWidth()*15/100);
+        sideBarContainer.setPrefHeight(ScreenSize.getScreenHeight()*90/100);
+        headerContainer.setPrefWidth(ScreenSize.getScreenWidth());
+        headerContainer.setPrefHeight(ScreenSize.getScreenHeight()*10/100);
 
         onLbNewClicked();
 

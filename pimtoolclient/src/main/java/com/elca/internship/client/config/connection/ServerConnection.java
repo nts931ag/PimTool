@@ -1,6 +1,6 @@
 package com.elca.internship.client.config.connection;
 
-import com.elca.internship.client.Utils.AlertDialog;
+import com.elca.internship.client.common.AlertDialog;
 import javafx.scene.control.Alert;
 import lombok.Data;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.elca.internship.client.Utils;
+package com.elca.internship.client.utils;
 
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
@@ -9,10 +9,8 @@ import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
 import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
 
-import java.lang.management.MemoryManagerMXBean;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

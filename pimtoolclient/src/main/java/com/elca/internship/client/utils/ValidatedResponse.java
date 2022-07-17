@@ -1,4 +1,4 @@
-package com.elca.internship.client.Utils;
+package com.elca.internship.client.utils;
 
 import javafx.scene.control.Label;
 import lombok.Data;

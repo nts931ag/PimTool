@@ -51,10 +51,16 @@ public class ProjectController {
         }
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public void deleteProject(@PathVariable(value = "id") long id){
-        var project = projectService.getProject(id);
-        projectService.deleteProject(project);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity deleteProject(@PathVariable(value = "id") Long projectId){
+        var project = projectService.getProject(projectId);
+        if(project != null){
+            projectEmployeeService.removeProjectEmployeeByProjectId(projectId);
+            projectService.deleteProject(project);
+            return new ResponseEntity<Response>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<Response>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping()
