@@ -61,7 +61,7 @@ public class ProjectRestClient {
 
     public List<Project> getAllProjectsByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
         var uri = UriComponentsBuilder.fromUriString(URI_GET_ALL_PROJECT_CRITERIA_SPECIFIED)
-                .queryParam("proName", tfSearchValue)
+                .queryParam("proCriteria", tfSearchValue)
                 .queryParam("proStatus", cbStatusValue)
                 .build().toUriString();
         return webClient.get()

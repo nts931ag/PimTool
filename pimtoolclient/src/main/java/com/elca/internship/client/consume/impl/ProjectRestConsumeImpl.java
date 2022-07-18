@@ -24,8 +24,8 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
     private final ProjectRestClient projectRestClient;
 
     @Override
-    public List<Project> retrieveAllProjects() {
-        return projectRestClient.getAllProjects();
+    public ObservableList<Project> retrieveAllProjects() {
+        return FXCollections.observableArrayList(projectRestClient.getAllProjects());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
     }
 
     @Override
-    public ObservableList<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
+    public List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
         return FXCollections.observableArrayList(
                 projectRestClient.getAllProjectsByCriteriaSpecified(tfSearchValue, cbStatusValue)
         );

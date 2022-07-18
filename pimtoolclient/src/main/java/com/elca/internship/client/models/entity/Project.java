@@ -56,10 +56,10 @@ public class Project extends BaseEntity{
                 return Status.INP;
             }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS))){
                 return Status.PLA;
-            }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS))){
+            }/*else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS))){
                 return Status.FIN;
-            }else{
-                return null;
+            }*/else{
+                return Status.FIN;
             }
         }
 

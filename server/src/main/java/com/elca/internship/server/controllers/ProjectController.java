@@ -79,7 +79,7 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/search")
-    public List<Project> searchProjectCriteriaSpecified(@RequestParam(value = "proName") String proName, @RequestParam(value = "proStatus") String proStatus){
+    public List<Project> searchProjectCriteriaSpecified(@RequestParam(value = "proCriteria") String proName, @RequestParam(value = "proStatus") String proStatus){
 
         return projectService.getProjectByCriteria(proName, proStatus);
     }

@@ -109,4 +109,39 @@ public class ProjectDAOImpl implements ProjectDAO {
                 .addValue("proName", proName);
         return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
     }
+
+    @Override
+    public List<Project> findByProNum(String proCriteria) {
+        final var sql = "SELECT DISTINCT * FROM project where project_number = :proCriteria";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue(":proCriteria", proCriteria);
+        return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
+    }
+
+    @Override
+    public List<Project> findByProNumAndProStatus(String proCriteria, String proStatus) {
+        final var sql = "SELECT DISTINCT * FROM project where project_number = :proCriteria and status like :proStatus";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue("proCriteria", proCriteria)
+                .addValue("proStatus", proStatus);
+        return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
+    }
+
+    @Override
+    public List<Project> findByProCriteria(String proCriteria) {
+        final var sql = "SELECT DISTINCT * FROM project where name like :proCriteria or customer like :proCriteria";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue("proCriteria", proCriteria);
+        return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
+    }
+
+
+    @Override
+    public List<Project> findByProCriteriaAndProStatus(String proCriteria, String proStatus) {
+        final var sql = "SELECT DISTINCT * FROM project where (name like :proCriteria or customer like :proCriteria) and status like :proStatus";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue("proCriteria", proCriteria)
+                .addValue("proStatus", proStatus);
+        return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
+    }
 }

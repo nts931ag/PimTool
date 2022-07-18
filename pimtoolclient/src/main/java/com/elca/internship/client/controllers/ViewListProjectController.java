@@ -32,12 +32,9 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.ResourceAccessException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
-import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 
 @Component
 @FxmlView("/views/viewListProject.fxml")
@@ -139,39 +136,45 @@ public class ViewListProjectController implements Initializable, ApplicationList
         tbProject.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tbProject.getSelectionModel().setCellSelectionEnabled(true);
 
-        createTableProject();
+        fillDataProjectToTable(null, null);
     }
 
-    public void createTableProject(){
+
+
+    public void fillDataProjectToTable(String tfSearch, String status){
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
-        var projects = restTemplateConsume.getAllProject();
-        dataProjects = FXCollections.observableArrayList(Arrays
-                                                            .stream(projects)
-                                                            .map(e ->
-                                                                new ProjectTable(
-                                                                        new CheckBox(),
-                                                                        e.getId(),
-                                                                        e.getGroupId(),
-                                                                        e.getProjectNumber(),
-                                                                        e.getName(),
-                                                                        e.getCustomer(),
-                                                                        e.getStatus(),
-                                                                        e.getStartDate(),
-                                                                        e.getEndDate(),
-                                                                        e.getVersion(),
-                                                                        new IconNode(GoogleMaterialDesignIcons.DELETE)
-                                                                )
-                                                            )
-                                                            .toList());
+        var projects = projectRestConsume.searchProjectByCriteriaSpecified(tfSearch, status);
+        dataProjects = FXCollections.observableArrayList(projects.stream()
+                .map(e ->
+                        new ProjectTable(
+                                new CheckBox(),
+                                e.getId(),
+                                e.getGroupId(),
+                                e.getProjectNumber(),
+                                e.getName(),
+                                e.getCustomer(),
+                                e.getStatus(),
+                                e.getStartDate(),
+                                e.getEndDate(),
+                                e.getVersion(),
+                                new IconNode(GoogleMaterialDesignIcons.DELETE)
+                        )
+                )
+                .toList());
 
 
         for(var dataProject: dataProjects){
-            dataProject.getIcDelete().getStyleClass().add("icon-node");
-            dataProject.getIcDelete().setOnMouseClicked(event -> {
-                var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
-                dataProjects.remove(projectTableDeleted);
-                projectRestConsume.removeProjectById(projectTableDeleted.getId());
-            });
+            if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
+                dataProject.getIcDelete().getStyleClass().add("icon-node");
+                dataProject.getIcDelete().setOnMouseClicked(event -> {
+                    var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
+                    dataProjects.remove(projectTableDeleted);
+                    projectRestConsume.removeProjectById(projectTableDeleted.getId());
+                });
+            }else{
+                dataProject.setIcDelete(null);
+                dataProject.getCheckBox().setDisable(true);
+            }
             dataProject.getLbProNumLink().getStyleClass().add("lb-super-link");
             dataProject.getLbProNumLink().setOnMouseClicked(event -> {
                 navigateToTabEditProject(dataProject);
@@ -215,50 +218,50 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public void onBtnSearchClicked(ActionEvent actionEvent) {
         var tfSearchValue = tfSearch.getText();
         var cbStatusValue = cbStatus.getSelectionModel().getSelectedItem();
-        /*if(tfSearchValue.isBlank() && cbStatusValue == null){
-            createTableProject();
-        }else{
-            if(tfSearchValue.isBlank()){
-                tfSearchValue = "ALL";
-            }else{
-                if(cbStatusValue.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_PROJECT_STATUS))){
-                    cbStatusValue = "ALL";
-                }
-            }
-
-            var listProject = projectRestConsume
-                    .searchProjectByCriteriaSpecified(
-                            tfSearchValue
-                            , Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).toString());
-            listProject.forEach(System.out::println);
-        }*/
-
-        ObservableList<Project> listProjectsSpecified = null;
 
         if(tfSearchValue.isBlank() && cbStatusValue == null){
-            createTableProject();
-            System.out.println("both");
+            fillDataProjectToTable(null, null);
         } else if (!tfSearchValue.isBlank() && cbStatusValue != null) {
-            listProjectsSpecified = projectRestConsume.searchProjectByCriteriaSpecified(
-                    tfSearchValue
-                    , Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).name());
-            listProjectsSpecified.forEach(System.out::println);
+            fillDataProjectToTable(tfSearchValue, Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).name());
         } else{
-            if(tfSearchValue.isBlank()){
-                listProjectsSpecified = projectRestConsume.searchProjectByCriteriaSpecified(null, Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).name());
+            if(tfSearchValue.isBlank() && cbStatusValue != null){
+                fillDataProjectToTable(null, Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).name());
             }else{
-                listProjectsSpecified = projectRestConsume.searchProjectByCriteriaSpecified(tfSearchValue, null);
+                fillDataProjectToTable(tfSearchValue, null);
             }
-            listProjectsSpecified.forEach(System.out::println);
         }
+//        fillDataProjectToTable(listProjectsSpecified);
+//        listProjectsSpecified.forEach(System.out::println);
+
     }
+
+    /*private void fillDataProjectToTable(List<Project> listProjectsSpecified) {
+        ObservableList<ProjectTable> listProjectTable = FXCollections.observableArrayList(listProjectsSpecified.stream().map(e ->
+                        new ProjectTable(
+                                new CheckBox(),
+                                e.getId(),
+                                e.getGroupId(),
+                                e.getProjectNumber(),
+                                e.getName(),
+                                e.getCustomer(),
+                                e.getStatus(),
+                                e.getStartDate(),
+                                e.getEndDate(),
+                                e.getVersion(),
+                                new IconNode(GoogleMaterialDesignIcons.DELETE)
+                        )
+                )
+                .toList());
+//        fillDataProjectToTable();(listProjectTable);
+    }*/
+
 
     @FXML
     public void onLbBtnResetSearchClicked(MouseEvent mouseEvent) {
         tfSearch.clear();
         cbStatus.getSelectionModel().select(-1);
 //        cbStatus.getSelectionModel().select(cbStatus.getPromptText());
-        createTableProject();
+        fillDataProjectToTable(null, null);
 
     }
 

@@ -44,17 +44,39 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getProjectByCriteria(String proName, String proStatus) {
-        if(proName.isBlank() && proStatus.isBlank()){
+    public List<Project> getProjectByCriteria(String proCriteria, String proStatus) {
+        /*if(proCriteria.isBlank() && proStatus.isBlank()){
             return projectDAO.findAll();
-        }else if(!proName.isBlank() && !proStatus.isBlank()){
-            return projectDAO.findByProNameAndProStatus(proName, proStatus);
+        }else if(!proCriteria.isBlank() && !proStatus.isBlank()){
+            return projectDAO.findByProNameAndProStatus(proCriteria, proStatus);
         }
         else {
-            if(proName.isBlank()){
+            if(proCriteria.isBlank()){
                 return projectDAO.findByStatus(proStatus);
             }else{
-                return projectDAO.findByProName(proName);
+                return projectDAO.findByProName(proCriteria);
+            }
+        }*/
+
+        if(proCriteria.isBlank() && proStatus.isBlank()){
+            return projectDAO.findAll();
+        }else{
+            if(proCriteria.isBlank()){
+                return projectDAO.findByStatus(proStatus);
+            }else{
+                if(proCriteria.matches("\\d+")){
+                    if(proStatus.isBlank()){
+                        return projectDAO.findByProNum(proCriteria);
+                    }else{
+                        return projectDAO.findByProNumAndProStatus(proCriteria, proStatus);
+                    }
+                }else{
+                    if(proStatus.isBlank()){
+                        return projectDAO.findByProCriteria(proCriteria);
+                    }else{
+                        return projectDAO.findByProCriteriaAndProStatus(proCriteria, proStatus);
+                    }
+                }
             }
         }
     }

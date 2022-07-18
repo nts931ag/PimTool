@@ -7,11 +7,11 @@ import javafx.collections.ObservableList;
 import java.util.List;
 
 public interface ProjectRestConsume {
-    List<Project> retrieveAllProjects();
+    ObservableList<Project> retrieveAllProjects();
     ObservableList<Integer> retrieveAllProjectNumbers();
     String removeProjectById(Long projectId);
 
     void saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException;
 
-    ObservableList<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue);
+    List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue);
 }

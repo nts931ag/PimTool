@@ -20,7 +20,15 @@ public interface ProjectDAO {
 
     List<Project> findByProNameAndProStatus(String proName, String proStatus);
 
+    List<Project> findByProCriteriaAndProStatus(String proCriteria, String proStatus);
+
     List<Project> findByStatus(String proStatus);
 
     List<Project> findByProName(String proName);
+
+    List<Project> findByProNum(String proCriteria);
+
+    List<Project> findByProNumAndProStatus(String proCriteria, String proStatus);
+
+    List<Project> findByProCriteria(String proCriteria);
 }
