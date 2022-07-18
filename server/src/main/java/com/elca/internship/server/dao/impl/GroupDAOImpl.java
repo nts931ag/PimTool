@@ -6,9 +6,12 @@ import com.elca.internship.server.utils.GroupRowMapper;
 import com.elca.internship.server.utils.ProjectRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 
 @Component
@@ -16,6 +19,7 @@ import java.util.List;
 public class GroupDAOImpl implements GroupDAO {
 
     private final JdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert simpleJdbcInsert;
 
     @Override
     public List<Group> findAll() {
@@ -24,5 +28,17 @@ public class GroupDAOImpl implements GroupDAO {
 
 
         return jdbcTemplate.query(sql, new GroupRowMapper());
+    }
+
+    @Override
+    public Long insert(Group group) {
+        if(simpleJdbcInsert.isCompiled() == false){
+            simpleJdbcInsert.withTableName("team").usingGeneratedKeyColumns("id");
+        }
+
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("version", 1);
+
+        return simpleJdbcInsert.executeAndReturnKey(params).longValue();
     }
 }

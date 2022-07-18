@@ -47,6 +47,7 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
         map.put("project", project);
         map.put("listMember", listMember);
         var jsonObject = objectMapper.writeValueAsString(map);
+        System.out.println(jsonObject);
         var response = projectRestClient.updateProject(jsonObject);
         System.out.println(response);
     }

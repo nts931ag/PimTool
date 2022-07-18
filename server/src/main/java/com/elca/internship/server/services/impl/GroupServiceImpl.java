@@ -18,4 +18,9 @@ public class GroupServiceImpl implements GroupService {
     public List<Group> getAll() {
         return groupDAO.findAll();
     }
+
+    @Override
+    public Long createNewGroup(Group group) {
+        return groupDAO.insert(group);
+    }
 }

@@ -52,10 +52,10 @@ public class RestTemplateConsume {
         return FXCollections.observableArrayList(Arrays.stream(members).map(Employee::getVisa).toList());
     }
 
-    public ObservableList<Long> getAllGroupId(){
+    public ObservableList<String> getAllGroupId(){
         var responseForGroups = restTemplate.getForEntity(URI_GET_ALL_GROUP, Group[].class);
         var groups = responseForGroups.getBody();
-        return FXCollections.observableArrayList(Arrays.stream(groups).map(Group::getId).toList());
+        return FXCollections.observableArrayList(Arrays.stream(groups).map(Group::getId).map(Object::toString).toList());
     }
 
     public ResponseEntity saveNewProject(Project project, List<String> listMemberVisa) throws JsonProcessingException {

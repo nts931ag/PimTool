@@ -1,8 +1,10 @@
 package com.elca.internship.server.controllers;
 
+import com.elca.internship.server.models.entity.Group;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.entity.ProjectEmployee;
 import com.elca.internship.server.services.EmployeeService;
+import com.elca.internship.server.services.GroupService;
 import com.elca.internship.server.services.ProjectEmployeeService;
 import com.elca.internship.server.services.ProjectService;
 import com.elca.internship.server.utils.Response;
@@ -31,6 +33,8 @@ public class ProjectController {
     private final ProjectEmployeeService projectEmployeeService;
     private final EmployeeService employeeService;
 
+    private final GroupService groupService;
+
     @GetMapping()
     public List<Project> getAllProject(){
         return projectService.getAllProject();
@@ -45,6 +49,12 @@ public class ProjectController {
             var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
             var listEmployee = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
             var listEmployeeId = employeeService.getIdsByListVisa(listEmployee);
+            if(project.getGroupId() == 0){
+                var group = new Group(0,0,1);
+                var newGroupId = groupService.createNewGroup(group);
+                project.setGroupId(newGroupId);
+
+            }
             long newProjectId = projectService.createNewProject(project);
             projectEmployeeService.saveAllEmployeeToNewProject(newProjectId, listEmployeeId);
 
@@ -54,6 +64,8 @@ public class ProjectController {
             return new ResponseEntity<Response>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping()
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteProject(@PathVariable(value = "id") Long projectId){

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface GroupDAO {
     List<Group> findAll();
+
+    Long insert(Group group);
 }

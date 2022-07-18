@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @FxmlView("/views/createProject.fxml")
 @Component
@@ -48,7 +49,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private Button btnCreate;
 
     @FXML
-    private ComboBox<Long> cbProGroup;
+    private ComboBox<String> cbProGroup;
 
     @FXML
     private ComboBox<String> cbProStatus;
@@ -95,7 +96,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     public FormValidation projectFormValidation;
     private FxControllerAndView<ViewListProjectController, Node> tabProjectListCV;
     private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
-    private ObservableList<Long> listGroups;
+    private ObservableList<String> listGroups;
     private ObservableList<String> listMembers;
     private ObservableList<Integer> listCurProNum;
     private final RestTemplateConsume restTemplateConsume;
@@ -229,7 +230,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         tfProNum.setDisable(true);
         tfProName.setText(project.getName());
         tfProCustomer.setText(project.getCustomer());
-        cbProGroup.getSelectionModel().select(project.getGroupId());
+        cbProGroup.getSelectionModel().select(String.valueOf(project.getGroupId()));
         cbProStatus.getSelectionModel().select(i18nManager.text(Status.convertStatusToI18nKey(project.getStatus())));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
@@ -254,7 +255,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         );
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
-        listGroups = restTemplateConsume.getAllGroupId();
+        listGroups = FXCollections.observableArrayList("New");
+        listGroups.addAll(restTemplateConsume.getAllGroupId());
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
 
@@ -316,14 +318,27 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var status = cbProStatus.getSelectionModel().getSelectedItem();
         var startDate = pickerStartDate.getValue();
         var endDate = pickerEndDate.getValue();
-        return new Project(groupId,
-                Integer.parseInt(proNum),
-                proName,
-                customer,
-                Status.convertStringStatusToStatus(status, i18nManager),
-                startDate,
-                endDate,
-                1);
+        if(groupId.equalsIgnoreCase("new")){
+            return new Project(0,
+                    Integer.parseInt(proNum),
+                    proName,
+                    customer,
+                    Status.convertStringStatusToStatus(status, i18nManager),
+                    startDate,
+                    endDate,
+                    1);
+
+        }else{
+            return new Project(Long.parseLong(groupId),
+                    Integer.parseInt(proNum),
+                    proName,
+                    customer,
+                    Status.convertStringStatusToStatus(status, i18nManager),
+                    startDate,
+                    endDate,
+                    1);
+
+        }
     }
 
     public List<String> getMemberInputForm() {
