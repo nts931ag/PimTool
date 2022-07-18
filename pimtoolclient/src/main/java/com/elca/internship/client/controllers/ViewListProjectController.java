@@ -45,7 +45,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private Stage stage;
     private final I18nManager i18nManager;
     private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
-    private final RestTemplateConsume restTemplateConsume;
     @FXML
     public VBox vbListProject;
     @FXML
@@ -230,30 +229,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 fillDataProjectToTable(tfSearchValue, null);
             }
         }
-//        fillDataProjectToTable(listProjectsSpecified);
-//        listProjectsSpecified.forEach(System.out::println);
-
     }
 
-    /*private void fillDataProjectToTable(List<Project> listProjectsSpecified) {
-        ObservableList<ProjectTable> listProjectTable = FXCollections.observableArrayList(listProjectsSpecified.stream().map(e ->
-                        new ProjectTable(
-                                new CheckBox(),
-                                e.getId(),
-                                e.getGroupId(),
-                                e.getProjectNumber(),
-                                e.getName(),
-                                e.getCustomer(),
-                                e.getStatus(),
-                                e.getStartDate(),
-                                e.getEndDate(),
-                                e.getVersion(),
-                                new IconNode(GoogleMaterialDesignIcons.DELETE)
-                        )
-                )
-                .toList());
-//        fillDataProjectToTable();(listProjectTable);
-    }*/
 
 
     @FXML

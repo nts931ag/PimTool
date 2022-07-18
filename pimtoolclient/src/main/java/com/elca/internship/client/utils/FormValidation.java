@@ -1,5 +1,7 @@
 package com.elca.internship.client.utils;
 
+import com.elca.internship.client.i18n.I18nKey;
+import com.elca.internship.client.i18n.I18nManager;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -27,22 +29,24 @@ public class FormValidation {
 
     public static int iconSize;
 
-    public static ValidatedResponse isProNumValid(String val, ObservableList<Integer> listCurProNum, Label responseLabel ) {
+    public static ValidatedResponse isProNumValid(String val, ObservableList<Integer> listCurProNum, Label responseLabel, I18nManager i18nManager) {
         boolean valid;
         var msg = "";
         if(val == null){
             valid = false;
         } else if (val.isBlank()){
             valid = false;
-            msg = "This field can't be blank.";
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_BLANK);
         } else{
             String exp = "[\\d+]{0,19}";
             valid = val.matches(exp);
             if(!valid){
-                msg = "Only numbers is allowed. Length limit: Min-1, Max-19.";
+                msg = i18nManager.text(I18nKey.MSG_VALIDATED_FORMAT_NUMBER);
             }else{
+
                 valid = !listCurProNum.contains(Long.parseLong(val));
-                msg = "The project number already existed. Please select a different project number.";
+
+                msg = i18nManager.text(I18nKey.MSG_VALIDATED_NUMBER_EXISTED);
             }
         }
         return validationResponse(responseLabel, valid, msg);

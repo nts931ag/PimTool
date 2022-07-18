@@ -12,6 +12,8 @@ import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -117,7 +119,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proNum", false);
         projectFormValidation.getFormFields().put("proName", false);
         projectFormValidation.getFormFields().put("proCustomer", false);
-        projectFormValidation.getFormFields().put("proDate", false);
+        projectFormValidation.getFormFields().put("proDate", true);
         projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
 
@@ -130,7 +132,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
             var valid = FormValidation.isProNumValid(
                     newVal,
                     listCurProNum,
-                    lbValidateProNum
+                    lbValidateProNum,
+                    i18nManager
             ).isValid();
             projectFormValidation.getFormFields().put("proNum", valid);
 
@@ -213,8 +216,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         for(var i = 1; i< rowsContraints.size();++i){
             rowsContraints.get(i).setPrefHeight(35);
         }
-        alertDangerCV = fxWeaver.load(AlertDangerController.class);
-
+        alertDangerCV = fxWeaver.load(AlertDangerController.class, i18nManager.bundle());
         var node = (HBox) alertDangerCV.getView().get();
         gpCreateProjectTab.add(node,0,1,4,1);
         node.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -234,7 +236,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.getSelectionModel().select(i18nManager.text(Status.convertStatusToI18nKey(project.getStatus())));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
-//        var listMemberOfcurrentProject = restTemplateConsume.getAllEmployeeVisaByProjectId(project.getId());
         var listMemberOfcurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
         var listMember = new StringBuilder();
         listMemberOfcurrentProject.forEach(e->{

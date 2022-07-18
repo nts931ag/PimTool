@@ -53,7 +53,10 @@ public enum I18nKey {
     PROJECT_STATUS_PLA("project.status.pla"),
     PROJECT_STATUS_INP("project.status.inp"),
     PROJECT_STATUS_FIN("project.status.fin"),
-    ;
+    MSG_VALIDATED_BLANK("msg.validated.blank"),
+    MSG_VALIDATED_FORMAT_NUMBER("msg.validated.format.number"),
+    MSG_VALIDATED_NUMBER_EXISTED("msg.validated.number.existed"),
+    ALERT_DANGER_MSG("alert.danger.msg");
 
     private final String key;
 

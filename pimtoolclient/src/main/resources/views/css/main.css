@@ -190,3 +190,8 @@
 .lb-super-link {
     -fx-cursor: hand;
 }
+
+.icon-node-close {
+    -fx-cursor: hand;
+    -fx-padding: 8px;
+}
