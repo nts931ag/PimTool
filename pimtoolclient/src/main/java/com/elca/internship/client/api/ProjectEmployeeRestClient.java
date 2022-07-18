@@ -2,6 +2,8 @@ package com.elca.internship.client.api;
 
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,8 +31,8 @@ public class ProjectEmployeeRestClient {
                 .block();*/
         return webClient.get().uri(URI_GET_ALL_EMPLOYEE_OF_PROJECT_ID,projectId)
                 .retrieve()
-                .bodyToFlux(String.class)
-                .collectList()
+                .bodyToMono(new ParameterizedTypeReference<List<String>>() {
+                })
                 .block();
 
     }

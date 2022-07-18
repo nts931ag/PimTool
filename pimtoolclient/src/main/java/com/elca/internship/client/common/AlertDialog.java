@@ -1,6 +1,6 @@
 package com.elca.internship.client.common;
 
-import com.elca.internship.client.utils.ScreenSize;
+import com.elca.internship.client.utils.GuiUtil;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -81,7 +81,7 @@ public class AlertDialog {
         GridPane.setHgrow(textArea, Priority.ALWAYS);
 
         GridPane expContent = new GridPane();
-        expContent.setMaxWidth(ScreenSize.getScreenWidth() * 0.6);
+        expContent.setMaxWidth(GuiUtil.getScreenWidth() * 0.6);
         expContent.add(label, 0, 0);
         expContent.add(textArea, 0, 1);
 

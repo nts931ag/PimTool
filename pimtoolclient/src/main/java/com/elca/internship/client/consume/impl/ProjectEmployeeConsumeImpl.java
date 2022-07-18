@@ -13,6 +13,7 @@ public class ProjectEmployeeConsumeImpl implements ProjectEmployeeConsume {
     private final ProjectEmployeeRestClient projectEmployeeRestClient;
     @Override
     public ObservableList<String> retrieveAllEmployeeVisasByProjectId(Long projectId) {
-        return FXCollections.observableArrayList(projectEmployeeRestClient.getAllEmployeeVisaByProjectId(projectId));
+        var listProject =projectEmployeeRestClient.getAllEmployeeVisaByProjectId(projectId);
+        return FXCollections.observableArrayList(listProject);
     }
 }
