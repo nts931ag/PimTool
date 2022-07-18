@@ -49,6 +49,10 @@ CREATE TABLE `team` (
 --  CONSTRAINT `fk_team_leader_id` FOREIGN KEY (`team_leader_id`) REFERENCES `employee` (`id`)
 );
 
+CREATE UNIQUE INDEX IDXNAME ON `project`(project_number);
+
+
+
 ALTER TABLE `team`
     ADD FOREIGN KEY (team_leader_id)
         REFERENCES `employee`(id);

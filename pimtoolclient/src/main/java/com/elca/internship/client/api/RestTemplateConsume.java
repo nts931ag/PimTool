@@ -67,7 +67,7 @@ public class RestTemplateConsume {
         var msg = objectMapper.writeValueAsString(map);
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
+        System.out.println(msg);
         var httpEntity = new HttpEntity<>(msg, headers);
         return restTemplate.exchange(
                 URI_SAVE_NEW_PROJECT

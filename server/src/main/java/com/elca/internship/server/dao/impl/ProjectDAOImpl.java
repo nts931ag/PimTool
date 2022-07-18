@@ -2,8 +2,10 @@ package com.elca.internship.server.dao.impl;
 
 import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.models.entity.Project;
+import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistsException;
 import com.elca.internship.server.utils.ProjectRowMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -11,6 +13,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Component
@@ -47,7 +51,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     @Override
-    public Long insert(Project project) {
+    public Long insert(Project project) throws ProjectNumberAlreadyExistsException {
         if(simpleJdbcInsert.isCompiled() == false){
             simpleJdbcInsert.withTableName("project").usingGeneratedKeyColumns("id");
         }
@@ -61,8 +65,11 @@ public class ProjectDAOImpl implements ProjectDAO {
                 .addValue("start_date", Date.valueOf(project.getStartDate()))
                 .addValue("end_date", Date.valueOf(project.getEndDate()))
                 .addValue("version", 1);
-
-        return simpleJdbcInsert.executeAndReturnKey(params).longValue();
+        try{
+            return simpleJdbcInsert.executeAndReturnKey(params).longValue();
+        }catch (Exception e){
+            throw  new ProjectNumberAlreadyExistsException(project.getProjectNumber());
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.elca.internship.server.controllers;
 import com.elca.internship.server.models.entity.Group;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.entity.ProjectEmployee;
+import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistsException;
 import com.elca.internship.server.services.EmployeeService;
 import com.elca.internship.server.services.GroupService;
 import com.elca.internship.server.services.ProjectEmployeeService;
@@ -41,7 +42,7 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/save", consumes = "application/json")
-    public ResponseEntity createNewProject(@RequestBody String jsonObject){
+    public ResponseEntity<Response> createNewProject(@RequestBody String jsonObject){
         var objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         try {
@@ -50,7 +51,8 @@ public class ProjectController {
             var listEmployee = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
             var listEmployeeId = employeeService.getIdsByListVisa(listEmployee);
             if(project.getGroupId() == 0){
-                var group = new Group(0,0,1);
+                var newGroupLeaderId = (Long) listEmployeeId.get(0);
+                var group = new Group(0,newGroupLeaderId,1);
                 var newGroupId = groupService.createNewGroup(group);
                 project.setGroupId(newGroupId);
 
@@ -61,6 +63,8 @@ public class ProjectController {
             return new ResponseEntity<Response>(HttpStatus.OK);
         } catch (JsonProcessingException e) {
             System.out.println("can't parse json to object");
+            return new ResponseEntity<Response>(HttpStatus.BAD_REQUEST);
+        } catch (ProjectNumberAlreadyExistsException e) {
             return new ResponseEntity<Response>(HttpStatus.BAD_REQUEST);
         }
     }

@@ -282,6 +282,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     var response = restTemplateConsume.saveNewProject(project, listMember);
                     if (response.getStatusCode() == HttpStatus.OK) {
                         navigateToTabListProject();
+                    }else{
+                        System.out.println("hahaha");
                     }
                 } catch (JsonProcessingException e) {
                     navigateToErrorPage(e.getMessage());

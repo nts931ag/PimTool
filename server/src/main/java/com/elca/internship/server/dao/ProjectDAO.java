@@ -1,7 +1,10 @@
 package com.elca.internship.server.dao;
 
 import com.elca.internship.server.models.entity.Project;
+import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistsException;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public interface ProjectDAO {
@@ -10,7 +13,7 @@ public interface ProjectDAO {
 
     Project update(Long id, Project project);
 
-    Long insert(Project project);
+    Long insert(Project project) throws ProjectNumberAlreadyExistsException;
 
     Project findById(Long id);
 

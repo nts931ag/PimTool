@@ -2,10 +2,12 @@ package com.elca.internship.server.services.impl;
 
 import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.models.entity.Project;
+import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistsException;
 import com.elca.internship.server.services.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 
@@ -19,7 +21,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Long createNewProject(Project project) {
+    public Long createNewProject(Project project) throws ProjectNumberAlreadyExistsException {
         return projectDAO.insert(project);
     }
 

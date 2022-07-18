@@ -17,7 +17,7 @@ import java.time.Instant;
 @Component
 public class LoggerAspect {
 
-    @Around("execution(* com.elca.internship.server..*.*(..))")
+    /*@Around("execution(* com.elca.internship.server..*.*(..))")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable{
         log.info(joinPoint.getSignature().toLongString() + " method execution start");
         var start = Instant.now();
@@ -27,7 +27,7 @@ public class LoggerAspect {
         log.info("Time took to execute " + joinPoint.getSignature().toString() + " method is: " + timeElapsed);
         log.info(joinPoint.getSignature().toString()+ " method execution end");
         return returnObj;
-    }
+    }*/
 
     @AfterThrowing(value = "execution(* com.elca.internship.server.*.*(..))", throwing = "ex")
     public void logException(JoinPoint joinPoint, Exception ex){

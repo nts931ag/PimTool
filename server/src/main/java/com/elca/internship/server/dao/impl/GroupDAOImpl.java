@@ -37,6 +37,7 @@ public class GroupDAOImpl implements GroupDAO {
         }
 
         MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("team_leader_id", group.getGroupLeaderId())
                 .addValue("version", 1);
 
         return simpleJdbcInsert.executeAndReturnKey(params).longValue();
