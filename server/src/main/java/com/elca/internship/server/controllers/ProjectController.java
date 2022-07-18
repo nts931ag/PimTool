@@ -65,7 +65,6 @@ public class ProjectController {
         }
     }
 
-    @PutMapping()
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteProject(@PathVariable(value = "id") Long projectId){

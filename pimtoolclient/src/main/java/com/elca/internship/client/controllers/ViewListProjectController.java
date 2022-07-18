@@ -97,6 +97,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         hbFilterListProject.setPadding(new Insets(25,0,25,0));
         cbStatus.setPrefWidth(200);
         btnSearch.setPrefWidth(200);
+        tfSearch.setFocusTraversable(false);
 
         colCheck.setPrefWidth(30);
         colProDel.setPrefWidth(70);
@@ -116,14 +117,24 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private void fillValueToLayout() {
 
         var listStatus = FXCollections.observableArrayList(
-                i18nManager.text(I18nKey.COMBOBOX_PROJECT_STATUS)
-                , i18nManager.text(I18nKey.COMBOBOX_NEW_PROJECT_STATUS)
+                i18nManager.text(I18nKey.COMBOBOX_NEW_PROJECT_STATUS)
                 , i18nManager.text(I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS)
                 , i18nManager.text(I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS)
                 , i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS)
         );
         cbStatus.setItems(listStatus);
-
+        cbStatus.getSelectionModel().select(null);
+        cbStatus.setButtonCell(new ListCell<>(){
+            @Override
+            protected void updateItem(String item, boolean empty){
+                super.updateItem(item, empty);
+                if(empty || item == null){
+                    setText(i18nManager.text(I18nKey.COMBOBOX_PROMPT_TEXT_STATUS));
+                }else{
+                    setText(item);
+                }
+            }
+        });
         tbProject.setFocusTraversable(false);
         tbProject.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         tbProject.getSelectionModel().setCellSelectionEnabled(true);
@@ -203,28 +214,50 @@ public class ViewListProjectController implements Initializable, ApplicationList
     @FXML
     public void onBtnSearchClicked(ActionEvent actionEvent) {
         var tfSearchValue = tfSearch.getText();
-        var cbStatusValue = cbStatus.getValue();
-        if(tfSearchValue.isBlank() && cbStatusValue == null){
+        var cbStatusValue = cbStatus.getSelectionModel().getSelectedItem();
+        /*if(tfSearchValue.isBlank() && cbStatusValue == null){
             createTableProject();
         }else{
             if(tfSearchValue.isBlank()){
-                tfSearchValue = "all";
+                tfSearchValue = "ALL";
             }else{
-                if(cbStatusValue == null){
-                    cbStatusValue = "all";
+                if(cbStatusValue.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_PROJECT_STATUS))){
+                    cbStatusValue = "ALL";
                 }
             }
 
-//            var listProject = restTemplateConsume.searchProjectByCriteria(tfSearchValue, cbStatusValue);
-            var listProject = projectRestConsume.searchProjectByCriteriaSpecified(tfSearchValue, cbStatusValue);
+            var listProject = projectRestConsume
+                    .searchProjectByCriteriaSpecified(
+                            tfSearchValue
+                            , Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).toString());
+            listProject.forEach(System.out::println);
+        }*/
 
+        ObservableList<Project> listProjectsSpecified = null;
+
+        if(tfSearchValue.isBlank() && cbStatusValue == null){
+            createTableProject();
+            System.out.println("both");
+        } else if (!tfSearchValue.isBlank() && cbStatusValue != null) {
+            listProjectsSpecified = projectRestConsume.searchProjectByCriteriaSpecified(
+                    tfSearchValue
+                    , Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).name());
+            listProjectsSpecified.forEach(System.out::println);
+        } else{
+            if(tfSearchValue.isBlank()){
+                listProjectsSpecified = projectRestConsume.searchProjectByCriteriaSpecified(null, Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).name());
+            }else{
+                listProjectsSpecified = projectRestConsume.searchProjectByCriteriaSpecified(tfSearchValue, null);
+            }
+            listProjectsSpecified.forEach(System.out::println);
         }
     }
 
     @FXML
     public void onLbBtnResetSearchClicked(MouseEvent mouseEvent) {
         tfSearch.clear();
-        cbStatus.getSelectionModel().clearSelection();
+        cbStatus.getSelectionModel().select(-1);
+//        cbStatus.getSelectionModel().select(cbStatus.getPromptText());
         createTableProject();
 
     }
