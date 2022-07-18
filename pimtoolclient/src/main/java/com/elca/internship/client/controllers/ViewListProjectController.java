@@ -217,7 +217,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
 //            var listProject = restTemplateConsume.searchProjectByCriteria(tfSearchValue, cbStatusValue);
             var listProject = projectRestConsume.searchProjectByCriteriaSpecified(tfSearchValue, cbStatusValue);
-            System.out.println(listProject);
 
         }
     }

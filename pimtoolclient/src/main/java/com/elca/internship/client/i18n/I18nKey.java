@@ -48,6 +48,11 @@ public enum I18nKey {
     COMBOBOX_FINISHED_PROJECT_STATUS("combobox.finished.project.status"),
     COMBOBOX_PLANNED_PROJECT_STATUS("combobox.planned.project.status"),
     COMBOBOX_IN_PROGRESS_PROJECT_STATUS("combobox.in.progress.project.status"),
+
+    PROJECT_STATUS_NEW("project.status.new"),
+    PROJECT_STATUS_PLA("project.status.pla"),
+    PROJECT_STATUS_INP("project.status.inp"),
+    PROJECT_STATUS_FIN("project.status.fin"),
     ;
 
     private final String key;

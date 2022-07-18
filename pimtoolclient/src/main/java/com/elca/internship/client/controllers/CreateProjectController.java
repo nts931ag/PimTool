@@ -1,5 +1,6 @@
 package com.elca.internship.client.controllers;
 
+import ch.qos.logback.core.status.StatusUtil;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.consume.EmployeeRestConsume;
 import com.elca.internship.client.consume.ProjectEmployeeConsume;
@@ -119,10 +120,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
 
-        /*var listProjectTest = projectRestConsume.retrieveAllProjects();
-        listProjectTest.forEach(System.out::println);
-        var listProjectNumbersTest = projectRestConsume.retrieveAllProjectNumbers();
-        listProjectNumbersTest.forEach(System.out::println);*/
 
     }
 
@@ -226,13 +223,14 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     }
 
+
     public void initEditProjectLayout(Project project){
         tfProNum.setText(String.valueOf(project.getProjectNumber()));
         tfProNum.setDisable(true);
         tfProName.setText(project.getName());
         tfProCustomer.setText(project.getCustomer());
         cbProGroup.getSelectionModel().select(project.getGroupId());
-        cbProStatus.getSelectionModel().select(String.valueOf(project.getStatus()));
+        cbProStatus.getSelectionModel().select(i18nManager.text(Status.convertStatusToI18nKey(project.getStatus())));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
 //        var listMemberOfcurrentProject = restTemplateConsume.getAllEmployeeVisaByProjectId(project.getId());
@@ -252,7 +250,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
         );
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
-
         listGroups = restTemplateConsume.getAllGroupId();
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
@@ -302,8 +299,10 @@ public class CreateProjectController implements Initializable, ApplicationListen
             contentContainer.getChildren().clear();
             contentContainer.getChildren().add(view);
         });
-        titleContentContainer.setText("Projects list");
+        titleContentContainer.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
     }
+
+
 
     public Project getProjectInputForm() {
         var proNum = tfProNum.getText();
@@ -313,7 +312,14 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var status = cbProStatus.getSelectionModel().getSelectedItem();
         var startDate = pickerStartDate.getValue();
         var endDate = pickerEndDate.getValue();
-        return new Project(groupId, Integer.parseInt(proNum), proName, customer, Status.getStatus(status), startDate, endDate,1);
+        return new Project(groupId,
+                Integer.parseInt(proNum),
+                proName,
+                customer,
+                Status.convertStringStatusToStatus(status, i18nManager),
+                startDate,
+                endDate,
+                1);
     }
 
     public List<String> getMemberInputForm() {

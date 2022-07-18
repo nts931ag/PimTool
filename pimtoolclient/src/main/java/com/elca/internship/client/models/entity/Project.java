@@ -1,5 +1,7 @@
 package com.elca.internship.client.models.entity;
 
+import com.elca.internship.client.i18n.I18nKey;
+import com.elca.internship.client.i18n.I18nManager;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,23 +43,60 @@ public class Project extends BaseEntity{
 
 
     public enum Status{
-        NEW,
-        PLA,
-        INP,
-        FIN;
+        NEW("project.status.new"),
+        PLA("project.status.pla"),
+        INP("project.status.inp"),
+        FIN("project.status.fin");
 
-        public static Status getStatus(String status){
-            return switch (status){
-                case "New" ->
-                        Status.NEW;
-                case "Planned" ->
-                        Status.PLA;
-                case "In progress" ->
-                        Status.INP;
-                case "Finished" ->
-                        Status.FIN;
-                default -> null;
-            };
+
+        public static Status convertStringStatusToStatus(String value, I18nManager i18nManager){
+            if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_NEW_PROJECT_STATUS))){
+                return Status.NEW;
+            }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS))){
+                return Status.INP;
+            }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS))){
+                return Status.PLA;
+            }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS))){
+                return Status.FIN;
+            }else{
+                return null;
+            }
+        }
+
+        public static I18nKey convertStatusToI18nKey(Status status){
+            switch (status){
+                case NEW -> {
+                    return I18nKey.COMBOBOX_NEW_PROJECT_STATUS;
+                }
+
+                case PLA -> {
+                    return I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS;
+                }
+
+                case INP -> {
+                    return I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS;
+                }
+
+                case FIN -> {
+                    return I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS;
+                }
+
+                default -> {
+                    return null;
+                }
+
+            }
+        }
+
+
+        private final String key;
+
+        Status(final String key) {
+            this.key = key;
+        }
+
+        public String getKey() {
+            return key;
         }
 
     }
