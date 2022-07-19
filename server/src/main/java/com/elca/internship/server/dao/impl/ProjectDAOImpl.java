@@ -134,20 +134,24 @@ public class ProjectDAOImpl implements ProjectDAO {
         return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
     }
 
+    //:proCriteria
+
     @Override
     public List<Project> findByProCriteria(String proCriteria) {
-        final var sql = "SELECT DISTINCT * FROM project where name like :proCriteria or customer like :proCriteria";
+        final var sql = "SELECT DISTINCT * FROM project where lower(name) like :proCriteria or lower(customer) like :proCriteria";
+        var param = "%" + proCriteria.toLowerCase().trim() + "%";
         var namedParameters = new MapSqlParameterSource()
-                .addValue("proCriteria", proCriteria);
+                .addValue("proCriteria", param);
         return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
     }
 
 
     @Override
     public List<Project> findByProCriteriaAndProStatus(String proCriteria, String proStatus) {
-        final var sql = "SELECT DISTINCT * FROM project where (name like :proCriteria or customer like :proCriteria) and status like :proStatus";
+        final var sql = "SELECT DISTINCT * FROM project where (lower(name) like :proCriteria or lower(customer) like :proCriteria) and status like :proStatus";
+        var param = "%" + proCriteria.toLowerCase().trim() + "%";
         var namedParameters = new MapSqlParameterSource()
-                .addValue("proCriteria", proCriteria)
+                .addValue("proCriteria", param)
                 .addValue("proStatus", proStatus);
         return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
     }
