@@ -61,7 +61,7 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
     }
 
     @Override
-    public void deleteEmployeesFromProjectEmployee(long id, List<Long> values) {
+    public void deleteEmployeesFromProjectEmployee(Long id, List<Long> values) {
         final var sql = "DELETE FROM project_employee where project_id = :id and employee_id NOT IN (:values)";
         var params = new MapSqlParameterSource()
                 .addValue("id", id)
@@ -70,8 +70,19 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
     }
 
     @Override
-    public void saveNewEmployeesToProjectEmployee(long id, ArrayList<Long> listId) {
+    public void saveNewEmployeesToProjectEmployee(Long id, ArrayList<Long> listId) {
+        final var sql = "INSERT INTO project_employee (project_id, employee_id)\n" +
+                "SELECT * FROM (SELECT CAST (:projectId AS int) , CAST (:employeeId AS int)) AS tmp\n" +
+                "WHERE NOT EXISTS (\n" +
+                "    SELECT * FROM project_employee WHERE project_id = :projectId and employee_id = :employeeId\n" +
+                ") LIMIT 1;";
 
+
+/*        final var sql1 = "INSERT INTO project_employee(project_id, employee_id)" +
+                " SELECT * FROM (SELECT :projectId AS project_id, :employeeId AS employee_id) AS tmp" +
+                " WHERE NOT EXISTS ( SELECT * FROM project_employee" +
+                " WHERE project_id = :projectId and employee_id = :employeeId )" +
+                " LIMIT 1;";*/
 
         List<MapSqlParameterSource> entries = new ArrayList<>();
         for(var i = 0; i < listId.size(); ++i){
@@ -81,6 +92,6 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
                     ));
         }
         var array = entries.toArray(new MapSqlParameterSource[entries.size()]);
-
+        namedParameterJdbcTemplate.batchUpdate(sql, array);
     }
 }

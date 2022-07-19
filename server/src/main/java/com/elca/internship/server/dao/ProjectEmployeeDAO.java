@@ -12,7 +12,7 @@ public interface ProjectEmployeeDAO {
 
     List<String> findAllEmployeeVisaByProjectId(Long projectId);
 
-    void deleteEmployeesFromProjectEmployee(long id, List<Long> values);
+    void deleteEmployeesFromProjectEmployee(Long id, List<Long> values);
 
-    void saveNewEmployeesToProjectEmployee(long id, ArrayList<Long> listId);
+    void saveNewEmployeesToProjectEmployee(Long id, ArrayList<Long> listId);
 }
