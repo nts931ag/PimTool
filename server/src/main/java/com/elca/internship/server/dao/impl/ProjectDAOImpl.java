@@ -121,7 +121,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     public List<Project> findByProNum(String proCriteria) {
         final var sql = "SELECT DISTINCT * FROM project where project_number = :proCriteria";
         var namedParameters = new MapSqlParameterSource()
-                .addValue(":proCriteria", proCriteria);
+                .addValue("proCriteria", proCriteria);
         return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
     }
 

@@ -7,6 +7,7 @@ import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
+import com.elca.internship.client.models.entity.Response;
 import com.elca.internship.client.utils.FormValidation;
 import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
@@ -279,12 +280,14 @@ public class CreateProjectController implements Initializable, ApplicationListen
             var listMember = getMemberInputForm();
             if(!isEditMode){
                 try {
-                    var response = restTemplateConsume.saveNewProject(project, listMember);
-                    if (response.getStatusCode() == HttpStatus.OK) {
-                        navigateToTabListProject();
-                    }else{
-                        System.out.println("hahaha");
-                    }
+//                    var response = restTemplateConsume.saveNewProject(project, listMember);
+                    var wcResponse = projectRestConsume.createNewProject(project, listMember);
+                    System.out.println(wcResponse.getBody());
+//                    if (response.getStatusCode() == HttpStatus.OK) {
+//                        navigateToTabListProject();
+//                    }else{
+//                        System.out.println("hahaha");
+//                    }
                 } catch (JsonProcessingException e) {
                     navigateToErrorPage(e.getMessage());
                 }

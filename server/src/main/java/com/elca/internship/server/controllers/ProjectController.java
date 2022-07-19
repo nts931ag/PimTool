@@ -50,22 +50,30 @@ public class ProjectController {
             var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
             var listEmployee = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
             var listEmployeeId = employeeService.getIdsByListVisa(listEmployee);
+
             if(project.getGroupId() == 0){
                 var newGroupLeaderId = (Long) listEmployeeId.get(0);
                 var group = new Group(0,newGroupLeaderId,1);
                 var newGroupId = groupService.createNewGroup(group);
                 project.setGroupId(newGroupId);
-
             }
             long newProjectId = projectService.createNewProject(project);
             projectEmployeeService.saveAllEmployeeToNewProject(newProjectId, listEmployeeId);
 
-            return new ResponseEntity<Response>(HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            System.out.println("can't parse json to object");
-            return new ResponseEntity<Response>(HttpStatus.BAD_REQUEST);
-        } catch (ProjectNumberAlreadyExistsException e) {
-            return new ResponseEntity<Response>(HttpStatus.BAD_REQUEST);
+            var response = new Response();
+            response.setStatusCode("201");
+            response.setStatusMsg("Project saved successfully");
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(response);
+        } catch (JsonProcessingException | ProjectNumberAlreadyExistsException e) {
+            var response = new Response();
+            response.setStatusCode("400");
+            response.setStatusMsg("Project saved failed");
+            System.out.println(response);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(response);
         }
     }
 
@@ -84,7 +92,6 @@ public class ProjectController {
 
     @GetMapping(value = "/search")
     public List<Project> searchProjectCriteriaSpecified(@RequestParam(value = "proCriteria") String proName, @RequestParam(value = "proStatus") String proStatus){
-
         return projectService.getProjectByCriteria(proName, proStatus);
     }
 }

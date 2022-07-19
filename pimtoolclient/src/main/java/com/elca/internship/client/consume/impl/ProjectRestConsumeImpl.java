@@ -3,11 +3,13 @@ package com.elca.internship.client.consume.impl;
 import com.elca.internship.client.api.ProjectRestClient;
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.entity.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -57,6 +59,17 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
         return FXCollections.observableArrayList(
                 projectRestClient.getAllProjectsByCriteriaSpecified(tfSearchValue, cbStatusValue)
         );
+    }
+
+    @Override
+    public ResponseEntity<Response> createNewProject(Project project, List<String> listMember) throws JsonProcessingException {
+        var objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        var map = new HashMap<String, Object>();
+        map.put("project", project);
+        map.put("listMember", listMember);
+        var jsonObject = objectMapper.writeValueAsString(map);
+        return projectRestClient.saveNewProject(jsonObject).block();
     }
 
 

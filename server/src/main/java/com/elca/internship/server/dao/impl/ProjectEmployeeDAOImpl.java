@@ -33,7 +33,13 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
                     ));
         }
         var array = entries.toArray(new MapSqlParameterSource[entries.size()]);
-        simpleJdbcInsert.executeBatch(array);
+        try {
+            simpleJdbcInsert.executeBatch(array);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override

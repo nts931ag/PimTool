@@ -3,6 +3,7 @@ package com.elca.internship.client.api;
 import com.elca.internship.client.models.entity.Employee;
 import com.elca.internship.client.models.entity.Group;
 import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.entity.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
@@ -73,7 +74,7 @@ public class RestTemplateConsume {
                 URI_SAVE_NEW_PROJECT
                 , HttpMethod.POST
                 , httpEntity
-                , String.class
+                , Response.class
         );
     }
 

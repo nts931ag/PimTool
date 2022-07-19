@@ -1,5 +1,4 @@
-package com.elca.internship.server.utils;
-
+package com.elca.internship.client.models.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Response {
+
     private String statusCode;
     private String statusMsg;
 }
