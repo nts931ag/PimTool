@@ -8,4 +8,6 @@ public interface GroupDAO {
     List<Group> findAll();
 
     Long insert(Group group);
+
+    Group findById(long groupId);
 }

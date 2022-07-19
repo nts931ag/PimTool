@@ -10,11 +10,13 @@ public interface ProjectService {
 
     Project getProject(Long id);
 
-    Project updateProject(Long id, Project project);
+    int updateProject(Long id, Project project);
 
     List<Project> getAllProject();
 
     void deleteProject(Project project);
 
     List<Project> getProjectByCriteria(String proCriteria, String proStatus);
+
+    void updateProjectWithListEmployeeVisa(Project project, List listEmployeeVisa);
 }

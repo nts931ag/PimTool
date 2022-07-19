@@ -10,13 +10,14 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
 
-
+    private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -57,5 +58,29 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
         var nameParameters = new MapSqlParameterSource().addValue("projectId", projectId);
 
         return namedParameterJdbcTemplate.queryForList(sql, nameParameters, String.class);
+    }
+
+    @Override
+    public void deleteEmployeesFromProjectEmployee(long id, List<Long> values) {
+        final var sql = "DELETE FROM project_employee where project_id = :id and employee_id NOT IN (:values)";
+        var params = new MapSqlParameterSource()
+                .addValue("id", id)
+                .addValue("values", values);
+        namedParameterJdbcTemplate.update(sql, params);
+    }
+
+    @Override
+    public void saveNewEmployeesToProjectEmployee(long id, ArrayList<Long> listId) {
+
+
+        List<MapSqlParameterSource> entries = new ArrayList<>();
+        for(var i = 0; i < listId.size(); ++i){
+            entries.add(new MapSqlParameterSource()
+                    .addValue("projectId", id)
+                    .addValue("employeeId", listId.get(i)
+                    ));
+        }
+        var array = entries.toArray(new MapSqlParameterSource[entries.size()]);
+
     }
 }

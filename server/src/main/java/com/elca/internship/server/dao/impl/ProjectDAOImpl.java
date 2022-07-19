@@ -32,22 +32,37 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     @Override
-    public Project update(Long id, Project project) {
+    public int update(Long id, Project project) {
         var oldProject = findById(id);
         if(oldProject == null){
-            return null;
+            return -1;
         }
 
-        final var sql = "UPDATE project " +
-                "SET team_id=?, project_number=?, name=?, customer=?, status=?, start_date=?, end_date=?, version=? " +
-                "WHERE id = ?";
+        final var sql = "UPDATE project" +
+                " SET team_id=:groupId" +
+                ", project_number=:proNum" +
+                ", name=:proName" +
+                ", customer=:proCus" +
+                ", status=:proSta" +
+                ", start_date=:proStart" +
+                ", end_date=:proEnd" +
+                ", version=:proVersion" +
+                " WHERE id =:proId;";
 
-        jdbcTemplate.update(sql, project.getGroupId(), project.getProjectNumber(), project.getName()
-                , project.getCustomer(), project.getStatus(), Date.valueOf(project.getStartDate())
-                , Date.valueOf(project.getEndDate()), project.getVersion(), project.getId());
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("proId", project.getId())
+                .addValue("groupId", project.getGroupId())
+                .addValue("proNum", project.getProjectNumber())
+                .addValue("proName", project.getName())
+                .addValue("proCus", project.getCustomer())
+                .addValue("proSta", project.getStatus().toString())
+                .addValue("proStart", Date.valueOf(project.getStartDate()))
+                .addValue("proEnd", Date.valueOf(project.getEndDate()))
+                .addValue("proVersion", oldProject.getVersion() + 1)
+                ;
 
-        project.setId(oldProject.getId());
-        return project;
+
+        return namedParameterJdbcTemplate.update(sql, params);
     }
 
     @Override
@@ -61,7 +76,7 @@ public class ProjectDAOImpl implements ProjectDAO {
                 .addValue("projectNumber", project.getProjectNumber())
                 .addValue("name", project.getName())
                 .addValue("customer", project.getCustomer())
-                .addValue("status", project.getStatus())
+                .addValue("status", project.getStatus().toString())
                 .addValue("start_date", Date.valueOf(project.getStartDate()))
                 .addValue("end_date", Date.valueOf(project.getEndDate()))
                 .addValue("version", 1);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @RunWith(value= SpringRunner.class)
@@ -48,5 +49,22 @@ public class ProjectServiceTest {
             count++;
         }
         Assert.assertEquals(2, count);*/
+    }
+
+    @Test
+    public void updateNewProject(){
+        var project = new Project(
+                1L,
+                1,
+                1,
+                "mobile",
+                "HCMUS",
+                Project.Status.NEW,
+                LocalDate.now(),
+                LocalDate.now(),
+                2
+        );
+        var listEmployee = List.of("TTT", "NGU", "TRA");
+        projectService.updateProjectWithListEmployeeVisa(project, listEmployee);
     }
 }

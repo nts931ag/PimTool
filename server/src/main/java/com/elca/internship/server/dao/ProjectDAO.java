@@ -11,7 +11,7 @@ public interface ProjectDAO {
 
     Project save(Project project);
 
-    Project update(Long id, Project project);
+    int update(Long id, Project project);
 
     Long insert(Project project) throws ProjectNumberAlreadyExistsException;
 

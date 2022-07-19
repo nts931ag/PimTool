@@ -352,6 +352,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         return Arrays.stream(members.split(", ")).toList();
     }
 
+    private FxControllerAndView<DashboardController, Node> dashboardCV;
+
 
     @FXML
     public void onCancelProjectBtn() {
@@ -365,14 +367,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
         }else{
             // navigationBackToProjectList;
         }
-
-
     }
 
     private void navigateToErrorPage(String msgError) {
         var nodeBorderPane = (BorderPane) stage.getScene().getRoot();
         nodeBorderPane.setLeft(null);
-        var errorPageCV = fxWeaver.load(ErrorPageController.class);
+        var errorPageCV = fxWeaver.load(ErrorPageController.class, i18nManager.bundle());
         errorPageCV.getView().ifPresent(nodeBorderPane::setCenter);
         var errorPageController = errorPageCV.getController();
         errorPageController.setMsgError(msgError);

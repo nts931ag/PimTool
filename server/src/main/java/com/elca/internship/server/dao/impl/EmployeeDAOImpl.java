@@ -9,7 +9,10 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -33,5 +36,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     {
         var query = "SELECT * FROM EMPLOYEE";
         return jdbcTemplate.query(query, new EmployeeRowMapper());
+    }
+
+    @Override
+    public Map getMapVisaIdByListVisa(List listEmployeeVisa) {
+        var sql = "SELECT id, visa FROM EMPLOYEE WHERE visa IN (:listEmployeeVisa)";
+        var parameters = new MapSqlParameterSource("listEmployeeVisa", listEmployeeVisa);
+        var listMap = namedParameterJdbcTemplate.queryForList(sql, parameters);
+        return listMap.stream().collect(Collectors.toMap(k -> (String) k.get("VISA"), k -> ((Number) k.get("ID")).longValue()));
     }
 }

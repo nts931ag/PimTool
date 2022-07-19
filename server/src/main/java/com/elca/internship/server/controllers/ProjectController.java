@@ -77,6 +77,40 @@ public class ProjectController {
         }
     }
 
+    @PutMapping(value = "/update", consumes = "application/json")
+    public ResponseEntity<Response> saveProjectChange(@RequestBody String jsonObject){
+        var objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        try {
+            var jsonNode = objectMapper.readTree(jsonObject);
+            var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
+            var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
+
+            projectService.updateProjectWithListEmployeeVisa(project, listEmployeeVisa);
+
+            // check all visa existed
+
+            // check group is existed?
+
+            // update project
+
+            var response = new Response();
+            response.setStatusCode("201");
+            response.setStatusMsg("Project saved successfully");
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(response);
+        } catch (JsonProcessingException e) {
+            var response = new Response();
+            response.setStatusCode("400");
+            response.setStatusMsg("Project saved failed");
+            System.out.println(response);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(response);
+        }
+    }
+
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity deleteProject(@PathVariable(value = "id") Long projectId){
