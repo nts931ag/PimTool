@@ -5,6 +5,7 @@ import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
 import com.elca.internship.server.utils.ProjectRowMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -85,7 +86,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     @Override
-    public Project findById(Long id) {
+    public Project findById(Long id) throws EmptyResultDataAccessException {
         final var sql = "SELECT * FROM project WHERE id = :id";
         var namedParameters = new MapSqlParameterSource().addValue("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new ProjectRowMapper());

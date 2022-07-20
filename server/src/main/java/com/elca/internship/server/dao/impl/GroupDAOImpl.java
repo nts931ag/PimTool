@@ -5,6 +5,7 @@ import com.elca.internship.server.models.entity.Group;
 import com.elca.internship.server.utils.GroupRowMapper;
 import com.elca.internship.server.utils.ProjectRowMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -46,7 +47,7 @@ public class GroupDAOImpl implements GroupDAO {
     }
 
     @Override
-    public Group findById(long groupId) {
+    public Group findById(long groupId) throws EmptyResultDataAccessException {
         var sql = "SELECT * FROM team WHERE id = :groupId";
         var params = new MapSqlParameterSource()
                 .addValue("groupId", groupId);
