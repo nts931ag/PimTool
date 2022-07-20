@@ -45,11 +45,11 @@ public class ProjectRestClient {
     }
 
 
-    public String deleteById(Long projectId) {
+    public Mono<Response> deleteById(Long projectId) {
         return webClient.delete().uri(URI_DELETE_PROJECT_BY_ID, projectId)
                 .retrieve()
-                .bodyToMono(String.class)
-                .block();
+                .bodyToMono(Response.class);
+
     }
 
     public List<Project> getAllProjectsByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
@@ -65,26 +65,22 @@ public class ProjectRestClient {
                 .block();
     }
 
-    public Mono<ResponseEntity<Response>> updateProject(String jsonObject) {
+    public Mono<Response> updateProject(String jsonObject) {
 
         return webClient.put().uri(URI_UPDATE_PROJECT_CHANGE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(jsonObject))
                 .retrieve()
-                .toEntity(Response.class);
+                .bodyToMono(Response.class);
     }
 
-    public Mono<ResponseEntity<Response>> saveNewProject(String jsonObject) {
-        try{
-            return webClient.post().uri(URI_SAVE_NEW_PROJECT)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(BodyInserters.fromValue(jsonObject))
-                    .retrieve()
-                    .toEntity(Response.class);
-        }catch (WebClientResponseException ex){
-            throw ex;
-        }catch (Exception ex){
-            throw ex;
-        }
+    public Mono<Response> saveNewProject(String jsonObject) {
+
+        return webClient.post().uri(URI_SAVE_NEW_PROJECT)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(jsonObject))
+                .retrieve()
+                .bodyToMono(Response.class);
+
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProjectService {
     Long createNewProject(Project project) throws ProjectNumberAlreadyExistedException;
 
-    Project getProject(Long id);
+    Project getProjectById(Long id);
 
     int updateProject(Long id, Project project);
 

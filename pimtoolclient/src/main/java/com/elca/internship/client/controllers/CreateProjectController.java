@@ -208,11 +208,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         pickerEndDate.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         pickerStartDate.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
-        var rowsContraints = gpCreateProjectTab.getRowConstraints();
-        rowsContraints.get(0).setPrefHeight(1);
-        for(var i = 1; i< rowsContraints.size();++i){
-            rowsContraints.get(i).setPrefHeight(35);
+        var rowsConstraints = gpCreateProjectTab.getRowConstraints();
+        rowsConstraints.get(0).setPrefHeight(1);
+        for(var i = 1; i< rowsConstraints.size();++i){
+            rowsConstraints.get(i).setPrefHeight(35);
         }
+
         alertDangerCV = fxWeaver.load(AlertDangerController.class, i18nManager.bundle());
         var node = (HBox) alertDangerCV.getView().get();
         gpCreateProjectTab.add(node,0,1,4,1);
@@ -278,9 +279,11 @@ public class CreateProjectController implements Initializable, ApplicationListen
             if(!isEditMode){
                 try {
                     var response = projectRestConsume.createNewProject(project, listMember);
-                    System.out.println(response.getBody());
-                    if (response.getStatusCode() == HttpStatus.CREATED) {
+                    if(!response.isError()){
                         DashboardController.navigationHandler.handleNavigateToListProject();
+                    }else{
+                        alertDangerCV.getController().lbAlertDanger.setText(response.getStatusMsg());
+                        System.out.println(response);
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
@@ -288,8 +291,11 @@ public class CreateProjectController implements Initializable, ApplicationListen
             }else{
                 try {
                     var response = projectRestConsume.saveProjectChange(project, listMember);
-                    if (response.getStatusCode() == HttpStatus.CREATED) {
+                    if(!response.isError()){
                         DashboardController.navigationHandler.handleNavigateToListProject();
+                    }else{
+                        alertDangerCV.getController().lbAlertDanger.setText(response.getStatusMsg());
+
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());

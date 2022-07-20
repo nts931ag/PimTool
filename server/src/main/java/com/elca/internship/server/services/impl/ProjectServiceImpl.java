@@ -12,6 +12,7 @@ import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedE
 import com.elca.internship.server.services.ProjectService;
 import com.elca.internship.server.validator.EmployeeValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProject(Long id) {
+    public Project getProjectById(Long id) throws EmptyResultDataAccessException {
         return projectDAO.findById(id);
     }
 
@@ -81,7 +82,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateProjectWithListEmployeeVisa(Project project, List<String> listEmployeeVisa) throws EmployeeNotExistedException, GroupNotExistedException {
         // check all visa existed
         var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
@@ -93,9 +94,9 @@ public class ProjectServiceImpl implements ProjectService {
             var newGroupId = groupDAO.insert(new Group(0,listId.get(0),1));
             project.setGroupId(newGroupId);
         }else{
-            var newGroupId = groupDAO.findById(project.getGroupId());
-            if(newGroupId == null){
-                // throw exception group not existed
+            try{
+                groupDAO.findById(project.getGroupId());
+            }catch (EmptyResultDataAccessException e){
                 throw new GroupNotExistedException(project.getGroupId());
             }
         }
@@ -107,7 +108,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void createNewProjectWithEmployeeVisas(Project project, List<String> listEmployeeVisa) throws ProjectNumberAlreadyExistedException, EmployeeNotExistedException, GroupNotExistedException {
         // check all visa existed
         var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
@@ -119,9 +120,9 @@ public class ProjectServiceImpl implements ProjectService {
             var newGroupId = groupDAO.insert(new Group(0,listId.get(0),1));
             project.setGroupId(newGroupId);
         }else{
-            var newGroupId = groupDAO.findById(project.getGroupId());
-            if(newGroupId == null){
-                // throw exception group not existed
+            try{
+                groupDAO.findById(project.getGroupId());
+            }catch (EmptyResultDataAccessException e){
                 throw new GroupNotExistedException(project.getGroupId());
             }
         }

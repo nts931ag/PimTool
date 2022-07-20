@@ -11,11 +11,11 @@ import java.util.List;
 public interface ProjectRestConsume {
     ObservableList<Project> retrieveAllProjects();
     ObservableList<Integer> retrieveAllProjectNumbers();
-    String removeProjectById(Long projectId);
+    Response removeProjectById(Long projectId);
 
-    ResponseEntity saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException;
+    Response saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException;
 
     List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue);
 
-    ResponseEntity createNewProject(Project project, List<String> listMember) throws JsonProcessingException;
+    Response createNewProject(Project project, List<String> listMember) throws JsonProcessingException;
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,15 +47,10 @@ public class ProjectController {
 
             projectService.createNewProjectWithEmployeeVisas(project, listEmployeeVisa);
 
-            var response = new Response();
-            response.setStatusCode("201");
-            response.setStatusMsg("Project saved successfully");
-            return response;
+            return new Response(false, "Create new project successfully!");
+
         } catch (JsonProcessingException | ProjectNumberAlreadyExistedException | EmployeeNotExistedException | GroupNotExistedException e) {
-            var response = new Response();
-            response.setStatusCode("400");
-            response.setStatusMsg("Project saved failed");
-            return response;
+            return new Response(true, e.getMessage());
         }
     }
 
@@ -69,28 +65,23 @@ public class ProjectController {
 
             projectService.updateProjectWithListEmployeeVisa(project, listEmployeeVisa);
 
-            var response = new Response();
-            response.setStatusCode("201");
-            response.setStatusMsg("Project saved successfully");
-            return response;
+            return new Response(false, "Save project successfully!");
         } catch (JsonProcessingException | GroupNotExistedException | EmployeeNotExistedException e) {
-            var response = new Response();
-            response.setStatusCode("400");
-            response.setStatusMsg("Project saved failed");
-            return response;
+            return new Response(true, e.getMessage());
         }
     }
 
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteProject(@PathVariable(value = "id") Long projectId){
-        var project = projectService.getProject(projectId);
-        if(project != null){
+    public Response deleteProject(@PathVariable(value = "id") Long projectId){
+        try{
+            var project = projectService.getProjectById(projectId);
             projectEmployeeService.removeProjectEmployeeByProjectId(projectId);
             projectService.deleteProject(project);
-            return new ResponseEntity<Response>(HttpStatus.OK);
-        }else{
-            return new ResponseEntity<Response>(HttpStatus.BAD_REQUEST);
+            return new Response(false, "delete project successfully!");
+
+        }catch (EmptyResultDataAccessException e){
+            return new Response(true, "Delete project failed!");
         }
     }
 

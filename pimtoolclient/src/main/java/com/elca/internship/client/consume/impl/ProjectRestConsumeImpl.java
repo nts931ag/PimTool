@@ -37,8 +37,8 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
     }
 
     @Override
-    public String removeProjectById(Long projectId) {
-        return projectRestClient.deleteById(projectId);
+    public Response removeProjectById(Long projectId) {
+        return projectRestClient.deleteById(projectId).block();
     }
 
     @Override
@@ -49,19 +49,18 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
     }
 
     @Override
-    public ResponseEntity<Response> saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException {
+    public Response saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException {
         var objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         var map = new HashMap<String, Object>();
         map.put("project", project);
         map.put("listMember", listMember);
         var jsonObject = objectMapper.writeValueAsString(map);
-        System.out.println(jsonObject);
         return projectRestClient.updateProject(jsonObject).block();
     }
 
     @Override
-    public ResponseEntity<Response> createNewProject(Project project, List<String> listMember) throws JsonProcessingException {
+    public Response createNewProject(Project project, List<String> listMember) throws JsonProcessingException {
         var objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         var map = new HashMap<String, Object>();
