@@ -6,15 +6,18 @@ import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.dao.ProjectEmployeeDAO;
 import com.elca.internship.server.models.entity.Group;
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistsException;
+import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
+import com.elca.internship.server.models.exceptions.GroupNotExistedException;
+import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
 import com.elca.internship.server.services.ProjectService;
+import com.elca.internship.server.validator.EmployeeValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -24,9 +27,10 @@ public class ProjectServiceImpl implements ProjectService {
     private final EmployeeDAO employeeDAO;
     private final GroupDAO groupDAO;
     private final ProjectEmployeeDAO projectEmployeeDAO;
+    private final EmployeeValidator employeeValidator;
 
     @Override
-    public Long createNewProject(Project project) throws ProjectNumberAlreadyExistsException {
+    public Long createNewProject(Project project) throws ProjectNumberAlreadyExistedException {
         return projectDAO.insert(project);
     }
 
@@ -77,15 +81,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void updateProjectWithListEmployeeVisa(Project project, List listEmployeeVisa) {
-
+    @Transactional
+    public void updateProjectWithListEmployeeVisa(Project project, List<String> listEmployeeVisa) throws EmployeeNotExistedException, GroupNotExistedException {
         // check all visa existed
         var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
         var listId = new ArrayList<Long>(mapVisaId.values());
-        if(mapVisaId.size() != listEmployeeVisa.size()){
-            // throw exception employee not existed
-//            throw new EmployeeNotExistedException();
-        }
+        var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
+        employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
         // check group is existed?
         if(project.getGroupId() == 0){
             var newGroupId = groupDAO.insert(new Group(0,listId.get(0),1));
@@ -94,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService {
             var newGroupId = groupDAO.findById(project.getGroupId());
             if(newGroupId == null){
                 // throw exception group not existed
-//                throw new GroupNotExistedException();
+                throw new GroupNotExistedException(project.getGroupId());
             }
         }
         // update project
@@ -105,14 +107,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void createNewProjectWithEmployeeVisas(Project project, List listEmployeeVisa) throws ProjectNumberAlreadyExistsException {
+    @Transactional
+    public void createNewProjectWithEmployeeVisas(Project project, List<String> listEmployeeVisa) throws ProjectNumberAlreadyExistedException, EmployeeNotExistedException, GroupNotExistedException {
         // check all visa existed
         var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
         var listId = new ArrayList<Long>(mapVisaId.values());
-        if(mapVisaId.size() != listEmployeeVisa.size()){
-            // throw exception employee not existed
-//            throw new EmployeeNotExistedException();
-        }
+        var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
+        employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
         // check group is existed?
         if(project.getGroupId() == 0){
             var newGroupId = groupDAO.insert(new Group(0,listId.get(0),1));
@@ -121,7 +122,7 @@ public class ProjectServiceImpl implements ProjectService {
             var newGroupId = groupDAO.findById(project.getGroupId());
             if(newGroupId == null){
                 // throw exception group not existed
-//                throw new GroupNotExistedException();
+                throw new GroupNotExistedException(project.getGroupId());
             }
         }
         // create project

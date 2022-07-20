@@ -6,8 +6,11 @@ import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -85,6 +88,13 @@ public class ViewListProjectController implements Initializable, ApplicationList
         initLayout();
         fillValueToLayout();
 
+        numCheckBoxesSelected.addListener(((observable, oldValue, newValue) -> {
+            if(numCheckBoxesSelected.intValue() > 0){
+                System.out.println("haha");
+            }else{
+                System.out.println("not haha");
+            }
+        }));
     }
 
     private void initLayout() {
@@ -135,7 +145,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
         fillDataProjectToTable(null, null);
     }
 
-
+    private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
+    private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
 
     public void fillDataProjectToTable(String tfSearch, String status){
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
@@ -167,6 +178,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                     dataProjects.remove(projectTableDeleted);
                     projectRestConsume.removeProjectById(projectTableDeleted.getId());
                 });
+                configureCheckBox(dataProject.getCheckBox());
             }else{
                 dataProject.setIcDelete(null);
                 dataProject.getCheckBox().setDisable(true);
@@ -186,6 +198,20 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 
         tbProject.setItems(dataProjects);
+    }
+
+    private void configureCheckBox(CheckBox checkBox){
+        if(checkBox.isSelected()){
+            selectedCheckBoxes.add(checkBox);
+        }
+
+        checkBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue){
+                selectedCheckBoxes.add(checkBox);
+            }else{
+                selectedCheckBoxes.remove(checkBox);
+            }
+        }));
     }
 
     @FXML

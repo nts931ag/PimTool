@@ -1,9 +1,9 @@
 package com.elca.internship.server.controllers;
 
-import com.elca.internship.server.models.entity.Group;
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.models.entity.ProjectEmployee;
-import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistsException;
+import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
+import com.elca.internship.server.models.exceptions.GroupNotExistedException;
+import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
 import com.elca.internship.server.services.EmployeeService;
 import com.elca.internship.server.services.GroupService;
 import com.elca.internship.server.services.ProjectEmployeeService;
@@ -12,17 +12,11 @@ import com.elca.internship.server.utils.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -42,44 +36,30 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/save", consumes = "application/json")
-    public ResponseEntity<Response> createNewProject(@RequestBody String jsonObject){
+    public Response createNewProject(@RequestBody String jsonObject){
         var objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         try {
             var jsonNode = objectMapper.readTree(jsonObject);
             var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
             var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
-            /*var listEmployeeId = employeeService.getIdsByListVisa(listEmployeeVisa);
-
-            if(project.getGroupId() == 0){
-                var newGroupLeaderId = (Long) listEmployeeId.get(0);
-                var group = new Group(0,newGroupLeaderId,1);
-                var newGroupId = groupService.createNewGroup(group);
-                project.setGroupId(newGroupId);
-            }
-            long newProjectId = projectService.createNewProject(project);
-            projectEmployeeService.saveAllEmployeeToNewProject(newProjectId, listEmployeeId);*/
 
             projectService.createNewProjectWithEmployeeVisas(project, listEmployeeVisa);
 
             var response = new Response();
             response.setStatusCode("201");
             response.setStatusMsg("Project saved successfully");
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(response);
-        } catch (JsonProcessingException | ProjectNumberAlreadyExistsException e) {
+            return response;
+        } catch (JsonProcessingException | ProjectNumberAlreadyExistedException | EmployeeNotExistedException | GroupNotExistedException e) {
             var response = new Response();
             response.setStatusCode("400");
             response.setStatusMsg("Project saved failed");
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(response);
+            return response;
         }
     }
 
     @PutMapping(value = "/update", consumes = "application/json")
-    public ResponseEntity<Response> saveProjectChange(@RequestBody String jsonObject){
+    public Response saveProjectChange(@RequestBody String jsonObject){
         var objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         try {
@@ -92,17 +72,12 @@ public class ProjectController {
             var response = new Response();
             response.setStatusCode("201");
             response.setStatusMsg("Project saved successfully");
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(response);
-        } catch (JsonProcessingException e) {
+            return response;
+        } catch (JsonProcessingException | GroupNotExistedException | EmployeeNotExistedException e) {
             var response = new Response();
             response.setStatusCode("400");
             response.setStatusMsg("Project saved failed");
-            System.out.println(response);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(response);
+            return response;
         }
     }
 
