@@ -1,20 +1,15 @@
 package com.elca.internship.client.controllers;
 
-import ch.qos.logback.core.status.StatusUtil;
 import com.elca.internship.client.StageReadyEvent;
-import com.elca.internship.client.consume.EmployeeRestConsume;
 import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
-import com.elca.internship.client.models.entity.Response;
 import com.elca.internship.client.utils.FormValidation;
 import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -285,38 +280,23 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     var response = projectRestConsume.createNewProject(project, listMember);
                     System.out.println(response.getBody());
                     if (response.getStatusCode() == HttpStatus.CREATED) {
-                        navigateToTabListProject();
+                        DashboardController.navigationHandler.handleNavigateToListProject();
                     }
                 } catch (JsonProcessingException e) {
-                    navigateToErrorPage(e.getMessage());
+                    DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
                 }
             }else{
                 try {
                     var response = projectRestConsume.saveProjectChange(project, listMember);
                     if (response.getStatusCode() == HttpStatus.CREATED) {
-                        navigateToTabListProject();
+                        DashboardController.navigationHandler.handleNavigateToListProject();
                     }
                 } catch (JsonProcessingException e) {
-                    navigateToErrorPage(e.getMessage());
+                    DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
                 }
             }
         }
     }
-
-    private void navigateToTabListProject() {
-        // get and set contentContainer
-        var borderPane = (BorderPane) stage.getScene().getRoot().getChildrenUnmodifiable().get(2);
-        var titleContentContainer =  (Label)borderPane.getChildren().get(1);
-        var contentContainer = (Pane) borderPane.getChildren().get(0);
-        tabProjectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
-        tabProjectListCV.getView().ifPresent(view ->{
-            contentContainer.getChildren().clear();
-            contentContainer.getChildren().add(view);
-        });
-        titleContentContainer.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
-    }
-
-
 
     public Project getProjectInputForm() {
         var proNum = tfProNum.getText();
@@ -375,12 +355,4 @@ public class CreateProjectController implements Initializable, ApplicationListen
         }
     }
 
-    private void navigateToErrorPage(String msgError) {
-        var nodeBorderPane = (BorderPane) stage.getScene().getRoot();
-        nodeBorderPane.setLeft(null);
-        var errorPageCV = fxWeaver.load(ErrorPageController.class, i18nManager.bundle());
-        errorPageCV.getView().ifPresent(nodeBorderPane::setCenter);
-        var errorPageController = errorPageCV.getController();
-        errorPageController.setMsgError(msgError);
-    }
 }

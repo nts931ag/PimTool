@@ -1,6 +1,7 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
+import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.utils.NavigationHandler;
 import com.elca.internship.client.utils.GuiUtil;
 import com.elca.internship.client.i18n.I18nKey;
@@ -30,11 +31,14 @@ import java.util.ResourceBundle;
 public class DashboardController implements Initializable, ApplicationListener<StageReadyEvent> {
 
     private final FxWeaver fxWeaver;
+    public BorderPane MainContainer;
     private Stage stage;
     public static NavigationHandler navigationHandler;
     private final I18nManager i18nManager;
-    private FxControllerAndView<ViewListProjectController, Node> tabProjectListCV;
-    private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
+    private FxControllerAndView<ViewListProjectController, Node> projectListCV;
+    private FxControllerAndView<CreateProjectController, Node> createProjectCV;
+    private FxControllerAndView<ErrorPageController, Node> errorPageCV;
+    private FxControllerAndView<CreateProjectController, Node> editProjectCV;
 
     @FXML
     private Pane contentContainer;
@@ -55,13 +59,23 @@ public class DashboardController implements Initializable, ApplicationListener<S
     public void initialize(URL url, ResourceBundle resourceBundle) {
         navigationHandler = new NavigationHandler() {
             @Override
-            public void handleShowTabProjectList() {
+            public void handleNavigateToCreateProject() {
+                onLbNewClicked();
+            }
+
+            @Override
+            public void handleNavigateToEditProject(Project project) {
+                navigateToEditProjectPage(project);
+            }
+
+            @Override
+            public void handleNavigateToListProject() {
                 onLbProjectClicked();
             }
 
             @Override
-            public void handleShowTabCreateProject() {
-                onLbNewClicked();
+            public void handleNavigateToErrorPage(String msg) {
+                navigateToErrorPage(msg);
             }
         };
 
@@ -72,7 +86,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
         headerContainer.setPrefWidth(GuiUtil.getScreenWidth());
         headerContainer.setPrefHeight(GuiUtil.getScreenHeight()*10/100);
 
-        onLbNewClicked();
+        navigationHandler.handleNavigateToListProject();
 
     }
 
@@ -84,25 +98,41 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbProjectClicked(){
-        var currentBundle = i18nManager.bundle();
-        tabProjectListCV = fxWeaver.load(ViewListProjectController.class, currentBundle);
-        tabProjectListCV.getView().ifPresent(view ->{
+        projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
+        projectListCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
-            contentContainer.getChildren().add(view);
-//            lbHeaderOfTab.setText("Project List");
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
+            contentContainer.getChildren().add(view);
         });
     }
 
     @FXML
     public void onLbNewClicked() {
-        var currentBundle = i18nManager.bundle();
-        tabCreateProjectCV = fxWeaver.load(CreateProjectController.class, currentBundle);
-        tabCreateProjectCV.getView().ifPresent(view ->{
+        createProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
+        createProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
-            contentContainer.getChildren().add(view);
-//            lbHeaderOfTab.setText("New Project");
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
+            contentContainer.getChildren().add(view);
+        });
+    }
+
+    public void navigateToErrorPage(String msg){
+        errorPageCV = fxWeaver.load(ErrorPageController.class, i18nManager.bundle());
+        errorPageCV.getView().ifPresent(view -> {
+            MainContainer.setLeft(null);
+            contentContainer.getChildren().clear();
+            errorPageCV.getController().setMsgError(msg);
+            contentContainer.getChildren().add(view);
+        });
+    }
+
+    public void navigateToEditProjectPage(Project project){
+        editProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
+        editProjectCV.getView().ifPresent(view ->{
+            contentContainer.getChildren().clear();
+            lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
+            editProjectCV.getController().initEditProjectLayout(project);
+            contentContainer.getChildren().add(view);
         });
     }
 }
