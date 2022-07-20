@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Response {
-    private String statusCode;
+    private boolean isError;
     private String statusMsg;
 }
