@@ -1,6 +1,5 @@
 package com.elca.internship.client.config.connection;
 
-import com.elca.internship.client.common.AlertDialog;
 import javafx.scene.control.Alert;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
@@ -54,8 +53,7 @@ public class ServerConnection {
             var errMsg = "Connection Error";
             System.out.println(errMsg);
             // Information dialog
-            var alertDialog = new AlertDialog("Error",errMsg,e.getMessage(), Alert.AlertType.ERROR);
-            alertDialog.showErrorDialog(e);
+
             return this.isConnected;
         }
 

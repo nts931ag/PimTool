@@ -1,6 +1,5 @@
 package com.elca.internship.client;
 
-import com.elca.internship.client.common.AlertDialog;
 import com.elca.internship.client.utils.GuiUtil;
 import com.elca.internship.client.config.connection.ServerConnection;
 import com.elca.internship.client.controllers.DashboardController;
@@ -119,8 +118,8 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
         } else {
             if (retryCount > 60) {
                 // Information dialog
-                AlertDialog alertDialog = new AlertDialog("Error", "Connection Timed Out: Error Connecting ...", "Try relaunching ther application! Exiting....", Alert.AlertType.ERROR);
-                alertDialog.showInformationDialog();
+//                AlertDialog alertDialog = new AlertDialog("Error", "Connection Timed Out: Error Connecting ...", "Try relaunching ther application! Exiting....", Alert.AlertType.ERROR);
+//                alertDialog.showInformationDialog();
                 stage.close();
                 return null;
             } else {
