@@ -98,11 +98,35 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
         // update project
-        System.out.println(project.getId());
         projectDAO.update(project.getId(), project);
         projectEmployeeDAO.deleteEmployeesFromProjectEmployee(project.getId(), listId);
         projectEmployeeDAO.saveNewEmployeesToProjectEmployee(project.getId(), listId);
 //        projectEmployeeDAO.saveProjectEmployee(project.getId(), listId);
+    }
+
+    @Override
+    public void createNewProjectWithEmployeeVisas(Project project, List listEmployeeVisa) throws ProjectNumberAlreadyExistsException {
+        // check all visa existed
+        var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
+        var listId = new ArrayList<Long>(mapVisaId.values());
+        if(mapVisaId.size() != listEmployeeVisa.size()){
+            // throw exception employee not existed
+//            throw new EmployeeNotExistedException();
+        }
+        // check group is existed?
+        if(project.getGroupId() == 0){
+            var newGroupId = groupDAO.insert(new Group(0,listId.get(0),1));
+            project.setGroupId(newGroupId);
+        }else{
+            var newGroupId = groupDAO.findById(project.getGroupId());
+            if(newGroupId == null){
+                // throw exception group not existed
+//                throw new GroupNotExistedException();
+            }
+        }
+        // create project
+        var newProjectId = projectDAO.insert(project);
+        projectEmployeeDAO.saveProjectEmployee(newProjectId, listId);
     }
 
 }

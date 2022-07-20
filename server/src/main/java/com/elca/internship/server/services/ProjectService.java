@@ -19,4 +19,6 @@ public interface ProjectService {
     List<Project> getProjectByCriteria(String proCriteria, String proStatus);
 
     void updateProjectWithListEmployeeVisa(Project project, List listEmployeeVisa);
+
+    void createNewProjectWithEmployeeVisas(Project project, List listEmployeeVisa) throws ProjectNumberAlreadyExistsException;
 }

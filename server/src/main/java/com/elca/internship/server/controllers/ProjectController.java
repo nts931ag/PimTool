@@ -48,8 +48,8 @@ public class ProjectController {
         try {
             var jsonNode = objectMapper.readTree(jsonObject);
             var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
-            var listEmployee = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
-            var listEmployeeId = employeeService.getIdsByListVisa(listEmployee);
+            var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
+            /*var listEmployeeId = employeeService.getIdsByListVisa(listEmployeeVisa);
 
             if(project.getGroupId() == 0){
                 var newGroupLeaderId = (Long) listEmployeeId.get(0);
@@ -58,7 +58,9 @@ public class ProjectController {
                 project.setGroupId(newGroupId);
             }
             long newProjectId = projectService.createNewProject(project);
-            projectEmployeeService.saveAllEmployeeToNewProject(newProjectId, listEmployeeId);
+            projectEmployeeService.saveAllEmployeeToNewProject(newProjectId, listEmployeeId);*/
+
+            projectService.createNewProjectWithEmployeeVisas(project, listEmployeeVisa);
 
             var response = new Response();
             response.setStatusCode("201");

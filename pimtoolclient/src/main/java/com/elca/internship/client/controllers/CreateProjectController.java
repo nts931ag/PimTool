@@ -106,7 +106,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final ProjectRestConsume projectRestConsume;
     private final ProjectEmployeeConsume projectEmployeeConsume;
     private boolean isEditMode;
-    private Long currentIdEdit;
+    private Long currentIdEdit = 0L;
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
