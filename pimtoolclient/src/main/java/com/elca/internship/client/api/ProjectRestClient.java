@@ -65,12 +65,13 @@ public class ProjectRestClient {
                 .block();
     }
 
-    public ResponseEntity updateProject(String jsonObject) {
+    public Mono<ResponseEntity<Response>> updateProject(String jsonObject) {
+
         return webClient.put().uri(URI_UPDATE_PROJECT_CHANGE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(jsonObject))
                 .retrieve()
-                .toBodilessEntity().block();
+                .toEntity(Response.class);
     }
 
     public Mono<ResponseEntity<Response>> saveNewProject(String jsonObject) {
@@ -81,13 +82,8 @@ public class ProjectRestClient {
                     .retrieve()
                     .toEntity(Response.class);
         }catch (WebClientResponseException ex){
-            System.out.println("Error Response Code is " + ex.getRawStatusCode() + " and the response body is " + ex.getResponseBodyAsString());
-            System.out.println("WebClientResponseException: " + ex);
-            System.out.println("---------------------------------------------------");
             throw ex;
         }catch (Exception ex){
-//            System.out.println("Exception in: " + ex);
-            System.out.println("---------------------------------------------------");
             throw ex;
         }
     }

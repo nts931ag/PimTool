@@ -106,6 +106,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final ProjectRestConsume projectRestConsume;
     private final ProjectEmployeeConsume projectEmployeeConsume;
     private boolean isEditMode;
+    private Long currentIdEdit;
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
@@ -229,6 +230,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
 
     public void initEditProjectLayout(Project project){
+        currentIdEdit = project.getId();
         tfProNum.setText(String.valueOf(project.getProjectNumber()));
         tfProNum.setDisable(true);
         tfProName.setText(project.getName());
@@ -280,20 +282,20 @@ public class CreateProjectController implements Initializable, ApplicationListen
             var listMember = getMemberInputForm();
             if(!isEditMode){
                 try {
-//                    var response = restTemplateConsume.saveNewProject(project, listMember);
-                    var wcResponse = projectRestConsume.createNewProject(project, listMember);
-                    System.out.println(wcResponse.getBody());
-//                    if (response.getStatusCode() == HttpStatus.OK) {
-//                        navigateToTabListProject();
-//                    }else{
-//                        System.out.println("hahaha");
-//                    }
+                    var response = projectRestConsume.createNewProject(project, listMember);
+                    System.out.println(response.getBody());
+                    if (response.getStatusCode() == HttpStatus.CREATED) {
+                        navigateToTabListProject();
+                    }
                 } catch (JsonProcessingException e) {
                     navigateToErrorPage(e.getMessage());
                 }
             }else{
                 try {
-                    projectRestConsume.saveProjectChange(project, listMember);
+                    var response = projectRestConsume.saveProjectChange(project, listMember);
+                    if (response.getStatusCode() == HttpStatus.CREATED) {
+                        navigateToTabListProject();
+                    }
                 } catch (JsonProcessingException e) {
                     navigateToErrorPage(e.getMessage());
                 }
@@ -325,7 +327,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var startDate = pickerStartDate.getValue();
         var endDate = pickerEndDate.getValue();
         if(groupId.equalsIgnoreCase("new")){
-            return new Project(0,
+            return new Project(
+                    currentIdEdit,
+                    0,
                     Integer.parseInt(proNum),
                     proName,
                     customer,
@@ -335,7 +339,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     1);
 
         }else{
-            return new Project(Long.parseLong(groupId),
+            return new Project(
+                    currentIdEdit,
+                    Long.parseLong(groupId),
                     Integer.parseInt(proNum),
                     proName,
                     customer,

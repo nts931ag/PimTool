@@ -98,6 +98,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
         // update project
+        System.out.println(project.getId());
         projectDAO.update(project.getId(), project);
         projectEmployeeDAO.deleteEmployeesFromProjectEmployee(project.getId(), listId);
         projectEmployeeDAO.saveNewEmployeesToProjectEmployee(project.getId(), listId);

@@ -42,7 +42,14 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
     }
 
     @Override
-    public void saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException {
+    public List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
+        return FXCollections.observableArrayList(
+                projectRestClient.getAllProjectsByCriteriaSpecified(tfSearchValue, cbStatusValue)
+        );
+    }
+
+    @Override
+    public ResponseEntity<Response> saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException {
         var objectMapper = new ObjectMapper();
         objectMapper.findAndRegisterModules();
         var map = new HashMap<String, Object>();
@@ -50,15 +57,7 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
         map.put("listMember", listMember);
         var jsonObject = objectMapper.writeValueAsString(map);
         System.out.println(jsonObject);
-        var response = projectRestClient.updateProject(jsonObject);
-        System.out.println(response);
-    }
-
-    @Override
-    public List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
-        return FXCollections.observableArrayList(
-                projectRestClient.getAllProjectsByCriteriaSpecified(tfSearchValue, cbStatusValue)
-        );
+        return projectRestClient.updateProject(jsonObject).block();
     }
 
     @Override

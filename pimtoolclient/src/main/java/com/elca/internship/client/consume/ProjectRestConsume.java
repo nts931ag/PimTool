@@ -13,7 +13,7 @@ public interface ProjectRestConsume {
     ObservableList<Integer> retrieveAllProjectNumbers();
     String removeProjectById(Long projectId);
 
-    void saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException;
+    ResponseEntity saveProjectChange(Project project, List<String> listMember) throws JsonProcessingException;
 
     List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue);
 

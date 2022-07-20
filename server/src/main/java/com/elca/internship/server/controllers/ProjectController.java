@@ -70,7 +70,6 @@ public class ProjectController {
             var response = new Response();
             response.setStatusCode("400");
             response.setStatusMsg("Project saved failed");
-            System.out.println(response);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(response);
@@ -87,12 +86,6 @@ public class ProjectController {
             var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
 
             projectService.updateProjectWithListEmployeeVisa(project, listEmployeeVisa);
-
-            // check all visa existed
-
-            // check group is existed?
-
-            // update project
 
             var response = new Response();
             response.setStatusCode("201");
