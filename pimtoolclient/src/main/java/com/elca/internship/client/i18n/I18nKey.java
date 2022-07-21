@@ -56,7 +56,9 @@ public enum I18nKey {
     MSG_VALIDATED_BLANK("msg.validated.blank"),
     MSG_VALIDATED_FORMAT_NUMBER("msg.validated.format.number"),
     MSG_VALIDATED_NUMBER_EXISTED("msg.validated.number.existed"),
-    ALERT_DANGER_MSG("alert.danger.msg");
+    ALERT_DANGER_MSG("alert.danger.msg"),
+    MSG_DELETE_ITEM_QUANTITY("msg.delete.item.quantity"),
+    MSG_DELETE_ITEM_SELECTED_TITLE("msg.delete.item.selected.title");
 
     private final String key;
 

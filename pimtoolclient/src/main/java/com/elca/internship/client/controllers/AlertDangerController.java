@@ -28,7 +28,7 @@ public class AlertDangerController implements Initializable {
         var iconNode = new IconNode(GoogleMaterialDesignIcons.CLOSE);
         hboxIcon.getChildren().add(iconNode);
         iconNode.getStyleClass().add("icon-node-close");
-        iconNode.setOnMouseClicked(e->{
+        iconNode.setOnMouseClicked(e -> {
             alertDanger.setVisible(false);
         });
     }

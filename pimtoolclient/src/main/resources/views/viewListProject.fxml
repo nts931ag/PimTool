@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="vbListProject" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.ViewListProjectController">
+<VBox fx:id="vbListProject" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.ViewListProjectController">
    <children>
       <HBox fx:id="hbFilterListProject" alignment="CENTER_LEFT" styleClass="border-top" stylesheets="@css/main.css">
          <children>
@@ -45,20 +45,24 @@
             <Insets top="15.0" />
          </padding>
       </HBox>
-      <TableView fx:id="tbProject" onMouseClicked="#displaySelected">
-        <columns>
-            <TableColumn fx:id="colCheck" />
-            <TableColumn fx:id="colProNum" text="%project.table.col.number" />
-            <TableColumn fx:id="colProName" text="%project.table.col.name" />
-            <TableColumn fx:id="colProStatus" text="%project.table.col.status" />
-            <TableColumn fx:id="colProCustomer" text="%project.table.col.customer" />
-            <TableColumn fx:id="colProStart" text="%project.table.col.start.date" />
-            <TableColumn fx:id="colProDel" text="%project.table.col.delete" />
-        </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
+      <VBox fx:id="vbTableView">
+         <children>
+            <TableView fx:id="tbProject" onMouseClicked="#displaySelected">
+              <columns>
+                  <TableColumn fx:id="colCheck" />
+                  <TableColumn fx:id="colProNum" text="%project.table.col.number" />
+                  <TableColumn fx:id="colProName" text="%project.table.col.name" />
+                  <TableColumn fx:id="colProStatus" text="%project.table.col.status" />
+                  <TableColumn fx:id="colProCustomer" text="%project.table.col.customer" />
+                  <TableColumn fx:id="colProStart" text="%project.table.col.start.date" />
+                  <TableColumn fx:id="colProDel" text="%project.table.col.delete" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </VBox>
       <Pagination fx:id="paginationTableProject" maxPageIndicatorCount="4" />
    </children>
 </VBox>

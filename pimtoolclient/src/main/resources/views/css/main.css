@@ -85,7 +85,7 @@
 }
 
 .alert-danger .label{
-    -fx-text-fill: red;
+    -fx-text-fill: #8c2c20;
     -fx-font-weight: 600;
 }
 
@@ -194,4 +194,25 @@
 .icon-node-close {
     -fx-cursor: hand;
     -fx-padding: 8px;
+}
+
+.hb-layout-remove-pane {
+    -fx-padding: 10px;
+    -fx-background-color: #B0E0E6;
+    -fx-border-style: hidden solid solid;
+    -fx-border-width: 0.2;
+}
+
+.lb-msg-remove-item {
+    -fx-font-size: 15;
+    -fx-text-fill: #8c2c20;
+    -fx-font-weight: bold;
+}
+
+.lb-msg-remove-item-blue{
+    -fx-text-fill: #2f85fa;
+}
+
+.lb-msg-remove-item-red{
+    -fx-text-fill: #8c2c20;
 }

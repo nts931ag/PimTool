@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox fx:id="hbLayout" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.RemoveItemPaneController">
+   <children>
+      <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="lbItemQuantity" text="Label" />
+         </children>
+      </HBox>
+      <HBox fx:id="hbIconItem" alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="lbDeleteItemSelected" text="Label" />
+         </children>
+      </HBox>
+   </children>
+</HBox>

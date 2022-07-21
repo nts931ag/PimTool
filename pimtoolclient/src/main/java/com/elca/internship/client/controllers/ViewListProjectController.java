@@ -8,6 +8,7 @@ import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
@@ -44,11 +45,13 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private final ProjectRestConsume projectRestConsume;
     private Stage stage;
     private final I18nManager i18nManager;
-    private FxControllerAndView<CreateProjectController, Node> tabCreateProjectCV;
     @FXML
     public VBox vbListProject;
     @FXML
     public HBox hbFilterListProject;
+    @FXML
+    public VBox vbTableView;
+
     @FXML
     public Pagination paginationTableProject;
     @FXML
@@ -78,6 +81,10 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     private ObservableList<ProjectTable> dataProjects;
 
+    private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
+    private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
+    private SimpleIntegerProperty simpleIntegerProperty = new SimpleIntegerProperty(numCheckBoxesSelected.getValue());
+
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
         this.stage = event.getStage();
@@ -87,15 +94,9 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initLayout();
         fillValueToLayout();
-
-        numCheckBoxesSelected.addListener(((observable, oldValue, newValue) -> {
-            if(numCheckBoxesSelected.intValue() > 0){
-                System.out.println("haha");
-            }else{
-                System.out.println("not haha");
-            }
-        }));
     }
+
+    private FxControllerAndView<RemoveItemPaneController, Node> removeItemPaneCV;
 
     private void initLayout() {
         hbFilterListProject.setPadding(new Insets(25,0,25,0));
@@ -114,6 +115,13 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colCheck.getStyleClass().add("table-column-align-center");
         colProDel.getStyleClass().add("table-column-align-center");
         colProNum.getStyleClass().add("table-column-align-right");
+
+        removeItemPaneCV = fxWeaver.load(RemoveItemPaneController.class, i18nManager.bundle());
+        removeItemPaneCV.getView().ifPresent(view -> {
+            vbTableView.getChildren().add(view);
+            removeItemPaneCV.getController().setBindingItemQuantity(numCheckBoxesSelected);
+            view.setVisible(false);
+        });
     }
 
 
@@ -145,8 +153,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         fillDataProjectToTable(null, null);
     }
 
-    private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
-    private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
 
     public void fillDataProjectToTable(String tfSearch, String status){
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
@@ -198,6 +204,14 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
 
         tbProject.setItems(dataProjects);
+
+        numCheckBoxesSelected.addListener(((observable, oldValue, newValue) -> {
+            if(numCheckBoxesSelected.intValue() > 0){
+                removeItemPaneCV.getController().hbLayout.setVisible(true);
+            }else{
+                removeItemPaneCV.getController().hbLayout.setVisible(false);
+            }
+        }));
     }
 
     private void configureCheckBox(CheckBox checkBox){
