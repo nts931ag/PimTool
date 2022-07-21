@@ -23,13 +23,11 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @FxmlView("/views/createProject.fxml")
 @Component
@@ -248,10 +246,10 @@ public class CreateProjectController implements Initializable, ApplicationListen
     public void fillDefaultValueForInputForm() {
 
         var listStatus = FXCollections.observableArrayList(
-                i18nManager.text(I18nKey.COMBOBOX_NEW_PROJECT_STATUS)
-                , i18nManager.text(I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS)
-                , i18nManager.text(I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS)
-                , i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS)
+                i18nManager.text(I18nKey.PROJECT_STATUS_NEW)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_PLANNED)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_IN_PROGRESS)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_FINISHED)
         );
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);

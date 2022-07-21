@@ -43,16 +43,12 @@ public enum I18nKey {
     PROJECT_TABLE_COL_DELTE("project.table.col.delete"),
 
     /* Combobox status ui */
-    COMBOBOX_PROJECT_STATUS("combobox.project.status"),
-    COMBOBOX_NEW_PROJECT_STATUS("combobox.new.project.status"),
-    COMBOBOX_FINISHED_PROJECT_STATUS("combobox.finished.project.status"),
-    COMBOBOX_PLANNED_PROJECT_STATUS("combobox.planned.project.status"),
-    COMBOBOX_IN_PROGRESS_PROJECT_STATUS("combobox.in.progress.project.status"),
-
+    PROJECT_STATUS("project.status"),
     PROJECT_STATUS_NEW("project.status.new"),
-    PROJECT_STATUS_PLA("project.status.pla"),
-    PROJECT_STATUS_INP("project.status.inp"),
-    PROJECT_STATUS_FIN("project.status.fin"),
+    PROJECT_STATUS_FINISHED("project.status.finished"),
+    PROJECT_STATUS_PLANNED("project.status.planned"),
+    PROJECT_STATUS_IN_PROGRESS("project.status.in.progress"),
+    
     MSG_VALIDATED_BLANK("msg.validated.blank"),
     MSG_VALIDATED_FORMAT_NUMBER("msg.validated.format.number"),
     MSG_VALIDATED_NUMBER_EXISTED("msg.validated.number.existed"),

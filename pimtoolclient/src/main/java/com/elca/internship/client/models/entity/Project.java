@@ -2,7 +2,6 @@ package com.elca.internship.client.models.entity;
 
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -50,11 +49,11 @@ public class Project extends BaseEntity{
 
 
         public static Status convertStringStatusToStatus(String value, I18nManager i18nManager){
-            if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_NEW_PROJECT_STATUS))){
+            if(value.equalsIgnoreCase(i18nManager.text(I18nKey.PROJECT_STATUS_NEW))){
                 return Status.NEW;
-            }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS))){
+            }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.PROJECT_STATUS_IN_PROGRESS))){
                 return Status.INP;
-            }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS))){
+            }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.PROJECT_STATUS_PLANNED))){
                 return Status.PLA;
             }/*else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS))){
                 return Status.FIN;
@@ -66,19 +65,19 @@ public class Project extends BaseEntity{
         public static I18nKey convertStatusToI18nKey(Status status){
             switch (status){
                 case NEW -> {
-                    return I18nKey.COMBOBOX_NEW_PROJECT_STATUS;
+                    return I18nKey.PROJECT_STATUS_NEW;
                 }
 
                 case PLA -> {
-                    return I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS;
+                    return I18nKey.PROJECT_STATUS_PLANNED;
                 }
 
                 case INP -> {
-                    return I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS;
+                    return I18nKey.PROJECT_STATUS_IN_PROGRESS;
                 }
 
                 case FIN -> {
-                    return I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS;
+                    return I18nKey.PROJECT_STATUS_FINISHED;
                 }
 
                 default -> {

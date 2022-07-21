@@ -128,10 +128,10 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private void fillValueToLayout() {
 
         var listStatus = FXCollections.observableArrayList(
-                i18nManager.text(I18nKey.COMBOBOX_NEW_PROJECT_STATUS)
-                , i18nManager.text(I18nKey.COMBOBOX_PLANNED_PROJECT_STATUS)
-                , i18nManager.text(I18nKey.COMBOBOX_IN_PROGRESS_PROJECT_STATUS)
-                , i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS)
+                i18nManager.text(I18nKey.PROJECT_STATUS_NEW)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_PLANNED)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_IN_PROGRESS)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_FINISHED)
         );
         cbStatus.setItems(listStatus);
         cbStatus.getSelectionModel().select(null);
@@ -140,7 +140,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
             protected void updateItem(String item, boolean empty){
                 super.updateItem(item, empty);
                 if(empty || item == null){
-                    setText(i18nManager.text(I18nKey.COMBOBOX_PROMPT_TEXT_STATUS));
+                    setText(i18nManager.text(I18nKey.PROJECT_STATUS));
                 }else{
                     setText(item);
                 }
