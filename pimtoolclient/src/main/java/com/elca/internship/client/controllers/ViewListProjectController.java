@@ -6,13 +6,14 @@ import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -33,8 +34,11 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import javax.lang.model.type.ArrayType;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -83,7 +87,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
     private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
-    private SimpleIntegerProperty simpleIntegerProperty = new SimpleIntegerProperty(numCheckBoxesSelected.getValue());
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
@@ -120,6 +123,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         removeItemPaneCV.getView().ifPresent(view -> {
             vbTableView.getChildren().add(view);
             removeItemPaneCV.getController().setBindingItemQuantity(numCheckBoxesSelected);
+            removeItemPaneCV.getController().iconNode.addEventHandler(MouseEvent.MOUSE_CLICKED, deleteMultiItemHandler());
             view.setVisible(false);
         });
     }
@@ -256,8 +260,14 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     }
 
-    @FXML
-    public void displaySelected(MouseEvent mouseEvent) {
-
+    public EventHandler<MouseEvent> deleteMultiItemHandler(){
+        return event -> {
+            var dataProjectDeleted = dataProjects.stream().filter(e -> e.getCheckBox().isSelected()).toList();
+            var listIdDelete = dataProjectDeleted.stream().map(ProjectTable::getId).toList();
+            dataProjects.removeAll(dataProjectDeleted);
+            projectRestConsume.removeProjectsByIds(listIdDelete);
+            selectedCheckBoxes.clear();
+        };
     }
+
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -86,7 +87,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     @Override
-    public Project findById(Long id) throws EmptyResultDataAccessException {
+    public Project findById(Long id) {
         final var sql = "SELECT * FROM project WHERE id = :id";
         var namedParameters = new MapSqlParameterSource().addValue("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, new ProjectRowMapper());
@@ -156,6 +157,13 @@ public class ProjectDAOImpl implements ProjectDAO {
         var namedParameters = new MapSqlParameterSource()
                 .addValue("proCriteria", param);
         return namedParameterJdbcTemplate.query(sql, namedParameters, new ProjectRowMapper());
+    }
+
+    @Override
+    public void deleteByIds(List<Long> ids) {
+        final var sql = "DELETE FROM project where id IN (:ids)";
+        var params = new MapSqlParameterSource().addValue("ids", ids);
+        namedParameterJdbcTemplate.update(sql, params);
     }
 
 

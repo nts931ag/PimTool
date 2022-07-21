@@ -85,6 +85,12 @@ public class ProjectController {
         }
     }
 
+    @DeleteMapping(value = "/delete")
+    public Response deleteProjects(@RequestParam(value = "Ids") List<Long> Ids){
+        projectService.deleteProjectsByIds(Ids);
+        return new Response(false, "Delete project successfully");
+    }
+
     @GetMapping(value = "/search")
     public List<Project> searchProjectCriteriaSpecified(@RequestParam(value = "proCriteria") String proName, @RequestParam(value = "proStatus") String proStatus){
         return projectService.getProjectByCriteria(proName, proStatus);

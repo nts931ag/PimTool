@@ -4,6 +4,7 @@ import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
 import com.elca.internship.server.models.exceptions.GroupNotExistedException;
 import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
+import com.elca.internship.server.utils.Response;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface ProjectService {
     void updateProjectWithListEmployeeVisa(Project project, List<String> listEmployeeVisa) throws EmployeeNotExistedException, GroupNotExistedException;
 
     void createNewProjectWithEmployeeVisas(Project project, List<String> listEmployeeVisa) throws ProjectNumberAlreadyExistedException, EmployeeNotExistedException, GroupNotExistedException;
+
+    void deleteProjectsByIds(List<Long> Ids);
 }

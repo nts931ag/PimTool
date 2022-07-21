@@ -28,6 +28,7 @@ public class RemoveItemPaneController implements Initializable {
     public Label lbDeleteItemSelected;
     public HBox hbLayout;
     public HBox hbIconItem;
+    public IconNode iconNode;
 
     private final I18nManager i18nManager;
 
@@ -37,7 +38,7 @@ public class RemoveItemPaneController implements Initializable {
         lbDeleteItemSelected.setText(i18nManager.text(I18nKey.MSG_DELETE_ITEM_SELECTED_TITLE));
         lbDeleteItemSelected.getStyleClass().addAll("lb-msg-remove-item", ".lb-msg-remove-item-red");
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
-        var iconNode = new IconNode(GoogleMaterialDesignIcons.DELETE);
+        iconNode = new IconNode(GoogleMaterialDesignIcons.DELETE);
         hbIconItem.setSpacing(15);
         hbIconItem.getChildren().add(iconNode);
         iconNode.setIconSize(25);

@@ -1,6 +1,8 @@
 package com.elca.internship.server.services;
 
 import com.elca.internship.server.models.entity.Project;
+import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
+import com.elca.internship.server.models.exceptions.GroupNotExistedException;
 import lombok.RequiredArgsConstructor;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,7 +54,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void updateNewProject(){
+    public void updateNewProject() throws GroupNotExistedException, EmployeeNotExistedException {
         var project = new Project(
                 1L,
                 1,

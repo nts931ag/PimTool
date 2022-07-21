@@ -15,4 +15,6 @@ public interface ProjectEmployeeDAO {
     void deleteEmployeesFromProjectEmployee(Long id, List<Long> values);
 
     void saveNewEmployeesToProjectEmployee(Long id, ArrayList<Long> listId);
+
+    void removeProjectEmployeeByProjectIds(List<Long> ids);
 }

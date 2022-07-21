@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.collections.ObservableList;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ProjectRestConsume {
@@ -18,4 +19,6 @@ public interface ProjectRestConsume {
     List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue);
 
     Response createNewProject(Project project, List<String> listMember) throws JsonProcessingException;
+
+    void removeProjectsByIds(List<Long> listIdDelete);
 }

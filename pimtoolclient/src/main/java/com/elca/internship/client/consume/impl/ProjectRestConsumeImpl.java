@@ -70,5 +70,12 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
         return projectRestClient.saveNewProject(jsonObject).block();
     }
 
+    @Override
+    public void removeProjectsByIds(List<Long> listIdDelete) {
+
+        var response = projectRestClient.deleteByIds(listIdDelete).block();
+        System.out.println(response);
+    }
+
 
 }
