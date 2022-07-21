@@ -98,7 +98,9 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbProjectClicked(){
-        projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
+        if(projectListCV == null){
+            projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
+        }
         projectListCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
@@ -108,7 +110,9 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbNewClicked() {
-        createProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
+        if(createProjectCV == null){
+            createProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
+        }
         createProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
@@ -117,7 +121,9 @@ public class DashboardController implements Initializable, ApplicationListener<S
     }
 
     public void navigateToErrorPage(String msg){
-        errorPageCV = fxWeaver.load(ErrorPageController.class, i18nManager.bundle());
+        if(errorPageCV == null){
+            errorPageCV = fxWeaver.load(ErrorPageController.class, i18nManager.bundle());
+        }
         errorPageCV.getView().ifPresent(view -> {
             MainContainer.setLeft(null);
             contentContainer.getChildren().clear();
@@ -127,7 +133,9 @@ public class DashboardController implements Initializable, ApplicationListener<S
     }
 
     public void navigateToEditProjectPage(Project project){
-        editProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
+        if(editProjectCV == null){
+            editProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
+        }
         editProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));

@@ -32,4 +32,9 @@ public class AlertDangerController implements Initializable {
             alertDanger.setVisible(false);
         });
     }
+
+    public void setContentAndShowAlertLabel(String msg){
+        lbAlertDanger.setText(msg);
+        alertDanger.setVisible(true);
+    }
 }

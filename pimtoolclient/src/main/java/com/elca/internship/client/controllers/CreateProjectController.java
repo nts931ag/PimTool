@@ -282,8 +282,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     if(!response.isError()){
                         DashboardController.navigationHandler.handleNavigateToListProject();
                     }else{
-                        alertDangerCV.getController().lbAlertDanger.setText(response.getStatusMsg());
-                        System.out.println(response);
+                        alertDangerCV.getController().setContentAndShowAlertLabel(response.getStatusMsg());
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
@@ -294,8 +293,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     if(!response.isError()){
                         DashboardController.navigationHandler.handleNavigateToListProject();
                     }else{
-                        alertDangerCV.getController().lbAlertDanger.setText(response.getStatusMsg());
-
+                        alertDangerCV.getController().setContentAndShowAlertLabel(response.getStatusMsg());
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
@@ -358,6 +356,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             cbProStatus.getSelectionModel().select(0);
         }else{
             // navigationBackToProjectList;
+            DashboardController.navigationHandler.handleNavigateToListProject();
         }
     }
 
