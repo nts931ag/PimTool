@@ -5,6 +5,7 @@ import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
+import com.elca.internship.client.utils.AlertDialog;
 import com.elca.internship.client.utils.FormValidation;
 import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
@@ -340,20 +341,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
         return Arrays.stream(members.split(", ")).toList();
     }
 
-    private FxControllerAndView<DashboardController, Node> dashboardCV;
-
-
     @FXML
     public void onCancelProjectBtn() {
+
         if(!isEditMode){
-            tfProNum.setText("");
-            tfProName.setText("");
-            tfProCustomer.setText("");
-            tfProCustomer.setText("");
-            cbProGroup.getSelectionModel().select(0);
-            cbProStatus.getSelectionModel().select(0);
+            DashboardController.navigationHandler.handleNavigateToListProject();
         }else{
-            // navigationBackToProjectList;
             DashboardController.navigationHandler.handleNavigateToListProject();
         }
     }

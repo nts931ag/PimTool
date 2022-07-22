@@ -105,14 +105,14 @@ public class DashboardController implements Initializable, ApplicationListener<S
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
             contentContainer.getChildren().add(view);
+            projectListCV.getController().onBtnSearchClicked();
         });
     }
 
     @FXML
     public void onLbNewClicked() {
-        if(createProjectCV == null){
-            createProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
-        }
+        createProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
+
         createProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
@@ -133,6 +133,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
     }
 
     public void navigateToEditProjectPage(Project project){
+
         if(editProjectCV == null){
             editProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
         }

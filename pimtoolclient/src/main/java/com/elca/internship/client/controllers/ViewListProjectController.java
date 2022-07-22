@@ -6,6 +6,7 @@ import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
+import com.elca.internship.client.utils.AlertDialog;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
@@ -33,12 +34,8 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-
-import javax.lang.model.type.ArrayType;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -150,11 +147,10 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 }
             }
         });
-        tbProject.setFocusTraversable(false);
+/*        tbProject.setFocusTraversable(false);
         tbProject.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        tbProject.getSelectionModel().setCellSelectionEnabled(true);
+        tbProject.getSelectionModel().setCellSelectionEnabled(true);*/
 
-        fillDataProjectToTable(null, null);
     }
 
 
@@ -185,8 +181,16 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 dataProject.getIcDelete().getStyleClass().add("icon-node");
                 dataProject.getIcDelete().setOnMouseClicked(event -> {
                     var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
-                    dataProjects.remove(projectTableDeleted);
-                    projectRestConsume.removeProjectById(projectTableDeleted.getId());
+                    var alertDialog = new AlertDialog(
+                            "CONFIRMATION"
+                            ,"Do you really want to delete this project"
+                            ,"Please choose \"Yes\" or \"No\"", Alert.AlertType.CONFIRMATION);
+                    var confirm = alertDialog.getConfirmationDeleteProjectDialog();
+                    confirm.showAndWait();
+                    if(confirm.getResult() == ButtonType.YES){
+                        dataProjects.remove(projectTableDeleted);
+                        projectRestConsume.removeProjectById(projectTableDeleted.getId());
+                    }
                 });
                 configureCheckBox(dataProject.getCheckBox());
             }else{
@@ -233,7 +237,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     }
 
     @FXML
-    public void onBtnSearchClicked(ActionEvent actionEvent) {
+    public void onBtnSearchClicked() {
         var tfSearchValue = tfSearch.getText();
         var cbStatusValue = cbStatus.getSelectionModel().getSelectedItem();
 
@@ -254,6 +258,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     @FXML
     public void onLbBtnResetSearchClicked(MouseEvent mouseEvent) {
+
         tfSearch.clear();
         cbStatus.getSelectionModel().select(-1);
         fillDataProjectToTable(null, null);
@@ -262,12 +267,22 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     public EventHandler<MouseEvent> deleteMultiItemHandler(){
         return event -> {
-            var dataProjectDeleted = dataProjects.stream().filter(e -> e.getCheckBox().isSelected()).toList();
-            var listIdDelete = dataProjectDeleted.stream().map(ProjectTable::getId).toList();
-            dataProjects.removeAll(dataProjectDeleted);
-            projectRestConsume.removeProjectsByIds(listIdDelete);
-            selectedCheckBoxes.clear();
+            var alertDialog = new AlertDialog(
+                    "CONFIRMATION"
+                    ,"Do you really want to delete projects"
+                    ,"Please choose \"Yes\" or \"No\"", Alert.AlertType.CONFIRMATION);
+            var confirm = alertDialog.getConfirmationDeleteProjectDialog();
+            confirm.showAndWait();
+            if(confirm.getResult() == ButtonType.YES){
+                var dataProjectDeleted = dataProjects.stream().filter(e -> e.getCheckBox().isSelected()).toList();
+                var listIdDelete = dataProjectDeleted.stream().map(ProjectTable::getId).toList();
+                dataProjects.removeAll(dataProjectDeleted);
+                projectRestConsume.removeProjectsByIds(listIdDelete);
+                selectedCheckBoxes.clear();
+            }
+
         };
     }
+
 
 }

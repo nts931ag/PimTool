@@ -47,7 +47,7 @@
       </HBox>
       <VBox fx:id="vbTableView">
          <children>
-            <TableView fx:id="tbProject" onMouseClicked="#displaySelected">
+            <TableView fx:id="tbProject">
               <columns>
                   <TableColumn fx:id="colCheck" />
                   <TableColumn fx:id="colProNum" text="%project.table.col.number" />
