@@ -10,7 +10,9 @@ import com.elca.internship.client.utils.FormValidation;
 import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
+import com.elca.internship.client.utils.ValidatedResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -101,6 +103,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final ProjectEmployeeConsume projectEmployeeConsume;
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
+    private boolean isLoading = false;
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
@@ -119,18 +122,22 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
 
+        Platform.runLater(() -> {
+            gpCreateProjectTab.requestFocus();
+
+        });
 
     }
 
     private void addEventListeners() {
 
-        tfProNum.textProperty().addListener((observableValue, oldVal, newVal) -> {
+        /*tfProNum.textProperty().addListener((observableValue, oldVal, newVal) -> {
             var valid = FormValidation.isProNumValid(
                     newVal,
                     listCurProNum,
                     lbValidateProNum,
                     i18nManager
-            ).isValid();
+            ).getIsValid();
             projectFormValidation.getFormFields().put("proNum", valid);
 
         });
@@ -139,7 +146,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             var valid = FormValidation.isProNameValid(
                     newVal,
                     lbValidateProName
-            ).isValid();
+            ).getIsValid();
             projectFormValidation.getFormFields().put("proName", valid);
         });
 
@@ -147,7 +154,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             var valid = FormValidation.isProCustomerValid(
                     newVal,
                     lbValidateProCustomer
-            ).isValid();
+            ).getIsValid();
             projectFormValidation.getFormFields().put("proCustomer", valid);
 
         });
@@ -157,29 +164,67 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     newValue,
                     listMembers,
                     lbValidateProMember
-            ).isValid();
+            ).getIsValid();
             projectFormValidation.getFormFields().put("proMember", valid);
+        }));*/
+
+
+
+        /*tfProCustomer.textProperty().addListener(((observable, oldValue, newValue) -> {
+            var valid = FormValidation.isProCustomerValidInput(
+                    newValue,
+                    lbValidateProCustomer,
+                    i18nManager
+            ).getIsValid();
+            projectFormValidation.getFormFields().put("proCustomer", valid);
+        }));*/
+
+        tfProName.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+            if(!newValue){
+                var valid = FormValidation.isProNameValidInput(
+                        tfProName.getText(),
+                        lbValidateProName,
+                        i18nManager
+                ).getIsValid();
+                projectFormValidation.getFormFields().put("proCustomer", valid);
+            }
         }));
+
+        tfProCustomer.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+            if(!newValue){
+                var valid = FormValidation.isProCustomerValidInput(
+                        tfProCustomer.getText(),
+                        lbValidateProCustomer,
+                        i18nManager
+                ).getIsValid();
+                projectFormValidation.getFormFields().put("proCustomer", valid);
+            }
+        }));
+
 
         pickerStartDate.valueProperty().addListener(((observable, oldValue, newValue) -> {
             var endDate = pickerEndDate.getValue();
-            var valid = FormValidation.isDateValid(
+            var valid = FormValidation.isDateValidInput(
                     endDate,
                     newValue,
-                    lbValidateProDate
-            ).isValid();
+                    lbValidateProDate,
+                    i18nManager
+            ).getIsValid();
             projectFormValidation.getFormFields().put("proDate", valid);
         }));
 
         pickerEndDate.valueProperty().addListener((observableValue, oldVal, newVal) -> {
             var startDate = pickerStartDate.getValue();
-            var valid = FormValidation.isDateValid(
+            var valid = FormValidation.isDateValidInput(
                     newVal,
                     startDate,
-                    lbValidateProDate
-            ).isValid();
+                    lbValidateProDate,
+                    i18nManager
+            ).getIsValid();
             projectFormValidation.getFormFields().put("proDate", valid);
         });
+
+
     }
 
     private boolean validateFrom() {
@@ -265,7 +310,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
 
         var curDate = LocalDate.now();
-        pickerEndDate.setValue(curDate);
         pickerStartDate.setValue(curDate);
     }
 

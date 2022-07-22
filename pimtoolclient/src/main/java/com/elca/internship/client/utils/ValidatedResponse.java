@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class ValidatedResponse {
     private Label responseLabel;
-    private boolean isValid;
+    private Boolean isValid;
 
-    public ValidatedResponse(Label responseLabel, boolean isValid) {
+    public ValidatedResponse(Label responseLabel, Boolean isValid) {
         this.responseLabel = responseLabel;
         this.isValid = isValid;
     }

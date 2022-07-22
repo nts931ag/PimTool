@@ -2,9 +2,10 @@ package com.elca.internship.client.utils;
 
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
@@ -12,7 +13,6 @@ import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,15 +21,13 @@ public class FormValidation {
 
     public FormValidation(){formFields = new HashMap<>();}
 
-
-
     public Map<String, Boolean> getFormFields(){
         return formFields;
     }
 
     public static int iconSize;
 
-    public static ValidatedResponse isProNumValid(String val, ObservableList<Integer> listCurProNum, Label responseLabel, I18nManager i18nManager) {
+/*    public static ValidatedResponse isProNumValid(String val, ObservableList<Integer> listCurProNum, Label responseLabel, I18nManager i18nManager) {
         boolean valid;
         var msg = "";
         if(val == null){
@@ -86,17 +84,15 @@ public class FormValidation {
     }
 
     public static ValidatedResponse isDateValid(LocalDate endVal, LocalDate startVal, Label responseLabel) {
-        boolean valid;
+        boolean valid = true;
         var msg = "";
-        if(startVal == null || endVal == null){
-            valid = false;
-            msg = "End date or Start date must not be empty.";
-        } else{
+        if(endVal != null && startVal != null){
             if(endVal.isBefore(startVal)){
-                msg = "End date must be less than start date.";
                 valid = false;
-            }else{
-                valid = true;
+            }
+        }else{
+            if (startVal == null){
+                valid = false;
             }
         }
         return validationResponse(responseLabel, valid, msg);
@@ -123,10 +119,73 @@ public class FormValidation {
         }
         var msg = "The following visas do not exist: " + listInvalidVisa.toString();
         return validationResponse(responseLabel, valid, msg);
+    }*/
+
+    public static ValidatedResponse isProNameValidInput(String val, Label responseLabel, I18nManager i18nManager) {
+        Boolean valid = true;
+        var msg = "";
+
+
+        if(val == null || val.isBlank()){
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_BLANK);
+            valid = false;
+        }else{
+            String exp = "^[A-Za-z][A-Za-z\\d_\\s+]{0,50}$";
+            /*if(val.matches(exp)){
+                valid = null;
+            }else{
+                valid = false;
+            }*/
+            valid = val.matches(exp);
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_TEXT_INPUT_FORMAT);
+        }
+
+        return validationResponse(responseLabel, valid, msg);
     }
 
-    public static ValidatedResponse validationResponse(Label responseLabel, boolean valid,String msg){
+    public static ValidatedResponse isProCustomerValidInput(String val, Label responseLabel, I18nManager i18nManager) {
+        Boolean valid = true;
+        var msg = "";
+
+
+        if(val == null || val.isBlank()){
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_BLANK);
+            valid = false;
+        }else{
+            String exp = "^[A-Za-z][A-Za-z\\d_\\s+]{0,50}$";
+            /*if(val.matches(exp)){
+                valid = null;
+            }else{
+                valid = false;
+            }*/
+            valid = val.matches(exp);
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_TEXT_INPUT_FORMAT);
+        }
+
+        return validationResponse(responseLabel, valid, msg);
+    }
+
+    public static ValidatedResponse isDateValidInput(LocalDate endVal, LocalDate startVal, Label responseLabel, I18nManager i18nManager) {
+        Boolean valid = true;
+        var msg = "";
+        if(endVal != null && startVal != null){
+            if(endVal.isBefore(startVal)){
+                valid = false;
+                msg = i18nManager.text(I18nKey.MSG_VALIDATED_DATE);
+            }
+        }else{
+            if (startVal == null){
+                valid = false;
+                msg = i18nManager.text(I18nKey.MSG_VALIDATED_NULL_DATE);
+            }
+        }
+        return validationResponse(responseLabel, valid, msg);
+    }
+
+
+    public static ValidatedResponse validationResponse(Label responseLabel, Boolean valid,String msg){
         FormValidation.iconSize = 24;
+
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
 
         responseLabel.setText("");
@@ -134,6 +193,18 @@ public class FormValidation {
         responseLabel.getStyleClass().clear();
         responseLabel.setWrapText(true);
 
+        /*if (valid == false) {
+
+            ImageView imageView = new ImageView(String.valueOf(FormValidation.class.getResource("/images/validate-response-loading.gif")));
+            imageView.setFitWidth(24);
+            imageView.setFitHeight(24);
+            responseLabel.setGraphic(imageView);
+
+            responseLabel.setText("");
+            responseLabel.getStyleClass().add("validate-success");
+            responseLabel.setTooltip(new Tooltip(msg));
+            return new ValidatedResponse(responseLabel, null);
+        } else*/
         if(valid){
             responseLabel.setText("");
 
@@ -145,8 +216,7 @@ public class FormValidation {
             responseLabel.getStyleClass().add("validate-success");
             responseLabel.setTooltip(new Tooltip(msg));
             return new ValidatedResponse(responseLabel,true);
-        }
-        else{
+        } else{
             responseLabel.setFont(new Font(responseLabel.getPrefHeight() * 0.50));
 
             responseLabel.setText(msg);
@@ -160,7 +230,4 @@ public class FormValidation {
             return new ValidatedResponse(responseLabel,false);
         }
     }
-
-
-
 }

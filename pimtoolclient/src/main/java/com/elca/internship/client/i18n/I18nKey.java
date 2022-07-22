@@ -48,11 +48,16 @@ public enum I18nKey {
     PROJECT_STATUS_FINISHED("project.status.finished"),
     PROJECT_STATUS_PLANNED("project.status.planned"),
     PROJECT_STATUS_IN_PROGRESS("project.status.in.progress"),
-    
+
+    /* MSG VALIDATED */
     MSG_VALIDATED_BLANK("msg.validated.blank"),
     MSG_VALIDATED_FORMAT_NUMBER("msg.validated.format.number"),
     MSG_VALIDATED_NUMBER_EXISTED("msg.validated.number.existed"),
-    ALERT_DANGER_MSG("alert.danger.msg"),
+    MSG_VALIDATED_DATE("msg.validated.date"),
+    MSG_VALIDATED_NULL_DATE("msg.validated.null.date"),
+    MSG_VALIDATED_TEXT_INPUT_FORMAT("msg.validated.text.input.format"),
+    /* MSG DELETE */
+    MSG_ALERT_DANGER("msg.alert.danger"),
     MSG_DELETE_ITEM_QUANTITY("msg.delete.item.quantity"),
     MSG_DELETE_ITEM_SELECTED_TITLE("msg.delete.item.selected.title");
 

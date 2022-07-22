@@ -9,7 +9,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
          <children>
-            <Label fx:id="lbAlertDanger" text="%alert.danger.msg" wrapText="true" HBox.hgrow="ALWAYS" />
+            <Label fx:id="lbAlertDanger" text="%msg.alert.danger" wrapText="true" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <HBox fx:id="hboxIcon" alignment="CENTER_LEFT">
