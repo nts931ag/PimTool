@@ -95,4 +95,13 @@ public class ProjectController {
     public List<Project> searchProjectCriteriaSpecified(@RequestParam(value = "proCriteria") String proName, @RequestParam(value = "proStatus") String proStatus){
         return projectService.getProjectByCriteria(proName, proStatus);
     }
+
+    @GetMapping(value = "/{proNum}")
+    public Long getProjectNumber(@PathVariable(value = "proNum") Long proNum){
+        try{
+            return projectService.findProjectNumber(proNum);
+        }catch (EmptyResultDataAccessException e){
+            return 0L;
+        }
+    }
 }

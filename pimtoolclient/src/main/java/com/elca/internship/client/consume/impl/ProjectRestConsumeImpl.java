@@ -74,8 +74,14 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
     public void removeProjectsByIds(List<Long> listIdDelete) {
 
         var response = projectRestClient.deleteByIds(listIdDelete).block();
-        System.out.println(response);
     }
 
-
+    @Override
+    public Boolean CheckProjectNumberIsExisted(Long projectNumber) {
+        var proNum = projectRestClient.getProjectNumber(projectNumber).block();
+        if(proNum == 0){
+            return false;
+        }
+        return true;
+    }
 }

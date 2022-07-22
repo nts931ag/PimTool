@@ -21,4 +21,6 @@ public interface ProjectRestConsume {
     Response createNewProject(Project project, List<String> listMember) throws JsonProcessingException;
 
     void removeProjectsByIds(List<Long> listIdDelete);
+
+    Boolean CheckProjectNumberIsExisted(Long projectNumber);
 }

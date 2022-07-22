@@ -97,7 +97,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
     private ObservableList<String> listGroups;
     private ObservableList<String> listMembers;
-    private ObservableList<Integer> listCurProNum;
     private final RestTemplateConsume restTemplateConsume;
     private final ProjectRestConsume projectRestConsume;
     private final ProjectEmployeeConsume projectEmployeeConsume;
@@ -121,11 +120,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proDate", true);
         projectFormValidation.getFormFields().put("proMember", false);
         this.addEventListeners();
-
-        Platform.runLater(() -> {
-            gpCreateProjectTab.requestFocus();
-
-        });
 
     }
 
@@ -179,6 +173,26 @@ public class CreateProjectController implements Initializable, ApplicationListen
             projectFormValidation.getFormFields().put("proCustomer", valid);
         }));*/
 
+        tfProNum.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+            if(!newValue){
+                var inputNumber = tfProNum.getText();
+                var valid = FormValidation.isProNumberValidInput(
+                        inputNumber,
+                        lbValidateProNum,
+                        i18nManager
+                ).getIsValid();
+                if(valid){
+                    var isExisted = projectRestConsume.CheckProjectNumberIsExisted(Long.parseLong(inputNumber));
+                    valid = FormValidation.isProNumberNotExisted(
+                            isExisted,
+                            lbValidateProNum,
+                            i18nManager
+                    ).getIsValid();
+                }
+                projectFormValidation.getFormFields().put("proNumber", valid);
+            }
+        }));
+
         tfProName.focusedProperty().addListener(((observable, oldValue, newValue) -> {
             if(!newValue){
                 var valid = FormValidation.isProNameValidInput(
@@ -186,7 +200,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                         lbValidateProName,
                         i18nManager
                 ).getIsValid();
-                projectFormValidation.getFormFields().put("proCustomer", valid);
+                projectFormValidation.getFormFields().put("proName", valid);
             }
         }));
 
@@ -306,7 +320,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
         listMembers = restTemplateConsume.getAllEmployeeVisa();
 
-        listCurProNum = restTemplateConsume.getAllProjectNumber();
 
 
         var curDate = LocalDate.now();

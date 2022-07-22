@@ -30,6 +30,8 @@ public class ProjectRestClient {
     public static final String URI_GET_PROJECT_BY_ID = BASE_URI + "/api/projects/{id}";
     public static final String URI_UPDATE_PROJECT_CHANGE = BASE_URI + "/api/projects/update";
     private static final String URI_DELETE_PROJECTS_BY_IDS = BASE_URI + "/api/projects/delete";
+    private static final String URI_GET_PROJECT_NUMBER = BASE_URI + "/api/projects/{proNum}";
+
     private final WebClient webClient;
 
     public List<Project> getAllProjects() {
@@ -96,5 +98,11 @@ public class ProjectRestClient {
                 .uri(uri)
                 .retrieve()
                 .bodyToMono(Response.class);
+    }
+
+    public Mono<Long> getProjectNumber(Long projectNumber) {
+        return webClient.get().uri(URI_GET_PROJECT_NUMBER, projectNumber)
+                .retrieve()
+                .bodyToMono(Long.class);
     }
 }

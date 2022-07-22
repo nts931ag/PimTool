@@ -34,4 +34,6 @@ public interface ProjectDAO {
     List<Project> findByProCriteria(String proCriteria);
 
     void deleteByIds(List<Long> ids);
+
+    Long findProjectNumber(Long proNum);
 }

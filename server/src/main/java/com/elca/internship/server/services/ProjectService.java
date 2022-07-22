@@ -26,4 +26,6 @@ public interface ProjectService {
     void createNewProjectWithEmployeeVisas(Project project, List<String> listEmployeeVisa) throws ProjectNumberAlreadyExistedException, EmployeeNotExistedException, GroupNotExistedException;
 
     void deleteProjectsByIds(List<Long> Ids);
+
+    Long findProjectNumber(Long proNum);
 }

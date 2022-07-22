@@ -166,6 +166,14 @@ public class ProjectDAOImpl implements ProjectDAO {
         namedParameterJdbcTemplate.update(sql, params);
     }
 
+    @Override
+    public Long findProjectNumber(Long proNum) {
+        final var sql = "SELECT project_number FROM project where project_number = :proNum";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue("proNum", proNum);
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, Long.class);
+    }
+
 
     @Override
     public List<Project> findByProCriteriaAndProStatus(String proCriteria, String proStatus) {

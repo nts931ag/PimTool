@@ -138,4 +138,9 @@ public class ProjectServiceImpl implements ProjectService {
         projectDAO.deleteByIds(Ids);
     }
 
+    @Override
+    public Long findProjectNumber(Long proNum) throws EmptyResultDataAccessException{
+        return projectDAO.findProjectNumber(proNum);
+    }
+
 }

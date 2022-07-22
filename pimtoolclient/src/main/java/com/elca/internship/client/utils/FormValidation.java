@@ -21,6 +21,9 @@ public class FormValidation {
 
     public FormValidation(){formFields = new HashMap<>();}
 
+
+
+
     public Map<String, Boolean> getFormFields(){
         return formFields;
     }
@@ -121,12 +124,42 @@ public class FormValidation {
         return validationResponse(responseLabel, valid, msg);
     }*/
 
+    public static ValidatedResponse isProNumberNotExisted(Boolean isExisted, Label responseLabel, I18nManager i18nManager) {
+        Boolean valid;
+        var msg = "";
+        if(isExisted){
+            valid = false;
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_NUMBER_EXISTED);
+        }else{
+            valid = true;
+        }
+
+        return validationResponse(responseLabel, valid, msg);
+    }
+
+    public static ValidatedResponse isProNumberValidInput(String val, Label responseLabel, I18nManager i18nManager) {
+        Boolean valid;
+        var msg = "";
+        if(val.isBlank()){
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_BLANK);
+            valid = false;
+        }else{
+            String exp = "[\\d+]{0,19}";
+            valid = val.matches(exp);
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_FORMAT_NUMBER);
+
+        }
+
+        return validationResponse(responseLabel, valid, msg);
+    }
+
+
     public static ValidatedResponse isProNameValidInput(String val, Label responseLabel, I18nManager i18nManager) {
-        Boolean valid = true;
+        Boolean valid;
         var msg = "";
 
 
-        if(val == null || val.isBlank()){
+        if(val.isBlank()){
             msg = i18nManager.text(I18nKey.MSG_VALIDATED_BLANK);
             valid = false;
         }else{
@@ -144,11 +177,11 @@ public class FormValidation {
     }
 
     public static ValidatedResponse isProCustomerValidInput(String val, Label responseLabel, I18nManager i18nManager) {
-        Boolean valid = true;
+        Boolean valid;
         var msg = "";
 
 
-        if(val == null || val.isBlank()){
+        if(val.isBlank()){
             msg = i18nManager.text(I18nKey.MSG_VALIDATED_BLANK);
             valid = false;
         }else{
@@ -193,7 +226,7 @@ public class FormValidation {
         responseLabel.getStyleClass().clear();
         responseLabel.setWrapText(true);
 
-        /*if (valid == false) {
+        /*if (valid == null) {
 
             ImageView imageView = new ImageView(String.valueOf(FormValidation.class.getResource("/images/validate-response-loading.gif")));
             imageView.setFitWidth(24);
