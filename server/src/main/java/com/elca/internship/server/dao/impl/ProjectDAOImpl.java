@@ -77,12 +77,16 @@ public class ProjectDAOImpl implements ProjectDAO {
                 .addValue("customer", project.getCustomer())
                 .addValue("status", project.getStatus().toString())
                 .addValue("start_date", Date.valueOf(project.getStartDate()))
-                .addValue("end_date", Date.valueOf(project.getEndDate()))
+
                 .addValue("version", 1);
+
+        if(project.getEndDate() != null){
+            params.addValue("end_date", Date.valueOf(project.getEndDate()));
+        }
         try{
             return simpleJdbcInsert.executeAndReturnKey(params).longValue();
         }catch (Exception e){
-            throw  new ProjectNumberAlreadyExistedException(project.getProjectNumber());
+            throw new ProjectNumberAlreadyExistedException(project.getProjectNumber());
         }
     }
 

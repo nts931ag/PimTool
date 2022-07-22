@@ -1,6 +1,7 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
+import com.elca.internship.client.consume.GroupRestConsume;
 import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.i18n.I18nKey;
@@ -114,64 +115,32 @@ public class CreateProjectController implements Initializable, ApplicationListen
         initLayout();
         fillDefaultValueForInputForm();
         projectFormValidation = new FormValidation();
-        projectFormValidation.getFormFields().put("proNum", false);
+        projectFormValidation.getFormFields().put("proNumber", false);
         projectFormValidation.getFormFields().put("proName", false);
         projectFormValidation.getFormFields().put("proCustomer", false);
-        projectFormValidation.getFormFields().put("proDate", true);
         projectFormValidation.getFormFields().put("proMember", false);
+        projectFormValidation.getFormFields().put("proDate", true);
         this.addEventListeners();
+
+        /*Platform.runLater(() -> {
+            gpCreateProjectTab.requestFocus();
+        });*/
 
     }
 
     private void addEventListeners() {
 
-        /*tfProNum.textProperty().addListener((observableValue, oldVal, newVal) -> {
-            var valid = FormValidation.isProNumValid(
-                    newVal,
-                    listCurProNum,
-                    lbValidateProNum,
-                    i18nManager
-            ).getIsValid();
-            projectFormValidation.getFormFields().put("proNum", valid);
-
-        });
-
-        tfProName.textProperty().addListener((observableValue, oldVal, newVal) -> {
-            var valid = FormValidation.isProNameValid(
-                    newVal,
-                    lbValidateProName
-            ).getIsValid();
-            projectFormValidation.getFormFields().put("proName", valid);
-        });
-
-        tfProCustomer.textProperty().addListener((observableValue, oldVal, newVal) -> {
-            var valid = FormValidation.isProCustomerValid(
-                    newVal,
-                    lbValidateProCustomer
-            ).getIsValid();
-            projectFormValidation.getFormFields().put("proCustomer", valid);
-
-        });
-
-        tfProMember.textProperty().addListener(((observable, oldValue, newValue) -> {
-            var valid = FormValidation.isProMemberValid(
-                    newValue,
-                    listMembers,
-                    lbValidateProMember
-            ).getIsValid();
-            projectFormValidation.getFormFields().put("proMember", valid);
-        }));*/
-
-
-
-        /*tfProCustomer.textProperty().addListener(((observable, oldValue, newValue) -> {
-            var valid = FormValidation.isProCustomerValidInput(
-                    newValue,
-                    lbValidateProCustomer,
-                    i18nManager
-            ).getIsValid();
-            projectFormValidation.getFormFields().put("proCustomer", valid);
-        }));*/
+        tfProMember.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+            if(!newValue){
+                var inputMembers = tfProMember.getText();
+                var valid = FormValidation.isProMemberValidInput(
+                        inputMembers,
+                        lbValidateProMember,
+                        i18nManager
+                ).getIsValid();
+                projectFormValidation.getFormFields().put("proMember", valid);
+            }
+        }));
 
         tfProNum.focusedProperty().addListener(((observable, oldValue, newValue) -> {
             if(!newValue){
@@ -243,6 +212,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     private boolean validateFrom() {
         var node = (HBox) alertDangerCV.getView().get();
+        System.out.println(projectFormValidation.getFormFields());
         if (projectFormValidation.getFormFields().containsValue(false)) {
             node.setVisible(true);
             return false;
@@ -293,15 +263,17 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.getSelectionModel().select(i18nManager.text(Status.convertStatusToI18nKey(project.getStatus())));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
-        var listMemberOfcurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
+        var listMemberOfCurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
         var listMember = new StringBuilder();
-        listMemberOfcurrentProject.forEach(e->{
+        listMemberOfCurrentProject.forEach(e->{
             listMember.append(e + ", ");
         });
         listMember.delete(listMember.length()-2, listMember.length());
         tfProMember.setText(listMember.toString());
         isEditMode = true;
     }
+
+    private final GroupRestConsume groupRestConsume;
 
     public void fillDefaultValueForInputForm() {
 
@@ -313,8 +285,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
         );
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
-        listGroups = FXCollections.observableArrayList("New");
-        listGroups.addAll(restTemplateConsume.getAllGroupId());
+        listGroups = FXCollections.observableArrayList(i18nManager.text(I18nKey.GROUP_NEW));
+//        listGroups.addAll(restTemplateConsume.getAllGroupId());
+        listGroups.addAll(groupRestConsume.retrieveObsListAllGroupIds());
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
 
@@ -366,7 +339,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var status = cbProStatus.getSelectionModel().getSelectedItem();
         var startDate = pickerStartDate.getValue();
         var endDate = pickerEndDate.getValue();
-        if(groupId.equalsIgnoreCase("new")){
+        if(groupId.equalsIgnoreCase(i18nManager.text(I18nKey.GROUP_NEW))){
             return new Project(
                     currentIdEdit,
                     0,

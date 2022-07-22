@@ -13,6 +13,7 @@ import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -123,6 +124,26 @@ public class FormValidation {
         var msg = "The following visas do not exist: " + listInvalidVisa.toString();
         return validationResponse(responseLabel, valid, msg);
     }*/
+
+    public static ValidatedResponse isProMemberValidInput(String newValue,  Label responseLabel, I18nManager i18nManager) {
+        boolean valid=true;
+        var listInvalidVisa = new ArrayList<String>();
+        var msg = "";
+        if(newValue.isBlank()){
+            valid = true;
+        }else{
+            var regex = "[A-Z+]{3}$";
+            var listVisaHandled = newValue.split(", ");
+            for (var visa: listVisaHandled) {
+                if(!visa.matches(regex)){
+                    listInvalidVisa.add(visa);
+                    valid = false;
+                }
+            }
+            msg = i18nManager.text(I18nKey.MSG_VALIDATED_EMPLOYEE_VISAS, listInvalidVisa);
+        }
+        return validationResponse(responseLabel, valid, msg);
+    }
 
     public static ValidatedResponse isProNumberNotExisted(Boolean isExisted, Label responseLabel, I18nManager i18nManager) {
         Boolean valid;

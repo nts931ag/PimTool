@@ -48,6 +48,7 @@ public enum I18nKey {
     PROJECT_STATUS_FINISHED("project.status.finished"),
     PROJECT_STATUS_PLANNED("project.status.planned"),
     PROJECT_STATUS_IN_PROGRESS("project.status.in.progress"),
+    GROUP_NEW("GROUP.NEW"),
 
     /* MSG VALIDATED */
     MSG_VALIDATED_BLANK("msg.validated.blank"),
@@ -59,7 +60,8 @@ public enum I18nKey {
     /* MSG DELETE */
     MSG_ALERT_DANGER("msg.alert.danger"),
     MSG_DELETE_ITEM_QUANTITY("msg.delete.item.quantity"),
-    MSG_DELETE_ITEM_SELECTED_TITLE("msg.delete.item.selected.title");
+    MSG_DELETE_ITEM_SELECTED_TITLE("msg.delete.item.selected.title"),
+    MSG_VALIDATED_EMPLOYEE_VISAS("msg.validated.employee.visas");
 
     private final String key;
 

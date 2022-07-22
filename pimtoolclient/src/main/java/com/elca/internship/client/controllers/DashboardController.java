@@ -106,6 +106,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
             contentContainer.getChildren().add(view);
             projectListCV.getController().onBtnSearchClicked();
+            lbMenuNew.setDisable(false);
         });
     }
 
@@ -117,6 +118,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
             contentContainer.getChildren().add(view);
+            lbMenuNew.setDisable(true);
         });
     }
 
@@ -129,19 +131,19 @@ public class DashboardController implements Initializable, ApplicationListener<S
             contentContainer.getChildren().clear();
             errorPageCV.getController().setMsgError(msg);
             contentContainer.getChildren().add(view);
+
         });
     }
 
     public void navigateToEditProjectPage(Project project){
-
-        if(editProjectCV == null){
-            editProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
-        }
+        editProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
         editProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
             editProjectCV.getController().initEditProjectLayout(project);
             contentContainer.getChildren().add(view);
+            lbMenuNew.setDisable(true);
         });
+
     }
 }
