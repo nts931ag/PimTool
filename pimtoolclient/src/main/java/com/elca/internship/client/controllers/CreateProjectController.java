@@ -145,7 +145,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         }));
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
         tfProNum.focusedProperty().addListener(((observable, oldValue, newValue) -> {
-            if(!newValue){
+            if(!newValue && firstTime.get() == false){
                 var inputNumber = tfProNum.getText();
                 var valid = FormValidation.isProNumberValidInput(
                         inputNumber,
@@ -161,6 +161,11 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     ).getIsValid();
                 }
                 projectFormValidation.getFormFields().put("proNumber", valid);
+            }else {
+                if(firstTime.get() == true){
+                    gpCreateProjectTab.requestFocus();
+                    firstTime.setValue(false);
+                }
             }
         }));
 
@@ -258,6 +263,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     public void initEditProjectLayout(Project project){
         currentIdEdit = project.getId();
         tfProNum.setText(String.valueOf(project.getProjectNumber()));
+        projectFormValidation.getFormFields().put("proNumber", true);
         tfProNum.setDisable(true);
         tfProName.setText(project.getName());
         tfProCustomer.setText(project.getCustomer());
@@ -273,6 +279,13 @@ public class CreateProjectController implements Initializable, ApplicationListen
         listMember.delete(listMember.length()-2, listMember.length());
         tfProMember.setText(listMember.toString());
         isEditMode = true;
+        Platform.runLater(()->{
+            tfProName.requestFocus();
+            tfProCustomer.requestFocus();
+            tfProMember.requestFocus();
+            gpCreateProjectTab.requestFocus();
+        });
+
     }
 
     private final GroupRestConsume groupRestConsume;

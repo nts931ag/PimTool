@@ -80,7 +80,7 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
     @Override
     public void saveNewEmployeesToProjectEmployee(Long id, ArrayList<Long> listId) {
         final var sql = "INSERT INTO project_employee (project_id, employee_id)\n" +
-                "SELECT * FROM (SELECT CAST (:projectId AS int) , CAST (:employeeId AS int)) AS tmp\n" +
+                "SELECT * FROM (SELECT :projectId AS project_id, :employeeId as employee_id) AS tmp\n" +
                 "WHERE NOT EXISTS (\n" +
                 "    SELECT * FROM project_employee WHERE project_id = :projectId and employee_id = :employeeId\n" +
                 ") LIMIT 1;";
