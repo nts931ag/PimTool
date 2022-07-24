@@ -79,12 +79,12 @@ public class DashboardController implements Initializable, ApplicationListener<S
             }
         };
 
-        contentContainer.setPrefWidth(GuiUtil.getScreenWidth()*85/100);
+        /*contentContainer.setPrefWidth(GuiUtil.getScreenWidth()*85/100);
         contentContainer.setPrefHeight(GuiUtil.getScreenHeight()*90/100);
         sideBarContainer.setPrefWidth(GuiUtil.getScreenWidth()*15/100);
         sideBarContainer.setPrefHeight(GuiUtil.getScreenHeight()*90/100);
         headerContainer.setPrefWidth(GuiUtil.getScreenWidth());
-        headerContainer.setPrefHeight(GuiUtil.getScreenHeight()*10/100);
+        headerContainer.setPrefHeight(GuiUtil.getScreenHeight()*10/100);*/
 
         navigationHandler.handleNavigateToListProject();
 

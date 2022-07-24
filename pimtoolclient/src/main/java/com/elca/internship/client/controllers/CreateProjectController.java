@@ -14,6 +14,8 @@ import com.elca.internship.client.models.entity.Project.Status;
 import com.elca.internship.client.utils.ValidatedResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -141,7 +143,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 projectFormValidation.getFormFields().put("proMember", valid);
             }
         }));
-
+        final BooleanProperty firstTime = new SimpleBooleanProperty(true);
         tfProNum.focusedProperty().addListener(((observable, oldValue, newValue) -> {
             if(!newValue){
                 var inputNumber = tfProNum.getText();

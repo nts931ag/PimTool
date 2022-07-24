@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.rgielen.fxweaver.core.FxControllerAndView;
@@ -47,8 +48,8 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
         stage = event.getStage();
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.initStyle(StageStyle.TRANSPARENT);
+//        stage.initStyle(StageStyle.UNDECORATED);
+//        stage.initStyle(StageStyle.TRANSPARENT);
         /*Dimension2D dimension2DLoading = Util.getCenterSceneDim(stage, 2, 1.5);
         loadingPageCV = fxWeaver.load(LoadingPageController.class);
         loadingPageCV.getView().ifPresent(view -> {
@@ -77,7 +78,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     }
 
     public void loadDashboardIgnoreConnection(){
-        Dimension2D dimension2DLoading = GuiUtil.getCenterSceneDim(stage, 1, 1);
+        Dimension2D dimension2DLoading = GuiUtil.getCenterSceneDim(stage, 1.5, 1.5);
         SupportedLocale locale = SupportedLocale.DEFAULT_LOCALE;
         i18nManager.setupLocale(locale);
         var bundle = i18nManager.bundle();
@@ -90,7 +91,6 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
             loadScene.getStylesheets().add(getClass().getResource("/views/css/main.css").toExternalForm());
             stage.setScene(loadScene);
         });
-
 
         stage.show();
     }

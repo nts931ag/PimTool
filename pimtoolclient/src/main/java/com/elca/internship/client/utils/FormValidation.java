@@ -165,7 +165,7 @@ public class FormValidation {
             msg = i18nManager.text(I18nKey.MSG_VALIDATED_BLANK);
             valid = false;
         }else{
-            String exp = "[\\d+]{0,19}";
+            String exp = "[\\d+]{0,4}";
             valid = val.matches(exp);
             msg = i18nManager.text(I18nKey.MSG_VALIDATED_FORMAT_NUMBER);
 

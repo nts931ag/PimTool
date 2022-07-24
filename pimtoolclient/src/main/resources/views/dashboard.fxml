@@ -93,13 +93,10 @@
       </VBox>
    </left>
    <center>
-      <BorderPane fx:id="bodyContainer" BorderPane.alignment="CENTER">
+      <BorderPane fx:id="bodyContainer">
          <center>
             <Pane fx:id="contentContainer" prefHeight="200.0" prefWidth="200.0" />
          </center>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
