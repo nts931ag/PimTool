@@ -28,6 +28,7 @@ public enum I18nKey {
     LABEL_PROJECT_START_DATE("label.project.start.date"),
     LABEL_PROJECT_END_DATE("label.project.end.date"),
     BUTTON_CREATE_PROJECT("button.create.project"),
+    BUTTON_EDIT_PROJECT("button.edit.project"),
     BUTTON_CANCEL_CREATE_PROJECT("button.cancel.create.project"),
 
     /* Project list ui */

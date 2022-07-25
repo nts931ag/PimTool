@@ -25,6 +25,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -38,6 +39,7 @@ import java.util.*;
 @FxmlView("/views/createProject.fxml")
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CreateProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
     public GridPane gpCreateProjectTab;
@@ -96,7 +98,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private TextField tfProNum;
 
     public FormValidation projectFormValidation;
-    private FxControllerAndView<ViewListProjectController, Node> tabProjectListCV;
     private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
     private ObservableList<String> listGroups;
     private ObservableList<String> listMembers;
@@ -105,7 +106,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final ProjectEmployeeConsume projectEmployeeConsume;
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
-    private boolean isLoading = false;
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
@@ -123,10 +123,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proMember", false);
         projectFormValidation.getFormFields().put("proDate", true);
         this.addEventListeners();
-
-        /*Platform.runLater(() -> {
-            gpCreateProjectTab.requestFocus();
-        });*/
 
     }
 
@@ -261,6 +257,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
 
     public void initEditProjectLayout(Project project){
+        btnCreate.setText(i18nManager.text(I18nKey.BUTTON_EDIT_PROJECT));
         currentIdEdit = project.getId();
         tfProNum.setText(String.valueOf(project.getProjectNumber()));
         projectFormValidation.getFormFields().put("proNumber", true);
@@ -301,7 +298,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
         listGroups = FXCollections.observableArrayList(i18nManager.text(I18nKey.GROUP_NEW));
-//        listGroups.addAll(restTemplateConsume.getAllGroupId());
         listGroups.addAll(groupRestConsume.retrieveObsListAllGroupIds());
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
@@ -320,6 +316,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         if(validateFrom()) {
             var project = getProjectInputForm();
             var listMember = getMemberInputForm();
+            log.info("Input form project: {}", project);
+            log.info("Input form list member: {}", listMember);
             if(!isEditMode){
                 try {
                     var response = projectRestConsume.createNewProject(project, listMember);
@@ -395,5 +393,4 @@ public class CreateProjectController implements Initializable, ApplicationListen
             DashboardController.navigationHandler.handleNavigateToListProject();
         }
     }
-
 }
