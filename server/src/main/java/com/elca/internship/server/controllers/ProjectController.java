@@ -8,13 +8,12 @@ import com.elca.internship.server.services.EmployeeService;
 import com.elca.internship.server.services.GroupService;
 import com.elca.internship.server.services.ProjectEmployeeService;
 import com.elca.internship.server.services.ProjectService;
-import com.elca.internship.server.utils.Response;
+import com.elca.internship.server.models.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,10 +46,14 @@ public class ProjectController {
 
             projectService.createNewProjectWithEmployeeVisas(project, listEmployeeVisa);
 
-            return new Response(false, "Create new project successfully!");
+            return new Response(0, "Create new project successfully!");
 
-        } catch (JsonProcessingException | ProjectNumberAlreadyExistedException | EmployeeNotExistedException | GroupNotExistedException e) {
-            return new Response(true, e.getMessage());
+        } catch (JsonProcessingException | ProjectNumberAlreadyExistedException  e) {
+            return new Response(1, e.getMessage());
+        } catch ( EmployeeNotExistedException enee){
+            return new Response(2, enee.getMessage());
+        } catch ( GroupNotExistedException gnee){
+            return new Response(3, gnee.getMessage());
         }
     }
 
@@ -65,9 +68,11 @@ public class ProjectController {
 
             projectService.updateProjectWithListEmployeeVisa(project, listEmployeeVisa);
 
-            return new Response(false, "Save project successfully!");
-        } catch (JsonProcessingException | GroupNotExistedException | EmployeeNotExistedException e) {
-            return new Response(true, e.getMessage());
+            return new Response(0, "Save project successfully!");
+        } catch (JsonProcessingException | EmployeeNotExistedException enee) {
+            return new Response(2, enee.getMessage());
+        }catch ( GroupNotExistedException gnee){
+            return new Response(3, gnee.getMessage());
         }
     }
 
@@ -78,17 +83,17 @@ public class ProjectController {
             var project = projectService.getProjectById(projectId);
             projectEmployeeService.removeProjectEmployeeByProjectId(projectId);
             projectService.deleteProject(project);
-            return new Response(false, "delete project successfully!");
+            return new Response(0, "delete project successfully!");
 
         }catch (EmptyResultDataAccessException e){
-            return new Response(true, "Delete project failed!");
+            return new Response(1, "Delete project failed!");
         }
     }
 
     @DeleteMapping(value = "/delete")
     public Response deleteProjects(@RequestParam(value = "Ids") List<Long> Ids){
         projectService.deleteProjectsByIds(Ids);
-        return new Response(false, "Delete project successfully");
+        return new Response(0, "Delete project successfully");
     }
 
     @GetMapping(value = "/search")

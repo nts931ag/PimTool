@@ -61,7 +61,11 @@ public enum I18nKey {
     MSG_ALERT_DANGER("msg.alert.danger"),
     MSG_DELETE_ITEM_QUANTITY("msg.delete.item.quantity"),
     MSG_DELETE_ITEM_SELECTED_TITLE("msg.delete.item.selected.title"),
-    MSG_VALIDATED_EMPLOYEE_VISAS("msg.validated.employee.visas");
+    MSG_VALIDATED_EMPLOYEE_VISAS("msg.validated.employee.visas"),
+    /* MSG ERROR RESPONSE */
+    RESPONSE_ERROR_PROJECT_NUMBER("response.error.project.number"),
+    RESPONSE_ERROR_PROJECT_GROUP("response.error.project.group"),
+    RESPONSE_ERROR_PROJECT_MEMBERS("response.error.project.members");
 
     private final String key;
 

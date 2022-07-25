@@ -1,4 +1,4 @@
-package com.elca.internship.server.utils;
+package com.elca.internship.server.models;
 
 
 import lombok.AllArgsConstructor;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Response {
-    private boolean isError;
+    private int typeError;
     private String statusMsg;
 }

@@ -323,10 +323,10 @@ public class CreateProjectController implements Initializable, ApplicationListen
             if(!isEditMode){
                 try {
                     var response = projectRestConsume.createNewProject(project, listMember);
-                    if(!response.isError()){
+                    if(response.getTypeError() == 0){
                         DashboardController.navigationHandler.handleNavigateToListProject();
                     }else{
-                        alertDangerCV.getController().setContentAndShowAlertLabel(response.getStatusMsg());
+                        alertDangerCV.getController().setContentAndShowAlertLabel(response);
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
@@ -334,10 +334,10 @@ public class CreateProjectController implements Initializable, ApplicationListen
             }else{
                 try {
                     var response = projectRestConsume.saveProjectChange(project, listMember);
-                    if(!response.isError()){
+                    if(response.getTypeError() == 0){
                         DashboardController.navigationHandler.handleNavigateToListProject();
                     }else{
-                        alertDangerCV.getController().setContentAndShowAlertLabel(response.getStatusMsg());
+                        alertDangerCV.getController().setContentAndShowAlertLabel(response);
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
