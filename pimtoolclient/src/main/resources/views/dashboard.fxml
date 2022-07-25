@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="MainContainer" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
+<?import javafx.scene.layout.AnchorPane?>
+<BorderPane fx:id="MainContainer" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
    <top>
       <HBox fx:id="headerContainer" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="border-bottom" stylesheets="@css/main.css">
          <children>
@@ -95,7 +96,7 @@
    <center>
       <BorderPane fx:id="bodyContainer">
          <center>
-            <Pane fx:id="contentContainer" prefHeight="200.0" prefWidth="200.0" />
+            <AnchorPane fx:id="contentContainer" prefHeight="200.0" prefWidth="200.0" />
          </center>
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

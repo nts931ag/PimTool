@@ -230,20 +230,28 @@ public class CreateProjectController implements Initializable, ApplicationListen
         gpCreateProjectTab.setVgap(15);
         gpCreateProjectTab.setHgap(10);
         var colsConstraints = gpCreateProjectTab.getColumnConstraints();
-        colsConstraints.get(0).setPercentWidth(8);
-        colsConstraints.get(1).setPercentWidth(14);
-        colsConstraints.get(2).setPercentWidth(14);
-        colsConstraints.get(3).setPercentWidth(14);
-        colsConstraints.get(4).setPercentWidth(50);
+        colsConstraints.get(0).setMaxWidth(150);
+        colsConstraints.get(1).setPrefWidth(200);
+        colsConstraints.get(1).setMaxWidth(300);
+        colsConstraints.get(2).setMaxWidth(150);
+        colsConstraints.get(3).setPrefWidth(200);
+        colsConstraints.get(3).setMaxWidth(300);
+        colsConstraints.get(4).setMinWidth(300);
+
         cbProGroup.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         cbProStatus.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         pickerEndDate.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         pickerStartDate.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
         var rowsConstraints = gpCreateProjectTab.getRowConstraints();
-        rowsConstraints.get(0).setPrefHeight(1);
-        for(var i = 1; i< rowsConstraints.size();++i){
-            rowsConstraints.get(i).setPrefHeight(35);
+        rowsConstraints.get(0).setMaxHeight(1);
+        for(var i = 1; i< rowsConstraints.size()-1;++i){
+            rowsConstraints.get(i).setMaxHeight(35);
         }
+        rowsConstraints.get(11).setPrefHeight(35);
+        AnchorPane.setBottomAnchor(gpCreateProjectTab, 10.0);
+        AnchorPane.setLeftAnchor(gpCreateProjectTab, 0.0);
+        AnchorPane.setRightAnchor(gpCreateProjectTab, 0.0);
+        AnchorPane.setTopAnchor(gpCreateProjectTab, 10.0);
 
         alertDangerCV = fxWeaver.load(AlertDangerController.class, i18nManager.bundle());
         var node = (HBox) alertDangerCV.getView().get();
