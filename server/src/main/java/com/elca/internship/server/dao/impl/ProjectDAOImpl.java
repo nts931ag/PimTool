@@ -48,6 +48,12 @@ public class ProjectDAOImpl implements ProjectDAO {
                 ", version=:proVersion" +
                 " WHERE id =:proId;";
 
+        var localDate = project.getEndDate();
+        Date date = null;
+        if(localDate != null){
+            date = Date.valueOf(localDate);
+        }
+
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("proId", project.getId())
                 .addValue("groupId", project.getGroupId())
@@ -56,7 +62,7 @@ public class ProjectDAOImpl implements ProjectDAO {
                 .addValue("proCus", project.getCustomer())
                 .addValue("proSta", project.getStatus().toString())
                 .addValue("proStart", Date.valueOf(project.getStartDate()))
-                .addValue("proEnd", Date.valueOf(project.getEndDate()))
+                .addValue("proEnd", date)
                 .addValue("proVersion", oldProject.getVersion() + 1)
                 ;
 

@@ -1,5 +1,7 @@
 package com.elca.internship.client.controllers;
 
+import com.elca.internship.client.i18n.I18nKey;
+import com.elca.internship.client.models.entity.Response;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -8,6 +10,7 @@ import javafx.scene.layout.HBox;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
 import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
+import lombok.AllArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +20,12 @@ import java.util.ResourceBundle;
 
 @Component
 @FxmlView("/views/alertDanger.fxml")
+@AllArgsConstructor
 public class AlertDangerController implements Initializable {
     public HBox alertDanger;
     public Label lbAlertDanger;
     public HBox hboxIcon;
+    private final I18nKey i18nKey;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -33,8 +38,11 @@ public class AlertDangerController implements Initializable {
         });
     }
 
-    public void setContentAndShowAlertLabel(String msg){
-        lbAlertDanger.setText(msg);
+    public void setContentAndShowAlertLabel(Response e){
+
+
+        lbAlertDanger.setText(e.getStatusMsg());
         alertDanger.setVisible(true);
+
     }
 }
