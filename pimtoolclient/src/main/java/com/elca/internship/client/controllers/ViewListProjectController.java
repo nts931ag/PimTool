@@ -22,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -99,18 +100,26 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private FxControllerAndView<RemoveItemPaneController, Node> removeItemPaneCV;
 
     private void initLayout() {
+        AnchorPane.setTopAnchor(vbListProject, 0.0);
+        AnchorPane.setRightAnchor(vbListProject, 0.0);
+        AnchorPane.setBottomAnchor(vbListProject, 0.0);
+        AnchorPane.setLeftAnchor(vbListProject, 0.0);
         hbFilterListProject.setPadding(new Insets(25,0,25,0));
         cbStatus.setPrefWidth(200);
         btnSearch.setPrefWidth(200);
         tfSearch.setFocusTraversable(false);
 
-        colCheck.setPrefWidth(30);
-        colProDel.setPrefWidth(70);
-        colProNum.setPrefWidth(100);
-        colProCustomer.setPrefWidth(150);
-        colProName.setPrefWidth(400);
-        colProStatus.setPrefWidth(100);
-        colProStart.setPrefWidth(150);
+        colCheck.setMinWidth(30);
+        colCheck.setMaxWidth(30);
+        colProNum.setMinWidth(80);
+        colProNum.setMaxWidth(80);
+        colProName.setMinWidth(350);
+        colProStatus.setMinWidth(70);
+        colProStatus.setMaxWidth(70);
+        colProCustomer.setMinWidth(250);
+        colProStart.setMinWidth(100);
+        colProDel.setMinWidth(70);
+        colProDel.setMaxWidth(70);
 
         colCheck.getStyleClass().add("table-column-align-center");
         colProDel.getStyleClass().add("table-column-align-center");
