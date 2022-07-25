@@ -69,4 +69,10 @@ public class ProjectServiceTest {
         var listEmployee = List.of("TTT", "NGU", "TRA");
         projectService.updateProjectWithListEmployeeVisa(project, listEmployee);
     }
+
+    @Test
+    public void findAllProjectSpecifiedWithPagination(){
+        var listProject = projectService.getProjectByCriteriaWithPagination("","NEW",0,4);
+        listProject.stream().forEach(System.out::println);
+    }
 }

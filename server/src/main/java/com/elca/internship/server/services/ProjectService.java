@@ -4,6 +4,7 @@ import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
 import com.elca.internship.server.models.exceptions.GroupNotExistedException;
 import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
+import org.springframework.data.relational.core.sql.In;
 
 import java.util.List;
 
@@ -27,4 +28,6 @@ public interface ProjectService {
     void deleteProjectsByIds(List<Long> Ids);
 
     Long findProjectNumber(Long proNum);
+
+    List<Project> getProjectByCriteriaWithPagination(String proName, String proStatus, Integer pageNumber, Integer pageSize);
 }

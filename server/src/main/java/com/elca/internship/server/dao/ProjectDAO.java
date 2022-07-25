@@ -2,6 +2,9 @@ package com.elca.internship.server.dao;
 
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -36,4 +39,10 @@ public interface ProjectDAO {
     void deleteByIds(List<Long> ids);
 
     Long findProjectNumber(Long proNum);
+
+    int count();
+
+    Page<Project> findAllProjectWithPagination(Pageable pageable);
+
+    Page<Project> findAllProjectSpecifiedWithPagination(String proCriteria, String proStatus, Pageable pageable);
 }

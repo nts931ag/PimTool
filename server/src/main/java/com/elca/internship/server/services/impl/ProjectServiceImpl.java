@@ -13,6 +13,9 @@ import com.elca.internship.server.services.ProjectService;
 import com.elca.internship.server.validator.EmployeeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -139,6 +142,18 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Long findProjectNumber(Long proNum) throws EmptyResultDataAccessException{
         return projectDAO.findProjectNumber(proNum);
+    }
+
+    @Override
+    public List<Project> getProjectByCriteriaWithPagination(String proCriteria, String proStatus, Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        if(proCriteria.isBlank() && proStatus.isBlank()){
+            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(null, null, pageRequest);
+            return pageProject.get().toList();
+        }else{
+            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(proCriteria, proStatus, pageRequest);
+            return pageProject.get().toList();
+        }
     }
 
 }

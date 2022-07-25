@@ -97,8 +97,8 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/search")
-    public List<Project> searchProjectCriteriaSpecified(@RequestParam(value = "proCriteria") String proName, @RequestParam(value = "proStatus") String proStatus){
-        return projectService.getProjectByCriteria(proName, proStatus);
+    public List<Project> searchProjectCriteriaSpecified(@RequestParam(value = "proCriteria") String proCriteria, @RequestParam(value = "proStatus") String proStatus){
+        return projectService.getProjectByCriteria(proCriteria, proStatus);
     }
 
     @GetMapping(value = "/{proNum}")
@@ -108,5 +108,15 @@ public class ProjectController {
         }catch (EmptyResultDataAccessException e){
             return 0L;
         }
+    }
+
+    @GetMapping(value = "/test/search")
+    public List<Project> searchProjectCriteriaSpecifiedWithPagination(
+            @RequestParam(value = "proCriteria") String proCriteria,
+            @RequestParam(value = "proStatus") String proStatus,
+            @RequestParam(value = "pageNumber") Integer pageNumber,
+            @RequestParam(value = "pageSize") Integer pageSize
+    ){
+        return projectService.getProjectByCriteriaWithPagination(proCriteria, proStatus, pageNumber, pageSize);
     }
 }

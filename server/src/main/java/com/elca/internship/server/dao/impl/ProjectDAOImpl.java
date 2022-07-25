@@ -6,6 +6,11 @@ import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedE
 import com.elca.internship.server.utils.ProjectRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -151,7 +156,12 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     @Override
     public List<Project> findByProNumAndProStatus(String proCriteria, String proStatus) {
-        final var sql = "SELECT DISTINCT * FROM project where project_number = :proCriteria and status like :proStatus";
+        final var sql = """
+                SELECT DISTINCT * FROM project 
+                where project_number = :proCriteria 
+                        and status like :proStatus
+                """;
+        var proStringCriteria = "%" + proCriteria + "%";
         var namedParameters = new MapSqlParameterSource()
                 .addValue("proCriteria", proCriteria)
                 .addValue("proStatus", proStatus);
@@ -182,6 +192,53 @@ public class ProjectDAOImpl implements ProjectDAO {
         var namedParameters = new MapSqlParameterSource()
                 .addValue("proNum", proNum);
         return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, Long.class);
+    }
+
+    @Override
+    public int count() {
+        return jdbcTemplate.queryForObject("SELECT count(*) FROM project", Integer.class);
+    }
+
+    @Override
+    public Page<Project> findAllProjectWithPagination(Pageable pageable) {
+        int count = this.count();
+        Order order = !pageable.getSort().isEmpty() ? pageable.getSort().toList().get(0) : Order.by("project_number");
+        List<Project> projects = jdbcTemplate.query("SELECT * FROM PROJECT ORDER BY " + order.getProperty() + " "
+        + order.getDirection().name() + " LIMIT " + pageable.getPageSize() + " OFFSET " + pageable.getOffset(),
+                new ProjectRowMapper());
+        return new PageImpl<>(projects, pageable, count);
+    }
+
+    @Override
+    public Page<Project> findAllProjectSpecifiedWithPagination(String proCriteria, String proStatus, Pageable pageable) {
+        int count = this.count();
+        if(proCriteria.isBlank() && proStatus.isBlank()){
+            proCriteria = "%";
+            proStatus = "%";
+        }else {
+            if(proCriteria.isBlank()){
+                proCriteria = "%";
+                proStatus = "%"+proStatus+"%";
+            }else{
+                proCriteria = "%"+proCriteria+"%";
+                proStatus = "%";
+            }
+        }
+
+
+        var sql = "SELECT * FROM PROJECT " +
+                "WHERE (CAST(project_number as CHAR(50)) like :proCriteria or lower(name) like :proCriteria or lower(customer) like :proCriteria) " +
+                "and status like :proStatus " +
+                "ORDER BY project_number ASC LIMIT :pageSize OFFSET :pageOffSet;";
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("pageSize", pageable.getPageSize())
+                .addValue("pageOffSet", pageable.getOffset())
+                .addValue("proCriteria", proCriteria)
+                .addValue("proStatus", proStatus);
+
+        List<Project> projects = namedParameterJdbcTemplate.query(sql, parameterSource, new ProjectRowMapper());
+        return new PageImpl<Project>(projects, pageable, count);
     }
 
 
