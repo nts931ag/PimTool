@@ -108,6 +108,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
         btnSearch.setPrefWidth(200);
         tfSearch.setFocusTraversable(false);
 
+        tbProject.setFixedCellSize(50);
+        tbProject.setPrefHeight((50.0 * (itemPerPage+1)) + 2);
 
         colCheck.setMinWidth(30);
         colCheck.setMaxWidth(30);

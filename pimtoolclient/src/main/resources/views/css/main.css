@@ -108,6 +108,10 @@
 
 /* table view */
 
+.table-view .column-header-background {
+    -fx-pref-height: 50px;
+}
+
 .table-view .label{
     -fx-text-fill: #666666;
     -fx-font-weight: 700;
