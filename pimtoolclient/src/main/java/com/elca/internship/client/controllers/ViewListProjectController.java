@@ -108,6 +108,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         btnSearch.setPrefWidth(200);
         tfSearch.setFocusTraversable(false);
 
+
         colCheck.setMinWidth(30);
         colCheck.setMaxWidth(30);
         colProNum.setMinWidth(80);
@@ -165,6 +166,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
     int itemPerPage = 5;
 
     private Node createPage(int pageIndex, String tfSearch, String cbStatus){
+        selectedCheckBoxes.clear();
+//        numCheckBoxesSelected.dispose();
         var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,pageIndex, itemPerPage);
         dataProjects = FXCollections.observableArrayList(projects.stream()
                 .map(e ->
@@ -224,16 +227,9 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         }));
 
-//        tbProject.setFixedCellSize(45);
-//        tbProject.prefHeightProperty().bind(Bindings.size(tbProject.getItems()).multiply(tbProject.getFixedCellSize()).add(45));
-        removeItemPaneCV = fxWeaver.load(RemoveItemPaneController.class, i18nManager.bundle());
-        removeItemPaneCV.getView().ifPresent(view -> {
-            vbTableView.getChildren().add(view);
-            removeItemPaneCV.getController().setBindingItemQuantity(numCheckBoxesSelected);
-            removeItemPaneCV.getController().iconNode.addEventHandler(MouseEvent.MOUSE_CLICKED, deleteMultiItemHandler());
-            view.setVisible(false);
-        });
-        return tbProject;
+
+
+        return vbTableView;
     }
 
 
