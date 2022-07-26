@@ -147,13 +147,15 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> getProjectByCriteriaWithPagination(String proCriteria, String proStatus, Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
-        if(proCriteria.isBlank() && proStatus.isBlank()){
-            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(null, null, pageRequest);
-            return pageProject.get().toList();
-        }else{
-            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(proCriteria, proStatus, pageRequest);
-            return pageProject.get().toList();
-        }
+        var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(proCriteria, proStatus, pageRequest);
+        return pageProject.get().toList();
+//        if(proCriteria.isBlank() && proStatus.isBlank()){
+//            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination("", "", pageRequest);
+//            return pageProject.get().toList();
+//        }else{
+//            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(proCriteria, proStatus, pageRequest);
+//            return pageProject.get().toList();
+//        }
     }
 
 }

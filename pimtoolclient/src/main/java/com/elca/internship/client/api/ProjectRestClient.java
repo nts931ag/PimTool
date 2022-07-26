@@ -1,7 +1,9 @@
 package com.elca.internship.client.api;
 
 import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.entity.ProjectTable;
 import com.elca.internship.client.models.entity.Response;
+import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -104,5 +106,22 @@ public class ProjectRestClient {
         return webClient.get().uri(URI_GET_PROJECT_NUMBER, projectNumber)
                 .retrieve()
                 .bodyToMono(Long.class);
+    }
+
+    private static String URI_TEST = "http://localhost:8080/api/projects/test/search";
+
+    public List<Project> getProjectsByCriteriaSpecifiedWithPagination(String tfSearchValue, String cbStatusValue, int pageIndex, int itemPerPage) {
+        var uri = UriComponentsBuilder.fromUriString(URI_TEST)
+                .queryParam("proCriteria", tfSearchValue)
+                .queryParam("proStatus", cbStatusValue)
+                .queryParam("pageNumber", pageIndex)
+                .queryParam("pageSize", itemPerPage)
+                .build().toUriString();
+        return webClient.get()
+                .uri(uri)
+                .retrieve()
+                .bodyToFlux(Project.class)
+                .collectList()
+                .block();
     }
 }

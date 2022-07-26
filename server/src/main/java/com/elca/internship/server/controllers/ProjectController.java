@@ -117,6 +117,7 @@ public class ProjectController {
             @RequestParam(value = "pageNumber") Integer pageNumber,
             @RequestParam(value = "pageSize") Integer pageSize
     ){
+        log.info("{} {} {} {}", proCriteria, proStatus, pageNumber, pageSize);
         return projectService.getProjectByCriteriaWithPagination(proCriteria, proStatus, pageNumber, pageSize);
     }
 }

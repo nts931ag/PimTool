@@ -1,6 +1,7 @@
 package com.elca.internship.client.consume;
 
 import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.entity.ProjectTable;
 import com.elca.internship.client.models.entity.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.collections.ObservableList;
@@ -23,4 +24,6 @@ public interface ProjectRestConsume {
     void removeProjectsByIds(List<Long> listIdDelete);
 
     Boolean CheckProjectNumberIsExisted(Long projectNumber);
+
+    ObservableList<Project> retrieveProjectsWithPagination(String tfSearchValue, String cbStatusValue, int pageIndex, int itemPerPage);
 }

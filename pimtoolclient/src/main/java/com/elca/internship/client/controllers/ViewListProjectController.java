@@ -85,6 +85,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
     private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
+    private FxControllerAndView<RemoveItemPaneController, Node> removeItemPaneCV;
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
@@ -94,10 +95,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initLayout();
-        fillValueToLayout();
     }
 
-    private FxControllerAndView<RemoveItemPaneController, Node> removeItemPaneCV;
 
     private void initLayout() {
         AnchorPane.setTopAnchor(vbListProject, 0.0);
@@ -121,6 +120,14 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProDel.setMinWidth(70);
         colProDel.setMaxWidth(70);
 
+        colCheck.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
+        colProDel.setCellValueFactory(new PropertyValueFactory<>("icDelete"));
+        colProNum.setCellValueFactory(new PropertyValueFactory<>("lbProNumLink"));
+        colProName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colProCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        colProStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+
         colCheck.getStyleClass().add("table-column-align-center");
         colProDel.getStyleClass().add("table-column-align-center");
         colProNum.getStyleClass().add("table-column-align-right");
@@ -132,10 +139,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
             removeItemPaneCV.getController().iconNode.addEventHandler(MouseEvent.MOUSE_CLICKED, deleteMultiItemHandler());
             view.setVisible(false);
         });
-    }
-
-
-    private void fillValueToLayout() {
 
         var listStatus = FXCollections.observableArrayList(
                 i18nManager.text(I18nKey.PROJECT_STATUS_NEW)
@@ -156,16 +159,13 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 }
             }
         });
-/*        tbProject.setFocusTraversable(false);
-        tbProject.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        tbProject.getSelectionModel().setCellSelectionEnabled(true);*/
 
+//        paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, "",""));
     }
+    int itemPerPage = 5;
 
-
-    public void fillDataProjectToTable(String tfSearch, String status){
-        IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
-        var projects = projectRestConsume.searchProjectByCriteriaSpecified(tfSearch, status);
+    private Node createPage(int pageIndex, String tfSearch, String cbStatus){
+        var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,pageIndex, itemPerPage);
         dataProjects = FXCollections.observableArrayList(projects.stream()
                 .map(e ->
                         new ProjectTable(
@@ -183,7 +183,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                         )
                 )
                 .toList());
-
+//        tbProject.setItems(dataProjects);
 
         for(var dataProject: dataProjects){
             if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
@@ -212,13 +212,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
             });
         }
 
-        colCheck.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
-        colProDel.setCellValueFactory(new PropertyValueFactory<>("icDelete"));
-        colProNum.setCellValueFactory(new PropertyValueFactory<>("lbProNumLink"));
-        colProName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colProCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
-        colProStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+
 
         tbProject.setItems(dataProjects);
 
@@ -229,6 +223,82 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 removeItemPaneCV.getController().hbLayout.setVisible(false);
             }
         }));
+
+//        tbProject.setFixedCellSize(45);
+//        tbProject.prefHeightProperty().bind(Bindings.size(tbProject.getItems()).multiply(tbProject.getFixedCellSize()).add(45));
+        removeItemPaneCV = fxWeaver.load(RemoveItemPaneController.class, i18nManager.bundle());
+        removeItemPaneCV.getView().ifPresent(view -> {
+            vbTableView.getChildren().add(view);
+            removeItemPaneCV.getController().setBindingItemQuantity(numCheckBoxesSelected);
+            removeItemPaneCV.getController().iconNode.addEventHandler(MouseEvent.MOUSE_CLICKED, deleteMultiItemHandler());
+            view.setVisible(false);
+        });
+        return tbProject;
+    }
+
+
+    public void fillDataProjectToTable(String tfSearch, String status){
+        IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
+        /*var projects = projectRestConsume.searchProjectByCriteriaSpecified(tfSearch, status);
+        dataProjects = FXCollections.observableArrayList(projects.stream()
+                .map(e ->
+                        new ProjectTable(
+                                new CheckBox(),
+                                e.getId(),
+                                e.getGroupId(),
+                                e.getProjectNumber(),
+                                e.getName(),
+                                e.getCustomer(),
+                                e.getStatus(),
+                                e.getStartDate(),
+                                e.getEndDate(),
+                                e.getVersion(),
+                                new IconNode(GoogleMaterialDesignIcons.DELETE)
+                        )
+                )
+                .toList());*/
+
+        paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, tfSearch,status));
+
+
+        /*for(var dataProject: dataProjects){
+            if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
+                dataProject.getIcDelete().getStyleClass().add("icon-node");
+                dataProject.getIcDelete().setOnMouseClicked(event -> {
+                    var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
+                    var alertDialog = new AlertDialog(
+                            "CONFIRMATION"
+                            ,"Do you really want to delete this project"
+                            ,"Please choose \"Yes\" or \"No\"", Alert.AlertType.CONFIRMATION);
+                    var confirm = alertDialog.getConfirmationDeleteProjectDialog();
+                    confirm.showAndWait();
+                    if(confirm.getResult() == ButtonType.YES){
+                        dataProjects.remove(projectTableDeleted);
+                        projectRestConsume.removeProjectById(projectTableDeleted.getId());
+                    }
+                });
+                configureCheckBox(dataProject.getCheckBox());
+            }else{
+                dataProject.setIcDelete(null);
+                dataProject.getCheckBox().setDisable(true);
+            }
+            dataProject.getLbProNumLink().getStyleClass().add("lb-super-link");
+            dataProject.getLbProNumLink().setOnMouseClicked(event -> {
+                DashboardController.navigationHandler.handleNavigateToEditProject(dataProject);
+            });
+        }
+
+
+
+        tbProject.setItems(dataProjects);
+
+        numCheckBoxesSelected.addListener(((observable, oldValue, newValue) -> {
+            if(numCheckBoxesSelected.intValue() > 0){
+                removeItemPaneCV.getController().hbLayout.setVisible(true);
+            }else{
+                removeItemPaneCV.getController().hbLayout.setVisible(false);
+            }
+        }));*/
     }
 
     private void configureCheckBox(CheckBox checkBox){
@@ -244,6 +314,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         }));
     }
+
+
 
     @FXML
     public void onBtnSearchClicked() {
