@@ -236,7 +236,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         colsConstraints.get(2).setMaxWidth(150);
         colsConstraints.get(3).setPrefWidth(200);
         colsConstraints.get(3).setMaxWidth(300);
-        colsConstraints.get(4).setMinWidth(300);
+        colsConstraints.get(4).setPrefWidth(450);
+        colsConstraints.get(4).setMinWidth(450);
 
         cbProGroup.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         cbProStatus.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -245,9 +246,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
         var rowsConstraints = gpCreateProjectTab.getRowConstraints();
         rowsConstraints.get(0).setMaxHeight(1);
         for(var i = 1; i< rowsConstraints.size()-1;++i){
-            rowsConstraints.get(i).setMaxHeight(35);
+            rowsConstraints.get(i).setMaxHeight(45);
         }
-        rowsConstraints.get(11).setPrefHeight(35);
+        rowsConstraints.get(11).setPrefHeight(45);
         AnchorPane.setBottomAnchor(gpCreateProjectTab, 10.0);
         AnchorPane.setLeftAnchor(gpCreateProjectTab, 0.0);
         AnchorPane.setRightAnchor(gpCreateProjectTab, 0.0);
