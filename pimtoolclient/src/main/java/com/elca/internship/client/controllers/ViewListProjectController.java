@@ -368,6 +368,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 dataProjects.removeAll(dataProjectDeleted);
                 projectRestConsume.removeProjectsByIds(listIdDelete);
                 selectedCheckBoxes.clear();
+                removeItemPaneCV.getController().hbLayout.setVisible(false);
             }
 
         };
