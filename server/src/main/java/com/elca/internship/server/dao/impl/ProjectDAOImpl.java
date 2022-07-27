@@ -5,10 +5,8 @@ import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
 import com.elca.internship.server.utils.ProjectRowMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,10 +14,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
-
 import java.sql.Date;
 import java.util.List;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -219,7 +215,8 @@ public class ProjectDAOImpl implements ProjectDAO {
             if(proCriteria.isBlank()){
                 proCriteria = "%";
                 proStatus = "%"+proStatus+"%";
-            }else{
+            }
+            if(proStatus.isBlank()){
                 proCriteria = "%"+proCriteria+"%";
                 proStatus = "%";
             }
