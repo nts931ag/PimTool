@@ -258,6 +258,14 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 )
                 .toList());*/
 
+        var projects = projectRestConsume.searchProjectByCriteriaSpecified(tfSearch, status);
+        var size = projects.size();
+        if(size % 5 == 0){
+            paginationTableProject.setPageCount((size/5));
+        }else{
+            paginationTableProject.setPageCount((size/5) + 1);
+        }
+
         paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, tfSearch,status));
 
 

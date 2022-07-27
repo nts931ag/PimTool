@@ -22,7 +22,6 @@ public class I18nManagerImpl implements I18nManager{
 
     public I18nManagerImpl() {
         Locale.setDefault(SupportedLocale.DEFAULT_LOCALE.getLocale());
-
         Stream.of(SupportedLocale.values())
                 .forEach(this::loadBundle);
     }

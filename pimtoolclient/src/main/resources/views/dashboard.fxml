@@ -4,12 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.layout.AnchorPane?>
 <BorderPane fx:id="MainContainer" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
    <top>
       <HBox fx:id="headerContainer" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="border-bottom" stylesheets="@css/main.css">
@@ -29,9 +28,9 @@
             </Label>
             <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
                <children>
-                  <Label styleClass="label-menu-button" text="%dashboard.menu.language.en" />
+                  <Label onMouseClicked="#switchToEN" styleClass="label-menu-button" text="%dashboard.menu.language.en" />
                   <Label text="|" />
-                  <Label styleClass="label-menu-button" text="%dashboard.menu.language.fr">
+                  <Label onMouseClicked="#switchToFR" styleClass="label-menu-button" text="%dashboard.menu.language.fr">
                      <HBox.margin>
                         <Insets right="50.0" />
                      </HBox.margin>

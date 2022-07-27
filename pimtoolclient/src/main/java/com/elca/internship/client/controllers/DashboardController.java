@@ -1,6 +1,7 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
+import com.elca.internship.client.i18n.SupportedLocale;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.utils.NavigationHandler;
 import com.elca.internship.client.utils.GuiUtil;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
@@ -138,6 +140,15 @@ public class DashboardController implements Initializable, ApplicationListener<S
             editProjectCV.getController().initEditProjectLayout(project);
             contentContainer.getChildren().add(view);
         });
+
+    }
+    @FXML
+    public void switchToEN() {
+        i18nManager.setupLocale(SupportedLocale.ENGLISH);
+    }
+    @FXML
+    public void switchToFR() {
+        i18nManager.setupLocale(SupportedLocale.FRANCE);
 
     }
 }
