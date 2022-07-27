@@ -43,7 +43,7 @@ public class ProjectController {
             var jsonNode = objectMapper.readTree(jsonObject);
             var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
             var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
-
+            log.info("Project info: {}, list employee visa: {}", project, listEmployeeVisa);
             projectService.createNewProjectWithEmployeeVisas(project, listEmployeeVisa);
 
             return new Response(0, "Create new project successfully!");
@@ -65,7 +65,7 @@ public class ProjectController {
             var jsonNode = objectMapper.readTree(jsonObject);
             var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
             var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
-
+            log.info("Project info: {}, list employee visa: {}", project, listEmployeeVisa);
             projectService.updateProjectWithListEmployeeVisa(project, listEmployeeVisa);
 
             return new Response(0, "Save project successfully!");
@@ -81,10 +81,10 @@ public class ProjectController {
     public Response deleteProject(@PathVariable(value = "id") Long projectId){
         try{
             var project = projectService.getProjectById(projectId);
+            log.info("Project will be deleted: {}", project);
             projectEmployeeService.removeProjectEmployeeByProjectId(projectId);
             projectService.deleteProject(project);
             return new Response(0, "delete project successfully!");
-
         }catch (EmptyResultDataAccessException e){
             return new Response(1, "Delete project failed!");
         }
@@ -92,6 +92,7 @@ public class ProjectController {
 
     @DeleteMapping(value = "/delete")
     public Response deleteProjects(@RequestParam(value = "Ids") List<Long> Ids){
+        log.info("List id project: ", Ids);
         projectService.deleteProjectsByIds(Ids);
         return new Response(0, "Delete project successfully");
     }
@@ -103,6 +104,7 @@ public class ProjectController {
 
     @GetMapping(value = "/{proNum}")
     public Long getProjectNumber(@PathVariable(value = "proNum") Long proNum){
+        log.info("Project number: {}", proNum);
         try{
             return projectService.findProjectNumber(proNum);
         }catch (EmptyResultDataAccessException e){
@@ -117,7 +119,7 @@ public class ProjectController {
             @RequestParam(value = "pageNumber") Integer pageNumber,
             @RequestParam(value = "pageSize") Integer pageSize
     ){
-//        log.info("{} {} {} {}", proCriteria, proStatus, pageNumber, pageSize);
+        log.info("Criteria value: {}, status value: {}, page number: {}, page size: {}", proCriteria, proStatus, pageNumber, pageSize);
         return projectService.getProjectByCriteriaWithPagination(proCriteria, proStatus, pageNumber, pageSize);
     }
 }

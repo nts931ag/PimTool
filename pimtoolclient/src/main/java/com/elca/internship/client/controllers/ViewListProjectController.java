@@ -30,6 +30,7 @@ import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
 import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -42,6 +43,7 @@ import java.util.ResourceBundle;
 @Component
 @FxmlView("/views/viewListProject.fxml")
 @RequiredArgsConstructor
+@Slf4j
 public class ViewListProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
     private final ProjectRestConsume projectRestConsume;
@@ -319,7 +321,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public void onBtnSearchClicked() {
         var tfSearchValue = tfSearch.getText();
         var cbStatusValue = cbStatus.getSelectionModel().getSelectedItem();
-
+        log.info("Value of tfSearch {}, value of cbStatus {}", tfSearchValue, cbStatusValue);
         if(tfSearchValue.isBlank() && cbStatusValue == null){
             fillDataProjectToTable(null, null);
         } else if (!tfSearchValue.isBlank() && cbStatusValue != null) {

@@ -215,7 +215,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     private boolean validateFrom() {
         var node = (HBox) alertDangerCV.getView().get();
-        System.out.println(projectFormValidation.getFormFields());
         if (projectFormValidation.getFormFields().containsValue(false)) {
             node.setVisible(true);
             return false;
@@ -330,10 +329,13 @@ public class CreateProjectController implements Initializable, ApplicationListen
             if(!isEditMode){
                 try {
                     var response = projectRestConsume.createNewProject(project, listMember);
+
                     if(response.getTypeError() == 0){
                         DashboardController.navigationHandler.handleNavigateToListProject();
+                        log.info("Reponse: {}", response.getStatusMsg());
                     }else{
                         alertDangerCV.getController().setContentAndShowAlertLabel(response);
+                        log.error("Reponse: {}", response.getStatusMsg());
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
@@ -343,8 +345,10 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     var response = projectRestConsume.saveProjectChange(project, listMember);
                     if(response.getTypeError() == 0){
                         DashboardController.navigationHandler.handleNavigateToListProject();
+                        log.info("Reponse: {}", response.getStatusMsg());
                     }else{
                         alertDangerCV.getController().setContentAndShowAlertLabel(response);
+                        log.error("Reponse: {}", response.getStatusMsg());
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
