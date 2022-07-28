@@ -8,6 +8,7 @@ import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -143,19 +144,31 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbNewClicked() {
+        isEditProject = false;
         lbMenuObjectProperty.set(lbMenuNew);
 
         createProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
-
         createProjectCV.getView().ifPresent(view ->{
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
             contentContainer.getChildren().add(view);
         });
     }
+    public void navigateToEditProjectPage(Project project){
+        isEditProject = true;
+        lbMenuObjectProperty.set(lbMenuNew);
+
+        editProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
+
+        editProjectCV.getView().ifPresent(view ->{
+            contentContainer.getChildren().clear();
+            lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
+            editProjectCV.getController().initEditProjectLayout(project);
+            contentContainer.getChildren().add(view);
+        });
+    }
 
     public void navigateToErrorPage(String msg){
-        lbMenuObjectProperty.set(lbMenuNew);
 
         if(errorPageCV == null){
             errorPageCV = fxWeaver.load(ErrorPageController.class, i18nManager.bundle());
@@ -169,15 +182,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
         });
     }
 
-    public void navigateToEditProjectPage(Project project){
-        editProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
-        editProjectCV.getView().ifPresent(view ->{
-            contentContainer.getChildren().clear();
-            lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
-            editProjectCV.getController().initEditProjectLayout(project);
-            contentContainer.getChildren().add(view);
-        });
-    }
+    private boolean isEditProject = false;
 
     private void switchLanguage(){
         lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
@@ -192,7 +197,12 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
         Label label = lbMenuObjectProperty.get();
         if (lbMenuNew.equals(label)) {
-            createProjectCV.getController().switchLanguage();
+            if(isEditProject){
+                editProjectCV.getController().switchLanguage();
+            }else{
+                createProjectCV.getController().switchLanguage();
+            }
+            projectListCV.getController().switchLanguage();
         } else if (lbMenuProject.equals(label)) {
             projectListCV.getController().switchLanguage();
         } else {

@@ -419,6 +419,19 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     public void switchLanguage(){
+        var listStatus = FXCollections.observableArrayList(
+                i18nManager.text(I18nKey.PROJECT_STATUS_NEW)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_PLANNED)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_IN_PROGRESS)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_FINISHED)
+        );
+        var idxStatusCurrent = cbProStatus.getSelectionModel().getSelectedIndex();
+        cbProStatus.setItems(listStatus);
+        cbProStatus.getSelectionModel().select(idxStatusCurrent);
+        listGroups.set(0,i18nManager.text(I18nKey.GROUP_NEW));
+//        cbProGroup.setItems(listGroups);
+
+
         lbProEndDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_END_DATE));
         lbProStartDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_START_DATE));
         lbProStatus.setText(i18nManager.text(I18nKey.LABEL_PROJECT_STATUS));
