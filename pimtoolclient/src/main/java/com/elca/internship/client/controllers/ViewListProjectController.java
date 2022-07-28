@@ -34,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
+import net.rgielen.fxweaver.core.SimpleFxControllerAndView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import java.net.URL;
@@ -101,6 +102,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
 
     private void initLayout() {
+
         AnchorPane.setTopAnchor(vbListProject, 0.0);
         AnchorPane.setRightAnchor(vbListProject, 0.0);
         AnchorPane.setBottomAnchor(vbListProject, 0.0);
@@ -344,10 +346,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
     }
 
 
-
     @FXML
     public void onLbBtnResetSearchClicked(MouseEvent mouseEvent) {
-
         tfSearch.clear();
         cbStatus.getSelectionModel().select(-1);
         fillDataProjectToTable(null, null);

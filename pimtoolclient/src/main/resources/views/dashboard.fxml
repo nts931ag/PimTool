@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="MainContainer" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
+<BorderPane fx:id="MainContainer" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.DashboardController">
    <top>
       <HBox fx:id="headerContainer" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="border-bottom" stylesheets="@css/main.css">
          <children>
@@ -77,10 +77,14 @@
                   <Insets left="40.0" top="10.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="lbMenuProject" onMouseClicked="#onLbProjectClicked" styleClass="label-menu-button" text="%dashboard.menu.list.project">
+            <Label fx:id="lbMenuProject" onMouseClicked="#onLbProjectClicked" text="%dashboard.menu.list.project">
                <VBox.margin>
                   <Insets left="40.0" />
                </VBox.margin>
+               <styleClass>
+                  <String fx:value="label-menu-button" />
+                  <String fx:value="label-menu-button-active" />
+               </styleClass>
             </Label>
             <Label fx:id="lbMenuCustomer" styleClass="label-menu-button" text="%dashboard.menu.customer">
                <VBox.margin>

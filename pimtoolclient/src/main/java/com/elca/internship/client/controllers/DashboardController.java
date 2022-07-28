@@ -4,23 +4,17 @@ import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.i18n.SupportedLocale;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.utils.NavigationHandler;
-import com.elca.internship.client.utils.GuiUtil;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
-import net.rgielen.fxweaver.core.FxControllerAndView;
-import net.rgielen.fxweaver.core.FxWeaver;
-import net.rgielen.fxweaver.core.FxmlView;
+import net.rgielen.fxweaver.core.*;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
@@ -74,6 +68,9 @@ public class DashboardController implements Initializable, ApplicationListener<S
     @FXML
     public Label lbMenuSupplier;
 
+    SimpleObjectProperty<Label> lbMenuObjectProperty = new SimpleObjectProperty<>();
+    SimpleObjectProperty<Label> lbLangObjectProperty = new SimpleObjectProperty<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         navigationHandler = new NavigationHandler() {
@@ -104,9 +101,23 @@ public class DashboardController implements Initializable, ApplicationListener<S
         sideBarContainer.setPrefHeight(GuiUtil.getScreenHeight()*90/100);
         headerContainer.setPrefWidth(GuiUtil.getScreenWidth());
         headerContainer.setPrefHeight(GuiUtil.getScreenHeight()*10/100);*/
+        lbMenuObjectProperty.addListener((observable, oldValue, newValue) -> {
+            if(oldValue!= null && oldValue != newValue){
+
+                oldValue.getStyleClass().remove("label-menu-button-active");
+                newValue.getStyleClass().add("label-menu-button-active");
+            }
+        });
+        lbLangObjectProperty.addListener((observable, oldValue, newValue) -> {
+            if(oldValue!= null && oldValue != newValue){
+
+                oldValue.getStyleClass().remove("label-menu-button-active");
+                newValue.getStyleClass().add("label-menu-button-active");
+            }
+        });
 
         navigationHandler.handleNavigateToListProject();
-
+        lbLangObjectProperty.set(lbEN);
     }
 
     @Override
@@ -117,6 +128,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbProjectClicked(){
+        lbMenuObjectProperty.set(lbMenuProject);
+
         if(projectListCV == null){
             projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
         }
@@ -130,6 +143,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbNewClicked() {
+        lbMenuObjectProperty.set(lbMenuNew);
+
         createProjectCV = fxWeaver.load(CreateProjectController.class, i18nManager.bundle());
 
         createProjectCV.getView().ifPresent(view ->{
@@ -140,6 +155,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
     }
 
     public void navigateToErrorPage(String msg){
+        lbMenuObjectProperty.set(lbMenuNew);
+
         if(errorPageCV == null){
             errorPageCV = fxWeaver.load(ErrorPageController.class, i18nManager.bundle());
         }
@@ -174,26 +191,22 @@ public class DashboardController implements Initializable, ApplicationListener<S
         lbMenuSupplier.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_SUPPLIER));
     }
 
-    private boolean isEN = true;
+
 
     @FXML
     public void switchToEN() {
-        if(!isEN){
+        if(lbLangObjectProperty.get() != lbEN){
             i18nManager.setupLocale(SupportedLocale.ENGLISH);
             switchLanguage();
-            lbFR.getStyleClass().remove("label-menu-button-active");
-            lbEN.getStyleClass().add("label-menu-button-active");
-            isEN = true;
+            lbLangObjectProperty.set(lbEN);
         }
     }
     @FXML
     public void switchToFR() {
-        if(isEN){
+        if(lbLangObjectProperty.get() != lbFR){
             i18nManager.setupLocale(SupportedLocale.FRANCE);
             switchLanguage();
-            lbFR.getStyleClass().add("label-menu-button-active");
-            lbEN.getStyleClass().remove("label-menu-button-active");
-            isEN = false;
+            lbLangObjectProperty.set(lbFR);
         }
     }
 }
