@@ -17,6 +17,7 @@
     -fx-font-weight: 800;
     -fx-text-fill: #666666;
 
+
 }
 
 /* Button */
@@ -46,6 +47,13 @@
 .label-menu-button:hover {
     -fx-cursor: hand;
     -fx-underline: true;
+    -fx-text-fill: #2f85fa;
+}
+
+.label-menu-button-active {
+    -fx-font-weight: BOLD;
+    -fx-text-fill: #2f85fa;
+
 }
 
 .label-btn-search{

@@ -313,6 +313,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
             selectedCheckBoxes.add(checkBox);
         }
 
+
         checkBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue){
                 selectedCheckBoxes.add(checkBox);

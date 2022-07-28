@@ -7,10 +7,13 @@ import com.elca.internship.client.utils.NavigationHandler;
 import com.elca.internship.client.utils.GuiUtil;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -30,7 +33,7 @@ import java.util.ResourceBundle;
 public class DashboardController implements Initializable, ApplicationListener<StageReadyEvent> {
 
     private final FxWeaver fxWeaver;
-    public BorderPane MainContainer;
+
     private Stage stage;
     public static NavigationHandler navigationHandler;
     private final I18nManager i18nManager;
@@ -38,7 +41,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
     private FxControllerAndView<CreateProjectController, Node> createProjectCV;
     private FxControllerAndView<ErrorPageController, Node> errorPageCV;
     private FxControllerAndView<CreateProjectController, Node> editProjectCV;
-
+    @FXML
+    public BorderPane MainContainer;
     @FXML
     private AnchorPane contentContainer;
     @FXML
@@ -46,13 +50,29 @@ public class DashboardController implements Initializable, ApplicationListener<S
     @FXML
     public VBox sideBarContainer;
     @FXML
+    public BorderPane bodyContainer;
+    @FXML
     private Label lbHeaderOfTab;
     @FXML
     public Label lbMenuNew;
     @FXML
     public Label lbMenuProject;
     @FXML
-    public BorderPane bodyContainer;
+    public Label lbTitleApp;
+    @FXML
+    public Label lbEN;
+    @FXML
+    public Label lbFR;
+    @FXML
+    public Label lbMenuHelo;
+    @FXML
+    public Label lbMenuLogout;
+    @FXML
+    public Label lbMenu;
+    @FXML
+    public Label lbMenuCustomer;
+    @FXML
+    public Label lbMenuSupplier;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -140,15 +160,40 @@ public class DashboardController implements Initializable, ApplicationListener<S
             editProjectCV.getController().initEditProjectLayout(project);
             contentContainer.getChildren().add(view);
         });
-
     }
+
+    private void switchLanguage(){
+        lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
+        lbMenuNew.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
+        lbMenuProject.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
+        lbTitleApp.setText(i18nManager.text(I18nKey.DASHBOARD_TITLE));
+        lbMenuHelo.setText(i18nManager.text(I18nKey.DASHBOARD_HEADER_HELP));
+        lbMenuLogout.setText(i18nManager.text(I18nKey.DASHBOARD_HEADER_LOGOUT));
+        lbMenu.setText(i18nManager.text(I18nKey.DASHBOARD_MENU));
+        lbMenuCustomer.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CUSTOMER));
+        lbMenuSupplier.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_SUPPLIER));
+    }
+
+    private boolean isEN = true;
+
     @FXML
     public void switchToEN() {
-        i18nManager.setupLocale(SupportedLocale.ENGLISH);
+        if(!isEN){
+            i18nManager.setupLocale(SupportedLocale.ENGLISH);
+            switchLanguage();
+            lbFR.getStyleClass().remove("label-menu-button-active");
+            lbEN.getStyleClass().add("label-menu-button-active");
+            isEN = true;
+        }
     }
     @FXML
     public void switchToFR() {
-        i18nManager.setupLocale(SupportedLocale.FRANCE);
-
+        if(isEN){
+            i18nManager.setupLocale(SupportedLocale.FRANCE);
+            switchLanguage();
+            lbFR.getStyleClass().add("label-menu-button-active");
+            lbEN.getStyleClass().remove("label-menu-button-active");
+            isEN = false;
+        }
     }
 }
