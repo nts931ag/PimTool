@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gpCreateProjectTab" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.CreateProjectController">
+<GridPane fx:id="gpCreateProjectTab" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.CreateProjectController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
@@ -75,7 +75,7 @@
       </HBox>
       <Label fx:id="lbValidateProName" GridPane.columnIndex="4" GridPane.rowIndex="3" />
       <Label fx:id="lbValidateProCustomer" GridPane.columnIndex="4" GridPane.rowIndex="4" />
-      <Label fx:id="lbValidateProGroup" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+      <Label fx:id="lbValidateProGroup" style="-fx-text-fill: green;" text="%label.validate.project.group" wrapText="true" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="5" />
       <Label fx:id="lbValidateProMember" GridPane.columnIndex="4" GridPane.rowIndex="6" />
       <Label fx:id="lbValidateProStatus" GridPane.columnIndex="4" GridPane.rowIndex="7" />
       <Label fx:id="lbValidateProDate" GridPane.columnIndex="4" GridPane.rowIndex="8" />

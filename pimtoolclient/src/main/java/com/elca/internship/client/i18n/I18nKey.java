@@ -27,6 +27,7 @@ public enum I18nKey {
     LABEL_PROJECT_STATUS("label.project.status"),
     LABEL_PROJECT_START_DATE("label.project.start.date"),
     LABEL_PROJECT_END_DATE("label.project.end.date"),
+    LABEL_VALIDATE_PROJECT_GROUP("label.validate.project.group"),
     BUTTON_CREATE_PROJECT("button.create.project"),
     BUTTON_EDIT_PROJECT("button.edit.project"),
     BUTTON_CANCEL_CREATE_PROJECT("button.cancel.create.project"),
@@ -58,6 +59,7 @@ public enum I18nKey {
     MSG_VALIDATED_DATE("msg.validated.date"),
     MSG_VALIDATED_NULL_DATE("msg.validated.null.date"),
     MSG_VALIDATED_TEXT_INPUT_FORMAT("msg.validated.text.input.format"),
+    MSG_VALIDATED_EMPTY_MEMBER("msg.validated.empty.member"),
     /* MSG DELETE */
     MSG_ALERT_DANGER("msg.alert.danger"),
     MSG_DELETE_ITEM_QUANTITY("msg.delete.item.quantity"),

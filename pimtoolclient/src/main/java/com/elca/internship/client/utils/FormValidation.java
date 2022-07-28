@@ -3,6 +3,7 @@ package com.elca.internship.client.utils;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -125,12 +126,17 @@ public class FormValidation {
         return validationResponse(responseLabel, valid, msg);
     }*/
 
-    public static ValidatedResponse isProMemberValidInput(String newValue,  Label responseLabel, I18nManager i18nManager) {
+    public static ValidatedResponse isProMemberValidInput(String newValue, int idxSelectGroup, Label responseLabel, I18nManager i18nManager) {
         boolean valid=true;
         var listInvalidVisa = new ArrayList<String>();
         var msg = "";
         if(newValue.isBlank()){
-            valid = true;
+            if(idxSelectGroup == 0){
+                msg = i18nManager.text(I18nKey.MSG_VALIDATED_BLANK);
+                valid = false;
+            }else{
+                valid = true;
+            }
         }else{
             var regex = "[A-Z+]{3}$";
             var listVisaHandled = newValue.split(", ");
@@ -142,6 +148,8 @@ public class FormValidation {
             }
             msg = i18nManager.text(I18nKey.MSG_VALIDATED_EMPLOYEE_VISAS, listInvalidVisa);
         }
+
+
         return validationResponse(responseLabel, valid, msg);
     }
 

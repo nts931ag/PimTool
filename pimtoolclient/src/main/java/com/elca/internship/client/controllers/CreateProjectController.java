@@ -6,12 +6,10 @@ import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
-import com.elca.internship.client.utils.AlertDialog;
 import com.elca.internship.client.utils.FormValidation;
 import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
-import com.elca.internship.client.utils.ValidatedResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -52,6 +50,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     public Label lbProCustomer;
     public Label lbProName;
     public Label lbProNumber;
+    public Label lbValidateProGroup;
     private Stage stage;
 
     @FXML
@@ -72,8 +71,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     @FXML
     private Label lbValidateProDate;
 
-    @FXML
-    private Label lbValidateProGroup;
 
     @FXML
     private Label lbValidateProMember;
@@ -136,17 +133,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     private void addEventListeners() {
 
-        tfProMember.focusedProperty().addListener(((observable, oldValue, newValue) -> {
-            if(!newValue){
-                var inputMembers = tfProMember.getText();
-                var valid = FormValidation.isProMemberValidInput(
-                        inputMembers,
-                        lbValidateProMember,
-                        i18nManager
-                ).getIsValid();
-                projectFormValidation.getFormFields().put("proMember", valid);
-            }
-        }));
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
         tfProNum.focusedProperty().addListener(((observable, oldValue, newValue) -> {
             if(!newValue && firstTime.get() == false){
@@ -218,7 +204,26 @@ public class CreateProjectController implements Initializable, ApplicationListen
             projectFormValidation.getFormFields().put("proDate", valid);
         });
 
+        cbProGroup.getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue.intValue() == 0){
+                lbValidateProGroup.setVisible(true);
+            }else{
+                lbValidateProGroup.setVisible(false);
+            }
+        }));
 
+        tfProMember.focusedProperty().addListener(((observable, oldValue, newValue) -> {
+            if(!newValue){
+                var inputMembers = tfProMember.getText();
+                var valid = FormValidation.isProMemberValidInput(
+                        inputMembers,
+                        cbProGroup.getSelectionModel().getSelectedIndex(),
+                        lbValidateProMember,
+                        i18nManager
+                ).getIsValid();
+                projectFormValidation.getFormFields().put("proMember", valid);
+            }
+        }));
     }
 
     private boolean validateFrom() {
