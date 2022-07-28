@@ -1,5 +1,6 @@
 package com.elca.internship.client.consume;
 
+import com.elca.internship.client.models.entity.ErrorResponse;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import com.elca.internship.client.models.entity.Response;
@@ -26,4 +27,6 @@ public interface ProjectRestConsume {
     Boolean CheckProjectNumberIsExisted(Long projectNumber);
 
     ObservableList<Project> retrieveProjectsWithPagination(String tfSearchValue, String cbStatusValue, int pageIndex, int itemPerPage);
+
+    ErrorResponse createNewProjectTest(Project project, List<String> listMember) throws JsonProcessingException;
 }

@@ -38,7 +38,7 @@ public interface ProjectDAO {
 
     void deleteByIds(List<Long> ids);
 
-    Long findProjectNumber(Long proNum);
+    Integer findProjectNumber(Integer proNum);
 
     int count();
 

@@ -1,5 +1,6 @@
 package com.elca.internship.server.configuration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -21,6 +22,11 @@ public class AppConfig {
     @Scope("prototype")
     NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(JdbcTemplate jdbcTemplate){
         return new NamedParameterJdbcTemplate(jdbcTemplate);
+    }
+
+    @Bean
+    ObjectMapper objectMapper(){
+        return new ObjectMapper().findAndRegisterModules();
     }
 
 }

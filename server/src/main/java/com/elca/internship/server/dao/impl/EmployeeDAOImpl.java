@@ -40,9 +40,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public Map getMapVisaIdByListVisa(List listEmployeeVisa) {
-        var sql = "SELECT id, visa FROM EMPLOYEE WHERE visa IN (:listEmployeeVisa)";
+
+        var sql = "SELECT id, visa FROM EMPLOYEE WHERE visa IN ( :listEmployeeVisa )";
         var parameters = new MapSqlParameterSource("listEmployeeVisa", listEmployeeVisa);
         var listMap = namedParameterJdbcTemplate.queryForList(sql, parameters);
         return listMap.stream().collect(Collectors.toMap(k -> (String) k.get("VISA"), k -> ((Number) k.get("ID")).longValue()));
+    }
+
+    @Override
+    public Long findIdByVisa(String visaLeader) {
+        final var sql = "SELECT id FROM employee where visa = :visaLeader";
+        var namedParameters = new MapSqlParameterSource()
+                .addValue("visaLeader", visaLeader);
+        return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, Long.class);
     }
 }

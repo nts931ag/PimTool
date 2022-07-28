@@ -11,4 +11,6 @@ public interface EmployeeDAO {
     List<Employee> findAll();
 
     Map getMapVisaIdByListVisa(List listEmployeeVisa);
+
+    Long findIdByVisa(String visaLeader);
 }

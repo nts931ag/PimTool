@@ -12,6 +12,7 @@ import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedE
 import com.elca.internship.server.services.ProjectService;
 import com.elca.internship.server.validator.EmployeeValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +20,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -140,7 +144,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Long findProjectNumber(Long proNum) throws EmptyResultDataAccessException{
+    public Integer findProjectNumber(Integer proNum) throws EmptyResultDataAccessException{
         return projectDAO.findProjectNumber(proNum);
     }
 
@@ -156,6 +160,91 @@ public class ProjectServiceImpl implements ProjectService {
 //            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(proCriteria, proStatus, pageRequest);
 //            return pageProject.get().toList();
 //        }
+    }
+    @Override
+    public boolean checkProjectNumberExisted(Integer projectNumber){
+        try{
+            var projectNumberFromDb = projectDAO.findProjectNumber(projectNumber);
+            return true;
+        }catch (EmptyResultDataAccessException erdae){
+            return false;
+        }
+    }
+
+    @Override
+    public void createNewProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa) {
+
+        var projectNumberIsExisted = checkProjectNumberExisted(project.getProjectNumber());
+        if(projectNumberIsExisted){
+            throw new ProjectNumberAlreadyExistedException(project.getProjectNumber());
+        }
+
+        if(listEmployeeVisa.isEmpty()){
+            if(project.getGroupId() == 0){
+                // throws exception
+                throw new EmptyResultDataAccessException("Members can't be empty", 1);
+            }
+
+            try{
+                groupDAO.findById(project.getGroupId());
+            }catch (EmptyResultDataAccessException erdae){
+                throw new GroupNotExistedException(project.getGroupId());
+            }
+
+            projectDAO.insert(project);
+        }else{
+            var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
+            var listIdExisted = new ArrayList<Long>(mapVisaId.values());
+            var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
+
+            employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
+
+            if(project.getGroupId() == 0){
+                var idLeader = listIdExisted.get(0);
+                var newGroupId = groupDAO.insert(new Group(0, idLeader, 1));
+                listIdExisted.remove(0);
+                listVisaExisted.remove(0);
+                project.setGroupId(newGroupId);
+            }
+
+            try{
+                groupDAO.findById(project.getGroupId());
+            }catch (EmptyResultDataAccessException erdae){
+                throw new GroupNotExistedException(project.getGroupId());
+            }
+
+
+            var newProjectId = projectDAO.insert(project);
+            projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);
+        }
+
+        /*var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
+        var listIdExisted = new ArrayList<Long>(mapVisaId.values());
+        var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
+
+        employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
+
+        var listEmployeeVisaIsEmpty = listEmployeeVisa.isEmpty();
+        if(project.getGroupId() == 0 && !listEmployeeVisaIsEmpty){
+            var idLeader = listIdExisted.get(0);
+            var newGroupId = groupDAO.insert(new Group(0, idLeader, 1));
+            listIdExisted.remove(0);
+            listVisaExisted.remove(0);
+            project.setGroupId(newGroupId);
+        }else if(project.getGroupId() == 0 && listEmployeeVisaIsEmpty){
+            // throw empty member
+
+        }
+
+        try{
+            groupDAO.findById(project.getGroupId());
+        }catch (EmptyResultDataAccessException erdae){
+            throw new GroupNotExistedException(project.getGroupId());
+        }
+
+        // create prooject
+        var newProjectId = projectDAO.insert(project);
+        projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);*/
     }
 
 }

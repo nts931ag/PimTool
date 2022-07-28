@@ -1,14 +1,17 @@
 package com.elca.internship.client.api;
 
+import com.elca.internship.client.models.entity.ErrorResponse;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import com.elca.internship.client.models.entity.Response;
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriBuilder;
@@ -123,5 +126,36 @@ public class ProjectRestClient {
                 .bodyToFlux(Project.class)
                 .collectList()
                 .block();
+    }
+
+    private static String URI_TEST_SAVE = "http://localhost:8080/api/projects/test/save";
+
+    public void createNewProjectTest(String jsonObject) {
+        webClient.post().uri(URI_TEST_SAVE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(jsonObject))
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> handle4xxError(clientResponse))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> handle5xxError(clientResponse))
+                .bodyToMono(ErrorResponse.class).block();
+    }
+
+    private Mono<? extends Throwable> handle5xxError(ClientResponse clientResponse) {
+        Mono<String> errorMessage = clientResponse.bodyToMono(String.class);
+        System.out.println(clientResponse.statusCode());
+        return errorMessage.flatMap(message -> {
+            System.out.println("Error Reponse Code is " + clientResponse.rawStatusCode() +  " and the message is " + message);
+            throw new ClientDataException(message);
+        });
+    }
+
+    private Mono<? extends Throwable> handle4xxError(ClientResponse clientResponse) {
+        Mono<String> errorMessage = clientResponse.bodyToMono(String.class);
+        System.out.println(clientResponse.statusCode());
+
+        return errorMessage.flatMap(message -> {
+            System.out.println("Error Reponse Code is " + clientResponse.rawStatusCode() +  " and the message is " + message);
+            throw new ClientDataException(message);
+        });
     }
 }

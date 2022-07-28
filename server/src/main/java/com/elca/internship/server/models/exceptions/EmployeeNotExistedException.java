@@ -2,7 +2,7 @@ package com.elca.internship.server.models.exceptions;
 
 import java.util.List;
 
-public class EmployeeNotExistedException extends Exception{
+public class EmployeeNotExistedException extends RuntimeException{
         public List<String> listVisaNotExisted;
 
         public EmployeeNotExistedException(List<String> listVisaNotExisted){

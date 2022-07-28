@@ -27,7 +27,11 @@ public interface ProjectService {
 
     void deleteProjectsByIds(List<Long> Ids);
 
-    Long findProjectNumber(Long proNum);
+    Integer findProjectNumber(Integer proNum);
 
     List<Project> getProjectByCriteriaWithPagination(String proName, String proStatus, Integer pageNumber, Integer pageSize);
+
+    void createNewProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa);
+
+    boolean checkProjectNumberExisted(Integer projectNumber);
 }

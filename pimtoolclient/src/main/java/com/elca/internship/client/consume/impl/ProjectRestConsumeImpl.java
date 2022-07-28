@@ -2,6 +2,7 @@ package com.elca.internship.client.consume.impl;
 
 import com.elca.internship.client.api.ProjectRestClient;
 import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.models.entity.ErrorResponse;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import com.elca.internship.client.models.entity.Response;
@@ -89,5 +90,17 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
     @Override
     public ObservableList<Project> retrieveProjectsWithPagination(String tfSearchValue, String cbStatusValue, int pageIndex, int itemPerPage) {
         return FXCollections.observableArrayList(projectRestClient.getProjectsByCriteriaSpecifiedWithPagination(tfSearchValue, cbStatusValue, pageIndex, itemPerPage));
+    }
+
+    @Override
+    public ErrorResponse createNewProjectTest(Project project, List<String> listMember) throws JsonProcessingException {
+        var objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        var map = new HashMap<String, Object>();
+        map.put("project", project);
+        map.put("listMember", listMember);
+        var jsonObject = objectMapper.writeValueAsString(map);
+        projectRestClient.createNewProjectTest(jsonObject);
+        return null;
     }
 }

@@ -9,11 +9,16 @@ import com.elca.internship.server.services.EmployeeService;
 import com.elca.internship.server.services.GroupService;
 import com.elca.internship.server.services.ProjectEmployeeService;
 import com.elca.internship.server.services.ProjectService;
+import com.elca.internship.server.test.ErrorResponse;
+import com.elca.internship.server.test.ProjectAdapter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -103,12 +108,12 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/{proNum}")
-    public Long getProjectNumber(@PathVariable(value = "proNum") Long proNum){
+    public Integer getProjectNumber(@PathVariable(value = "proNum") Integer proNum){
         log.info("Project number: {}", proNum);
         try{
             return projectService.findProjectNumber(proNum);
         }catch (EmptyResultDataAccessException e){
-            return 0L;
+            return 0;
         }
     }
 
@@ -121,5 +126,11 @@ public class ProjectController {
     ){
         log.info("Criteria value: {}, status value: {}, page number: {}, page size: {}", proCriteria, proStatus, pageNumber, pageSize);
         return projectService.getProjectByCriteriaWithPagination(proCriteria, proStatus, pageNumber, pageSize);
+    }
+    private final ProjectAdapter projectAdapter;
+    @PostMapping(value = "/test/save", consumes = "application/json")
+    public ResponseEntity<ErrorResponse> createNewProjectTest(@RequestBody String jsonObject){
+        var errorResponse = projectAdapter.createNewProject(jsonObject);
+        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
     }
 }

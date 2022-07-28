@@ -343,9 +343,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
             log.info("Input form project: {}", project);
             log.info("Input form list member: {}", listMember);
             if(!isEditMode){
-                try {
+                /*try {
                     var response = projectRestConsume.createNewProject(project, listMember);
-
                     if(response.getTypeError() == 0){
                         DashboardController.navigationHandler.handleNavigateToListProject();
                         log.info("Reponse: {}", response.getStatusMsg());
@@ -355,6 +354,11 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     }
                 } catch (JsonProcessingException e) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
+                }*/
+                try {
+                    projectRestConsume.createNewProjectTest(project, listMember);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
                 }
             }else{
                 try {
