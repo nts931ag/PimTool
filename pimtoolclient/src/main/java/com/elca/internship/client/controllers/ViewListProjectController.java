@@ -268,7 +268,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
         paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, tfSearch,status));
 
-
         /*for(var dataProject: dataProjects){
             if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
                 dataProject.getIcDelete().getStyleClass().add("icon-node");

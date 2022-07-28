@@ -277,12 +277,15 @@ public class CreateProjectController implements Initializable, ApplicationListen
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
         var listMemberOfCurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
-        var listMember = new StringBuilder();
-        listMemberOfCurrentProject.forEach(e->{
-            listMember.append(e + ", ");
-        });
-        listMember.delete(listMember.length()-2, listMember.length());
-        tfProMember.setText(listMember.toString());
+        if(listMemberOfCurrentProject.size() != 0){
+            var listMember = new StringBuilder();
+            listMemberOfCurrentProject.forEach(e->{
+                listMember.append(e + ", ");
+            });
+            listMember.delete(listMember.length()-2, listMember.length());
+            tfProMember.setText(listMember.toString());
+        }
+
         isEditMode = true;
         Platform.runLater(()->{
             tfProName.requestFocus();
