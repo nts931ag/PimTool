@@ -44,6 +44,14 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final FxWeaver fxWeaver;
     public GridPane gpCreateProjectTab;
     private final I18nManager i18nManager;
+    public Label lbProEndDate;
+    public Label lbProStartDate;
+    public Label lbProStatus;
+    public Label lbProMembers;
+    public Label lbProGroup;
+    public Label lbProCustomer;
+    public Label lbProName;
+    public Label lbProNumber;
     private Stage stage;
 
     @FXML
@@ -407,6 +415,24 @@ public class CreateProjectController implements Initializable, ApplicationListen
             DashboardController.navigationHandler.handleNavigateToListProject();
         }else{
             DashboardController.navigationHandler.handleNavigateToListProject();
+        }
+    }
+
+    public void switchLanguage(){
+        lbProEndDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_END_DATE));
+        lbProStartDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_START_DATE));
+        lbProStatus.setText(i18nManager.text(I18nKey.LABEL_PROJECT_STATUS));
+        lbProMembers.setText(i18nManager.text(I18nKey.LABEL_PROJECT_MEMBERS));
+        lbProGroup.setText(i18nManager.text(I18nKey.LABEL_PROJECT_GROUP));
+        lbProCustomer.setText(i18nManager.text(I18nKey.LABEL_PROJECT_CUSTOMER));
+        lbProName.setText(i18nManager.text(I18nKey.LABEL_PROJECT_NAME));
+        lbProNumber.setText(i18nManager.text(I18nKey.LABEL_PROJECT_NUMBER));
+        btnCancel.setText(i18nManager.text(I18nKey.BUTTON_CANCEL_CREATE_PROJECT));
+        if(isEditMode){
+            btnCreate.setText(i18nManager.text(I18nKey.BUTTON_EDIT_PROJECT));
+        }else{
+            btnCreate.setText(i18nManager.text(I18nKey.BUTTON_SEARCH_PROJECT));
+
         }
     }
 }

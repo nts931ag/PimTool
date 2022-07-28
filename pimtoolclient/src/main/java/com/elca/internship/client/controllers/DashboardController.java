@@ -189,6 +189,15 @@ public class DashboardController implements Initializable, ApplicationListener<S
         lbMenu.setText(i18nManager.text(I18nKey.DASHBOARD_MENU));
         lbMenuCustomer.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CUSTOMER));
         lbMenuSupplier.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_SUPPLIER));
+
+        Label label = lbMenuObjectProperty.get();
+        if (lbMenuNew.equals(label)) {
+            createProjectCV.getController().switchLanguage();
+        } else if (lbMenuProject.equals(label)) {
+            projectListCV.getController().switchLanguage();
+        } else {
+            throw new IllegalStateException("Unexpected value: " + lbMenuObjectProperty.get());
+        }
     }
 
 

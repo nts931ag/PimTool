@@ -38,7 +38,7 @@
    <children>
       <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="2">
          <children>
-            <Label text="%label.project.number" />
+            <Label fx:id="lbProNumber" text="%label.project.number" />
             <Label style="-fx-text-fill: red;" text="*" />
          </children>
       </HBox>
@@ -46,30 +46,30 @@
       <Label fx:id="lbValidateProNum" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="3">
          <children>
-            <Label text="%label.project.name" />
+            <Label fx:id="lbProName" text="%label.project.name" />
             <Label style="-fx-text-fill: red;" text="*" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="4">
          <children>
-            <Label text="%label.project.customer" />
+            <Label fx:id="lbProCustomer" text="%label.project.customer" />
             <Label style="-fx-text-fill: red;" text="*" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="5">
          <children>
-            <Label text="%label.project.group" />
+            <Label fx:id="lbProGroup" text="%label.project.group" />
             <Label style="-fx-text-fill: red;" text="*" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="6">
          <children>
-            <Label text="%label.project.members" />
+            <Label fx:id="lbProMembers" text="%label.project.members" />
          </children>
       </HBox>
       <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="7">
          <children>
-            <Label text="%label.project.status" />
+            <Label fx:id="lbProStatus" text="%label.project.status" />
             <Label style="-fx-text-fill: red;" text="*" />
          </children>
       </HBox>
@@ -86,7 +86,7 @@
       <ComboBox fx:id="cbProStatus" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" />
       <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="8">
          <children>
-            <Label text="%label.project.start.date" />
+            <Label fx:id="lbProStartDate" text="%label.project.start.date" />
             <Label style="-fx-text-fill: red;" text="*" />
          </children>
       </HBox>
@@ -103,7 +103,7 @@
                </styleClass></Button>
          </children>
       </HBox>
-      <Label text="%label.project.end.date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
+      <Label fx:id="lbProEndDate" text="%label.project.end.date" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
       <DatePicker fx:id="pickerEndDate" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
       <DatePicker fx:id="pickerStartDate" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" />
       <Pane maxHeight="1.0" minHeight="1.0" prefHeight="1.0" styleClass="border-bottom" stylesheets="@css/main.css" GridPane.columnSpan="4" />

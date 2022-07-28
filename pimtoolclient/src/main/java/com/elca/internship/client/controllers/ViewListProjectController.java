@@ -374,5 +374,26 @@ public class ViewListProjectController implements Initializable, ApplicationList
         };
     }
 
+    public void switchLanguage(){
+        /*tfSearch.setPromptText(i18nManager.text(I18nKey.TEXTFIELD_PROMPT_TEXT_SEARCH));
+        var listStatus = FXCollections.observableArrayList(
+                i18nManager.text(I18nKey.PROJECT_STATUS_NEW)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_PLANNED)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_IN_PROGRESS)
+                , i18nManager.text(I18nKey.PROJECT_STATUS_FINISHED)
+        );
+        cbStatus.setItems(listStatus);
+        cbStatus.getSelectionModel().select(1);
+        cbStatus.getSelectionModel().select(-1);
+        btnSearch.setText(i18nManager.text(I18nKey.BUTTON_SEARCH_PROJECT));
+        lbBtnResetSearch.setText(i18nManager.text(I18nKey.BUTTON_RESET_SEARCH_PROJECT));
+        colProNum.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_NUMBER));
+        colProStatus.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_STATUS));
+        colProDel.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_DELTE));
+        colProCustomer.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_CUSTOMER));
+        colProName.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_NAME));
+        colProStart.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_START_DATE));
+*/        DashboardController.navigationHandler.handleNavigateToListProject();
+    }
 
 }
