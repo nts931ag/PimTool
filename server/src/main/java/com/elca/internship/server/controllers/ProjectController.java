@@ -129,8 +129,8 @@ public class ProjectController {
     }
     private final ProjectAdapter projectAdapter;
     @PostMapping(value = "/test/save", consumes = "application/json")
-    public ResponseEntity<ErrorResponse> createNewProjectTest(@RequestBody String jsonObject){
-        var errorResponse = projectAdapter.createNewProject(jsonObject);
-        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
+    public ResponseEntity<String> createNewProjectTest(@RequestBody String jsonObject){
+        projectAdapter.createNewProject(jsonObject);
+        return ResponseEntity.status(HttpStatus.OK).body("Create project Success");
     }
 }

@@ -1,5 +1,6 @@
 package com.elca.internship.client.i18n;
 
+import com.elca.internship.client.test.ErrorResponseKey;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.value.ObservableValue;
@@ -58,7 +59,20 @@ public class I18nManagerImpl implements I18nManager{
     }
 
     @Override
+    public String text(final ErrorResponseKey key, final Object... arguments) {
+        return text(locale, key, arguments);
+    }
+
+
+    @Override
     public String text(final SupportedLocale explicitLocale, final I18nKey key, final Object... arguments) {
+        String template = bundles.get(explicitLocale).getString(key.getKey());
+
+        return MessageFormat.format(template, arguments);
+    }
+
+    @Override
+    public String text(final SupportedLocale explicitLocale,final ErrorResponseKey key, final Object... arguments) {
         String template = bundles.get(explicitLocale).getString(key.getKey());
 
         return MessageFormat.format(template, arguments);

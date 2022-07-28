@@ -217,34 +217,6 @@ public class ProjectServiceImpl implements ProjectService {
             var newProjectId = projectDAO.insert(project);
             projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);
         }
-
-        /*var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
-        var listIdExisted = new ArrayList<Long>(mapVisaId.values());
-        var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
-
-        employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
-
-        var listEmployeeVisaIsEmpty = listEmployeeVisa.isEmpty();
-        if(project.getGroupId() == 0 && !listEmployeeVisaIsEmpty){
-            var idLeader = listIdExisted.get(0);
-            var newGroupId = groupDAO.insert(new Group(0, idLeader, 1));
-            listIdExisted.remove(0);
-            listVisaExisted.remove(0);
-            project.setGroupId(newGroupId);
-        }else if(project.getGroupId() == 0 && listEmployeeVisaIsEmpty){
-            // throw empty member
-
-        }
-
-        try{
-            groupDAO.findById(project.getGroupId());
-        }catch (EmptyResultDataAccessException erdae){
-            throw new GroupNotExistedException(project.getGroupId());
-        }
-
-        // create prooject
-        var newProjectId = projectDAO.insert(project);
-        projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);*/
     }
 
 }

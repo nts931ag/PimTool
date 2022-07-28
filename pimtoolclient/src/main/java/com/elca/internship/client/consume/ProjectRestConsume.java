@@ -1,14 +1,10 @@
 package com.elca.internship.client.consume;
 
-import com.elca.internship.client.models.entity.ErrorResponse;
 import com.elca.internship.client.models.entity.Project;
-import com.elca.internship.client.models.entity.ProjectTable;
 import com.elca.internship.client.models.entity.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.collections.ObservableList;
-import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface ProjectRestConsume {
@@ -28,5 +24,5 @@ public interface ProjectRestConsume {
 
     ObservableList<Project> retrieveProjectsWithPagination(String tfSearchValue, String cbStatusValue, int pageIndex, int itemPerPage);
 
-    ErrorResponse createNewProjectTest(Project project, List<String> listMember) throws JsonProcessingException;
+    void createNewProjectTest(Project project, List<String> listMember) throws JsonProcessingException;
 }

@@ -1,7 +1,10 @@
 package com.elca.internship.server.models.exceptions;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class EmployeeNotExistedException extends RuntimeException{
         public List<String> listVisaNotExisted;
 

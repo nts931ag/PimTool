@@ -20,17 +20,14 @@ public class ProjectAdapter {
     private final ProjectService projectService;
     private final ObjectMapper objectMapper;
 
-    public ErrorResponse createNewProject(String jsonObject){
+    public void createNewProject(String jsonObject){
         try {
             var jsonNode = objectMapper.readTree(jsonObject);
             var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
             var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
             projectService.createNewProjectWithEmployeeVisasTest(project, listEmployeeVisa);
-
-            return new ErrorResponse(HttpStatus.CREATED.toString(), "Create new project successfully!");
-
         } catch (JsonProcessingException jpe) {
-            return new ErrorResponse(HttpStatus.BAD_REQUEST.toString(), jpe.getMessage());
+            System.out.println(jpe.getMessage());
         }
     }
 }

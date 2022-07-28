@@ -214,6 +214,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void switchToEN() {
+
         if(lbLangObjectProperty.get() != lbEN){
             i18nManager.setupLocale(SupportedLocale.ENGLISH);
             switchLanguage();

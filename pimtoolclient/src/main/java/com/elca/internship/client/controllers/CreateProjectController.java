@@ -4,6 +4,7 @@ import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.consume.GroupRestConsume;
 import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.test.ProjectException;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.utils.FormValidation;
@@ -29,6 +30,7 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -357,8 +359,15 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 }*/
                 try {
                     projectRestConsume.createNewProjectTest(project, listMember);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
+                }catch (ProjectException projectException){
+                    alertDangerCV.getController().showErrorAlertLabel(
+                            projectException.getI18nKey(),
+                            projectException.getI18nValue());
+//                    alertDangerCV.getController().setContentAndShowAlertLabel();
+                } catch (JsonProcessingException jsonProcessingException) {
+                    DashboardController.navigationHandler.handleNavigateToErrorPage(jsonProcessingException.getMessage());
+                } catch (WebClientRequestException webClientRequestException){
+                    DashboardController.navigationHandler.handleNavigateToErrorPage(webClientRequestException.getMessage());
                 }
             }else{
                 try {
