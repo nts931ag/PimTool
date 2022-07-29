@@ -209,6 +209,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProGroup.getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.intValue() == 0){
                 lbValidateProGroup.setVisible(true);
+                lbValidateProMember.setVisible(false);
 
             }else{
                 lbValidateProGroup.setVisible(false);
