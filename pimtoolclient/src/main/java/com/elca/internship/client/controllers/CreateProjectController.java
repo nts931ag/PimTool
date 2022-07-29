@@ -209,8 +209,17 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProGroup.getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.intValue() == 0){
                 lbValidateProGroup.setVisible(true);
+
             }else{
                 lbValidateProGroup.setVisible(false);
+                var inputMembers = tfProMember.getText();
+                var valid = FormValidation.isProMemberValidInput(
+                        inputMembers,
+                        cbProGroup.getSelectionModel().getSelectedIndex(),
+                        lbValidateProMember,
+                        i18nManager
+                ).getIsValid();
+                projectFormValidation.getFormFields().put("proMember", valid);
             }
         }));
 
