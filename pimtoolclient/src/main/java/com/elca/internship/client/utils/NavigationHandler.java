@@ -8,4 +8,5 @@ public interface NavigationHandler {
     void handleNavigateToEditProject(Project project);
     void handleNavigateToListProject();
     void handleNavigateToErrorPage(I18nKey msg);
+
 }

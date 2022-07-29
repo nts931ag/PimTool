@@ -3,15 +3,21 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.i18n.SupportedLocale;
 import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.entity.ProjectTable;
+import com.elca.internship.client.utils.AlertDialog;
 import com.elca.internship.client.utils.NavigationHandler;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
@@ -95,14 +101,10 @@ public class DashboardController implements Initializable, ApplicationListener<S
             public void handleNavigateToErrorPage(I18nKey key) {
                 navigateToErrorPage(key);
             }
+
+
         };
 
-        /*contentContainer.setPrefWidth(GuiUtil.getScreenWidth()*85/100);
-        contentContainer.setPrefHeight(GuiUtil.getScreenHeight()*90/100);
-        sideBarContainer.setPrefWidth(GuiUtil.getScreenWidth()*15/100);
-        sideBarContainer.setPrefHeight(GuiUtil.getScreenHeight()*90/100);
-        headerContainer.setPrefWidth(GuiUtil.getScreenWidth());
-        headerContainer.setPrefHeight(GuiUtil.getScreenHeight()*10/100);*/
         lbMenuObjectProperty.addListener((observable, oldValue, newValue) -> {
             if(oldValue!= null && oldValue != newValue){
 
@@ -139,6 +141,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
             contentContainer.getChildren().clear();
             lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
             contentContainer.getChildren().add(view);
+
             projectListCV.getController().onBtnSearchClicked();
         });
     }
@@ -180,9 +183,28 @@ public class DashboardController implements Initializable, ApplicationListener<S
             contentContainer.getChildren().clear();
 //            errorPageCV.getController().setMsgError(msg);
             errorPageCV.getController().showMsgError(msg);
+            errorPageCV.getController().setNavigateBackToProjectListEvent(navigateBackToProjectListEvent());
             contentContainer.getChildren().add(view);
 
         });
+    }
+
+
+    public EventHandler<MouseEvent> navigateBackToProjectListEvent(){
+        return event -> {
+            if (projectListCV == null) {
+                projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
+                projectListCV.getController().onBtnSearchClicked();
+            }
+
+            projectListCV.getView().ifPresent(view -> {
+                MainContainer.getLeft().setVisible(true);
+                bodyContainer.getTop().setVisible(true);
+                lbMenuObjectProperty.set(lbMenuProject);
+                contentContainer.getChildren().clear();
+                contentContainer.getChildren().add(view);
+            });
+        };
     }
 
     private boolean isEditProject = false;

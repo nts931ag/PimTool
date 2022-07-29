@@ -3,10 +3,12 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -49,6 +51,7 @@ public class ErrorPageController implements Initializable, ApplicationListener<S
         AnchorPane.setBottomAnchor(parentLayoutErrorPage,0.0);
         AnchorPane.setLeftAnchor(parentLayoutErrorPage,25.0);
         AnchorPane.setRightAnchor(parentLayoutErrorPage,200.0);
+
     }
 
     @Override
@@ -56,6 +59,9 @@ public class ErrorPageController implements Initializable, ApplicationListener<S
         this.stage = event.getStage();
     }
 
+    public void setNavigateBackToProjectListEvent(EventHandler<MouseEvent> mouseEvent){
+        lbBtnErrorBackToSearch.setOnMouseClicked(mouseEvent);
+    }
 
     public void setMsgError(String msgError) {
         lbErrorContent.setText(msgError);
