@@ -448,6 +448,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         listGroups.set(0,i18nManager.text(I18nKey.GROUP_NEW));
 //        cbProGroup.setItems(listGroups);
 
+        lbValidateProGroup.setText(i18nManager.text(I18nKey.LABEL_VALIDATE_PROJECT_GROUP));
 
         lbProEndDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_END_DATE));
         lbProStartDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_START_DATE));

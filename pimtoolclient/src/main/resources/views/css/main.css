@@ -116,9 +116,9 @@
 
 /* table view */
 
-.table-view .column-header-background {
+/*.table-view .column-header-background {
     -fx-pref-height: 50px;
-}
+}*/
 
 .table-view .label{
     -fx-text-fill: #666666;

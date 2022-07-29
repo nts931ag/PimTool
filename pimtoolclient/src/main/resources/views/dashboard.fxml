@@ -65,7 +65,7 @@
       </HBox>
    </top>
    <left>
-      <VBox fx:id="sideBarContainer" prefWidth="200.0" spacing="5.0" styleClass="border-right">
+      <VBox fx:id="sideBarContainer" spacing="5.0" styleClass="border-right">
          <children>
             <Label fx:id="lbMenu" maxWidth="1.7976931348623157E308" prefWidth="200.0" styleClass="lb-side-bar" text="%dashboard.menu">
                <VBox.margin>

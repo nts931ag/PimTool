@@ -24,6 +24,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
@@ -112,20 +113,26 @@ public class ViewListProjectController implements Initializable, ApplicationList
         btnSearch.setPrefWidth(200);
         tfSearch.setFocusTraversable(false);
 
-        tbProject.setFixedCellSize(50);
-        tbProject.setPrefHeight((50.0 * (itemPerPage+1)) + 2);
+        /*tbProject.setFixedCellSize(50);
+        tbProject.setPrefHeight((50.0 * (itemPerPage+1)) + 2);*/
+
+        tbProject.skinProperty().addListener(((observable, oldValue, newValue) -> {
+            Pane header =(Pane) tbProject.lookup("TableHeaderRow");
+            header.prefHeightProperty().bind(tbProject.heightProperty().divide(6));
+        }));
 
         colCheck.setMinWidth(30);
         colCheck.setMaxWidth(30);
         colProNum.setMinWidth(80);
         colProNum.setMaxWidth(80);
-        colProName.setMinWidth(350);
+        colProName.setMinWidth(320);
         colProStatus.setMinWidth(70);
         colProStatus.setMaxWidth(70);
-        colProCustomer.setMinWidth(250);
-        colProStart.setMinWidth(100);
-        colProDel.setMinWidth(70);
-        colProDel.setMaxWidth(70);
+        colProCustomer.setMinWidth(220);
+        colProStart.setMinWidth(120);
+        colProStart.setMaxWidth(120);
+        colProDel.setMinWidth(90);
+        colProDel.setMaxWidth(90);
 
         colCheck.setCellValueFactory(new PropertyValueFactory<>("checkBox"));
         colProDel.setCellValueFactory(new PropertyValueFactory<>("icDelete"));
