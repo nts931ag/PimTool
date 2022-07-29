@@ -130,6 +130,7 @@ public class ProjectController {
     private final ProjectAdapter projectAdapter;
     @PostMapping(value = "/test/save", consumes = "application/json")
     public ResponseEntity<String> createNewProjectTest(@RequestBody String jsonObject){
+        log.info("Json object from client: " + jsonObject);
         projectAdapter.createNewProject(jsonObject);
         return ResponseEntity.status(HttpStatus.OK).body("Create project Success");
     }
@@ -137,6 +138,7 @@ public class ProjectController {
 
     @PutMapping(value = "/test/update", consumes = "application/json")
     public ResponseEntity<String> saveProjectChangeTest(@RequestBody String jsonObject){
+        log.info("Json object from client: " + jsonObject);
         projectAdapter.updateProject(jsonObject);
         return ResponseEntity.status(HttpStatus.OK).body("Create project Success");
     }

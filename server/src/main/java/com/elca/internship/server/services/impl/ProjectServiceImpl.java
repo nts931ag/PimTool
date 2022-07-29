@@ -199,10 +199,9 @@ public class ProjectServiceImpl implements ProjectService {
             employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
 
             if(project.getGroupId() == 0){
-                var idLeader = listIdExisted.get(0);
+                var idLeader = (Long) mapVisaId.get(listEmployeeVisa.get(0));
                 var newGroupId = groupDAO.insert(new Group(0, idLeader, 1));
-                listIdExisted.remove(0);
-                listVisaExisted.remove(0);
+                listIdExisted.remove(idLeader);
                 project.setGroupId(newGroupId);
             }else{
                 try{
@@ -246,23 +245,19 @@ public class ProjectServiceImpl implements ProjectService {
             var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
             var listIdExisted = new ArrayList<Long>(mapVisaId.values());
             var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
-
             employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
-
             if(project.getGroupId() == 0){
-                var idLeader = listIdExisted.get(0);
+                var idLeader = (Long) mapVisaId.get(listEmployeeVisa.get(0));
                 var newGroupId = groupDAO.insert(new Group(0, idLeader, 1));
-                listIdExisted.remove(0);
-                listVisaExisted.remove(0);
+                listIdExisted.remove(idLeader);
                 project.setGroupId(newGroupId);
+            }else{
+                try{
+                    groupDAO.findById(project.getGroupId());
+                }catch (EmptyResultDataAccessException erdae){
+                    throw new GroupNotExistedException(project.getGroupId());
+                }
             }
-
-            try{
-                groupDAO.findById(project.getGroupId());
-            }catch (EmptyResultDataAccessException erdae){
-                throw new GroupNotExistedException(project.getGroupId());
-            }
-
 
             var newProjectId = projectDAO.insert(project);
             projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);

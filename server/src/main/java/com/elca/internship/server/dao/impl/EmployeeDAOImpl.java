@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +38,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public Map getMapVisaIdByListVisa(List listEmployeeVisa) {
+    public Map<String, Long> getMapVisaIdByListVisa(List listEmployeeVisa) {
 
         var sql = "SELECT id, visa FROM EMPLOYEE WHERE visa IN ( :listEmployeeVisa )";
         var parameters = new MapSqlParameterSource("listEmployeeVisa", listEmployeeVisa);
