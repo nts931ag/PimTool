@@ -167,7 +167,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         });
 
-//        paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, "",""));
     }
     int itemPerPage = 5;
 
@@ -200,9 +199,10 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 dataProject.getIcDelete().setOnMouseClicked(event -> {
                     var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
                     var alertDialog = new AlertDialog(
-                            "CONFIRMATION"
-                            ,"Do you really want to delete this project"
-                            ,"Please choose \"Yes\" or \"No\"", Alert.AlertType.CONFIRMATION);
+                            i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_TITLE)
+                            ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_HEADER_TEXT)
+                            ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_CONTENT_TEXT),
+                            Alert.AlertType.CONFIRMATION);
                     var confirm = alertDialog.getConfirmationDeleteProjectDialog();
                     confirm.showAndWait();
                     if(confirm.getResult() == ButtonType.YES){
@@ -241,24 +241,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     public void fillDataProjectToTable(String tfSearch, String status){
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
-        /*var projects = projectRestConsume.searchProjectByCriteriaSpecified(tfSearch, status);
-        dataProjects = FXCollections.observableArrayList(projects.stream()
-                .map(e ->
-                        new ProjectTable(
-                                new CheckBox(),
-                                e.getId(),
-                                e.getGroupId(),
-                                e.getProjectNumber(),
-                                e.getName(),
-                                e.getCustomer(),
-                                e.getStatus(),
-                                e.getStartDate(),
-                                e.getEndDate(),
-                                e.getVersion(),
-                                new IconNode(GoogleMaterialDesignIcons.DELETE)
-                        )
-                )
-                .toList());*/
 
         var projects = projectRestConsume.searchProjectByCriteriaSpecified(tfSearch, status);
         var size = projects.size();
@@ -270,44 +252,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
         paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, tfSearch,status));
 
-        /*for(var dataProject: dataProjects){
-            if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
-                dataProject.getIcDelete().getStyleClass().add("icon-node");
-                dataProject.getIcDelete().setOnMouseClicked(event -> {
-                    var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
-                    var alertDialog = new AlertDialog(
-                            "CONFIRMATION"
-                            ,"Do you really want to delete this project"
-                            ,"Please choose \"Yes\" or \"No\"", Alert.AlertType.CONFIRMATION);
-                    var confirm = alertDialog.getConfirmationDeleteProjectDialog();
-                    confirm.showAndWait();
-                    if(confirm.getResult() == ButtonType.YES){
-                        dataProjects.remove(projectTableDeleted);
-                        projectRestConsume.removeProjectById(projectTableDeleted.getId());
-                    }
-                });
-                configureCheckBox(dataProject.getCheckBox());
-            }else{
-                dataProject.setIcDelete(null);
-                dataProject.getCheckBox().setDisable(true);
-            }
-            dataProject.getLbProNumLink().getStyleClass().add("lb-super-link");
-            dataProject.getLbProNumLink().setOnMouseClicked(event -> {
-                DashboardController.navigationHandler.handleNavigateToEditProject(dataProject);
-            });
-        }
-
-
-
-        tbProject.setItems(dataProjects);
-
-        numCheckBoxesSelected.addListener(((observable, oldValue, newValue) -> {
-            if(numCheckBoxesSelected.intValue() > 0){
-                removeItemPaneCV.getController().hbLayout.setVisible(true);
-            }else{
-                removeItemPaneCV.getController().hbLayout.setVisible(false);
-            }
-        }));*/
     }
 
     private void configureCheckBox(CheckBox checkBox){
@@ -357,9 +301,10 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public EventHandler<MouseEvent> deleteMultiItemHandler(){
         return event -> {
             var alertDialog = new AlertDialog(
-                    "CONFIRMATION"
-                    ,"Do you really want to delete projects"
-                    ,"Please choose \"Yes\" or \"No\"", Alert.AlertType.CONFIRMATION);
+                    i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_TITLE)
+                    ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_HEADER_TEXT)
+                    ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_CONTENT_TEXT),
+                    Alert.AlertType.CONFIRMATION);
             var confirm = alertDialog.getConfirmationDeleteProjectDialog();
             confirm.showAndWait();
             if(confirm.getResult() == ButtonType.YES){
@@ -393,7 +338,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProCustomer.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_CUSTOMER));
         colProName.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_NAME));
         colProStart.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_START_DATE));
-//        DashboardController.navigationHandler.handleNavigateToListProject();
     }
 
 }

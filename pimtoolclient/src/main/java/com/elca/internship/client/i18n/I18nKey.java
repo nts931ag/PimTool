@@ -79,8 +79,12 @@ public enum I18nKey {
     LB_ERROR_PLEASE("lb.error.please"),
     LB_BTN_ERROR_CONTACT("lb.btn.error.contact"),
     LB_ERROR_OR("lb.error.or"),
-    LB_BTN_ERROR_BACK_TO_SEARCH("lb.btn.error.back.to.search")
-    ;
+    LB_BTN_ERROR_BACK_TO_SEARCH("lb.btn.error.back.to.search"),
+
+    /* ALERT DIALOG */
+    ALERT_DIALOG_CONFIRMATION_TITLE("alert.dialog.confirmation.title"),
+    ALERT_DIALOG_CONFIRMATION_HEADER_TEXT("alert.dialog.confirmation.header.text"),
+    ALERT_DIALOG_CONFIRMATION_CONTENT_TEXT("alert.dialog.confirmation.content.text");
 
     private final String key;
 
