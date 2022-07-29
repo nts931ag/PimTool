@@ -4,6 +4,7 @@ import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Response;
 import com.elca.internship.client.test.ErrorResponseKey;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -22,8 +23,11 @@ import java.util.ResourceBundle;
 @FxmlView("/views/alertDanger.fxml")
 @RequiredArgsConstructor
 public class AlertDangerController implements Initializable {
+    @FXML
     public HBox alertDanger;
+    @FXML
     public Label lbAlertDanger;
+    @FXML
     public HBox hboxIcon;
     private final I18nManager i18nManager;
     @Override

@@ -25,11 +25,17 @@ import java.util.ResourceBundle;
 public class ErrorPageController implements Initializable, ApplicationListener<StageReadyEvent> {
 
     private final FxWeaver fxWeaver;
+    @FXML
     public Label lbErrorContent;
+    @FXML
     public Label lbErrorPlease;
+    @FXML
     public Label lbBtnErrorContact;
+    @FXML
     public Label lbErrorOr;
+    @FXML
     public Label lbBtnErrorBackToSearch;
+    @FXML
     public HBox parentLayoutErrorPage;
 
     @FXML
@@ -41,8 +47,8 @@ public class ErrorPageController implements Initializable, ApplicationListener<S
     public void initialize(URL url, ResourceBundle resourceBundle) {
         AnchorPane.setTopAnchor(parentLayoutErrorPage,0.0);
         AnchorPane.setBottomAnchor(parentLayoutErrorPage,0.0);
-        AnchorPane.setLeftAnchor(parentLayoutErrorPage,0.0);
-        AnchorPane.setRightAnchor(parentLayoutErrorPage,0.0);
+        AnchorPane.setLeftAnchor(parentLayoutErrorPage,25.0);
+        AnchorPane.setRightAnchor(parentLayoutErrorPage,200.0);
     }
 
     @Override

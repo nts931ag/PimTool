@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="parentLayoutErrorPage" alignment="TOP_CENTER" maxWidth="-Infinity" minWidth="-Infinity" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.ErrorPageController">
+<HBox fx:id="parentLayoutErrorPage" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.ErrorPageController">
    <children>
-      <ImageView fx:id="imgError" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="imgError" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/error.png" />
          </image>
