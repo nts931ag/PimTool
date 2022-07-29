@@ -31,6 +31,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -111,6 +112,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final RestTemplateConsume restTemplateConsume;
     private final ProjectRestConsume projectRestConsume;
     private final ProjectEmployeeConsume projectEmployeeConsume;
+    private final GroupRestConsume groupRestConsume;
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
 
@@ -321,7 +323,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     }
 
-    private final GroupRestConsume groupRestConsume;
 
     public void fillDefaultValueForInputForm() {
         var listStatus = FXCollections.observableArrayList(
@@ -361,7 +362,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                     alertDangerCV.getController().showErrorAlertLabel(
                             projectException.getI18nKey(),
                             projectException.getI18nValue());
-                } catch (JsonProcessingException jsonProcessingException) {
+                } catch (JsonProcessingException | WebClientResponseException jsonProcessingException) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
                 } catch (WebClientRequestException webClientRequestException){
                     DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);
@@ -375,7 +376,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                             projectException.getI18nKey(),
                             projectException.getI18nValue()
                     );
-                } catch (JsonProcessingException jsonProcessingException) {
+                } catch (JsonProcessingException | WebClientResponseException jsonProcessingException) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
                 } catch (WebClientRequestException webClientRequestException){
                     DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);

@@ -129,8 +129,8 @@ public class ProjectRestClient {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(jsonObject))
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> handle4xxError(clientResponse))
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> handle5xxError(clientResponse))
+//                .onStatus(HttpStatus::is4xxClientError, clientResponse -> handle4xxError(clientResponse))
+//                .onStatus(HttpStatus::is5xxServerError, clientResponse -> handle5xxError(clientResponse))
                 .bodyToMono(Void.class)
                 .onErrorStop()
                 .block();
@@ -144,8 +144,8 @@ public class ProjectRestClient {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(jsonObject))
                 .retrieve()
-                .onStatus(HttpStatus::is4xxClientError, clientResponse -> handle4xxError(clientResponse))
-                .onStatus(HttpStatus::is5xxServerError, clientResponse -> handle5xxError(clientResponse))
+//                .onStatus(HttpStatus::is4xxClientError, clientResponse -> handle4xxError(clientResponse))
+//                .onStatus(HttpStatus::is5xxServerError, clientResponse -> handle5xxError(clientResponse))
                 .bodyToMono(Void.class)
                 .onErrorStop()
                 .block();

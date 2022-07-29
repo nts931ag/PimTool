@@ -1,5 +1,6 @@
 package com.elca.internship.server.test;
 
+import com.elca.internship.server.models.Response;
 import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
 import com.elca.internship.server.models.exceptions.GroupNotExistedException;
 import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.sql.SQLTransientConnectionException;
 
 @RestControllerAdvice(annotations = RestController.class)
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -55,5 +58,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 ErrorResponseKey.ERROR_RESPONSE_PROJECT_NUMBER_EXISTED,
                 projectNumberAlreadyExistedException.getProjectNumber().toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(SQLTransientConnectionException.class)
+    public ResponseEntity<ErrorResponse> handleDatabaseConnectionException(SQLTransientConnectionException sqlTransientConnectionException){
+        var errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.toString(),
+                sqlTransientConnectionException.getMessage(),
+                ErrorResponseKey.ERROR_RESPONSE_DATABASE_CONNECTION,
+                "");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }
