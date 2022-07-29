@@ -6,7 +6,7 @@ import com.elca.internship.client.models.entity.Project;
 public interface NavigationHandler {
     void handleNavigateToCreateProject();
     void handleNavigateToEditProject(Project project);
-    void handleNavigateToListProject();
+    void handleNavigateToListProject(boolean updateMode);
     void handleNavigateToErrorPage(I18nKey msg);
 
 }

@@ -3,19 +3,14 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.i18n.SupportedLocale;
 import com.elca.internship.client.models.entity.Project;
-import com.elca.internship.client.models.entity.ProjectTable;
-import com.elca.internship.client.utils.AlertDialog;
 import com.elca.internship.client.utils.NavigationHandler;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -93,8 +88,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
             }
 
             @Override
-            public void handleNavigateToListProject() {
-                onLbProjectClicked();
+            public void handleNavigateToListProject(boolean updateMode) {
+                navigateToListProject(updateMode);
             }
 
             @Override
@@ -120,7 +115,7 @@ public class DashboardController implements Initializable, ApplicationListener<S
             }
         });
 
-        navigationHandler.handleNavigateToListProject();
+        navigationHandler.handleNavigateToListProject(true);
         lbLangObjectProperty.set(lbEN);
     }
 
@@ -129,10 +124,27 @@ public class DashboardController implements Initializable, ApplicationListener<S
         this.stage = event.getStage();
     }
 
+    @FXML
+    public void switchToEN() {
+
+        if(lbLangObjectProperty.get() != lbEN){
+            i18nManager.setupLocale(SupportedLocale.ENGLISH);
+            switchLanguage();
+            lbLangObjectProperty.set(lbEN);
+        }
+    }
+    @FXML
+    public void switchToFR() {
+        if(lbLangObjectProperty.get() != lbFR){
+            i18nManager.setupLocale(SupportedLocale.FRANCE);
+            switchLanguage();
+            lbLangObjectProperty.set(lbFR);
+        }
+    }
 
     @FXML
     public void onLbProjectClicked(){
-        lbMenuObjectProperty.set(lbMenuProject);
+        /*lbMenuObjectProperty.set(lbMenuProject);
 
         if(projectListCV == null){
             projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
@@ -143,7 +155,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
             contentContainer.getChildren().add(view);
 
             projectListCV.getController().onBtnSearchClicked();
-        });
+        });*/
+        navigateToListProject(true);
     }
 
     @FXML
@@ -158,6 +171,25 @@ public class DashboardController implements Initializable, ApplicationListener<S
             contentContainer.getChildren().add(view);
         });
     }
+
+    public void navigateToListProject(boolean updateMode){
+        lbMenuObjectProperty.set(lbMenuProject);
+
+        if(projectListCV == null){
+            projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
+        }
+
+        projectListCV.getView().ifPresent(view ->{
+            contentContainer.getChildren().clear();
+            lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
+            contentContainer.getChildren().add(view);
+            if(updateMode){
+                projectListCV.getController().onBtnSearchClicked();
+            }
+        });
+
+    }
+
     public void navigateToEditProjectPage(Project project){
         isEditProject = true;
         lbMenuObjectProperty.set(lbMenuNew);
@@ -232,26 +264,6 @@ public class DashboardController implements Initializable, ApplicationListener<S
             projectListCV.getController().switchLanguage();
         } else {
             throw new IllegalStateException("Unexpected value: " + lbMenuObjectProperty.get());
-        }
-    }
-
-
-
-    @FXML
-    public void switchToEN() {
-
-        if(lbLangObjectProperty.get() != lbEN){
-            i18nManager.setupLocale(SupportedLocale.ENGLISH);
-            switchLanguage();
-            lbLangObjectProperty.set(lbEN);
-        }
-    }
-    @FXML
-    public void switchToFR() {
-        if(lbLangObjectProperty.get() != lbFR){
-            i18nManager.setupLocale(SupportedLocale.FRANCE);
-            switchLanguage();
-            lbLangObjectProperty.set(lbFR);
         }
     }
 }

@@ -357,7 +357,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             if(!isEditMode){
                 try {
                     projectRestConsume.createNewProjectTest(project, listMember);
-                    DashboardController.navigationHandler.handleNavigateToListProject();
+                    DashboardController.navigationHandler.handleNavigateToListProject(true);
                 }catch (ProjectException projectException){
                     alertDangerCV.getController().showErrorAlertLabel(
                             projectException.getI18nKey(),
@@ -370,7 +370,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             }else{
                 try {
                     projectRestConsume.updateProjectTest(project, listMember);
-                    DashboardController.navigationHandler.handleNavigateToListProject();
+                    DashboardController.navigationHandler.handleNavigateToListProject(true);
                 }catch (ProjectException projectException){
                     alertDangerCV.getController().showErrorAlertLabel(
                             projectException.getI18nKey(),
@@ -429,9 +429,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
     public void onCancelProjectBtn() {
 
         if(!isEditMode){
-            DashboardController.navigationHandler.handleNavigateToListProject();
+            DashboardController.navigationHandler.handleNavigateToListProject(false);
         }else{
-            DashboardController.navigationHandler.handleNavigateToListProject();
+            DashboardController.navigationHandler.handleNavigateToListProject(false);
         }
     }
 
