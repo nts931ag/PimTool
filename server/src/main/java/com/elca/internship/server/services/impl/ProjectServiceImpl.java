@@ -172,6 +172,56 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa) {
+
+        if(listEmployeeVisa.isEmpty()){
+            if(project.getGroupId() == 0){
+                // throws exception
+                throw new EmptyResultDataAccessException("Members can't be empty", 1);
+            }
+
+            try{
+                groupDAO.findById(project.getGroupId());
+            }catch (EmptyResultDataAccessException erdae){
+                throw new GroupNotExistedException(project.getGroupId());
+            }
+
+//            projectDAO.insert(project);
+            projectDAO.update(project.getId(), project);
+            projectEmployeeDAO.deleteProjectEmployeeByProjectId(project.getId());
+
+        }else{
+            var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
+            var listIdExisted = new ArrayList<Long>(mapVisaId.values());
+            var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
+
+            employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
+
+            if(project.getGroupId() == 0){
+                var idLeader = listIdExisted.get(0);
+                var newGroupId = groupDAO.insert(new Group(0, idLeader, 1));
+                listIdExisted.remove(0);
+                listVisaExisted.remove(0);
+                project.setGroupId(newGroupId);
+            }else{
+                try{
+                    groupDAO.findById(project.getGroupId());
+                }catch (EmptyResultDataAccessException erdae){
+                    throw new GroupNotExistedException(project.getGroupId());
+                }
+            }
+
+            projectDAO.update(project.getId(), project);
+            projectEmployeeDAO.deleteEmployeesFromProjectEmployee(project.getId(), listIdExisted);
+            projectEmployeeDAO.saveNewEmployeesToProjectEmployee(project.getId(), listIdExisted);
+//            var newProjectId = projectDAO.insert(project);
+//            projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void createNewProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa) {
 
         var projectNumberIsExisted = checkProjectNumberExisted(project.getProjectNumber());

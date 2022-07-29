@@ -1,10 +1,14 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
+import com.elca.internship.client.i18n.I18nKey;
+import com.elca.internship.client.i18n.I18nManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxWeaver;
@@ -21,18 +25,24 @@ import java.util.ResourceBundle;
 public class ErrorPageController implements Initializable, ApplicationListener<StageReadyEvent> {
 
     private final FxWeaver fxWeaver;
-    @FXML
-    private Label lbErrorContent;
-    @FXML
-    private Label btnContact;
-    @FXML
-    private Label btnBackToSearch;
+    public Label lbErrorContent;
+    public Label lbErrorPlease;
+    public Label lbBtnErrorContact;
+    public Label lbErrorOr;
+    public Label lbBtnErrorBackToSearch;
+    public HBox parentLayoutErrorPage;
+
     @FXML
     private ImageView imgError;
+    private final I18nManager i18nManager;
     private Stage stage;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        AnchorPane.setTopAnchor(parentLayoutErrorPage,0.0);
+        AnchorPane.setBottomAnchor(parentLayoutErrorPage,0.0);
+        AnchorPane.setLeftAnchor(parentLayoutErrorPage,0.0);
+        AnchorPane.setRightAnchor(parentLayoutErrorPage,0.0);
     }
 
     @Override
@@ -43,5 +53,9 @@ public class ErrorPageController implements Initializable, ApplicationListener<S
 
     public void setMsgError(String msgError) {
         lbErrorContent.setText(msgError);
+    }
+
+    public void showMsgError(I18nKey i18nKey){
+        lbErrorContent.setText(i18nManager.text(i18nKey));
     }
 }

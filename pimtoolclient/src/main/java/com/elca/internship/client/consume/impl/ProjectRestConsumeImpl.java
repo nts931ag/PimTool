@@ -95,4 +95,15 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
         var jsonObject = objectMapper.writeValueAsString(map);
         projectRestClient.createNewProjectTest(jsonObject);
     }
+
+    @Override
+    public void updateProjectTest(Project project, List<String> listMember) throws JsonProcessingException {
+        var objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        var map = new HashMap<String, Object>();
+        map.put("project", project);
+        map.put("listMember", listMember);
+        var jsonObject = objectMapper.writeValueAsString(map);
+        projectRestClient.updateNewProjectTest(jsonObject);
+    }
 }

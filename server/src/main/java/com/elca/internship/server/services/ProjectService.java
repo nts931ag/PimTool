@@ -34,4 +34,6 @@ public interface ProjectService {
     void createNewProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa);
 
     boolean checkProjectNumberExisted(Integer projectNumber);
+
+    void updateProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa);
 }

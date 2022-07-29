@@ -314,7 +314,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final GroupRestConsume groupRestConsume;
 
     public void fillDefaultValueForInputForm() {
-
         var listStatus = FXCollections.observableArrayList(
                 i18nManager.text(I18nKey.PROJECT_STATUS_NEW)
                 , i18nManager.text(I18nKey.PROJECT_STATUS_PLANNED)
@@ -345,42 +344,31 @@ public class CreateProjectController implements Initializable, ApplicationListen
             log.info("Input form project: {}", project);
             log.info("Input form list member: {}", listMember);
             if(!isEditMode){
-                /*try {
-                    var response = projectRestConsume.createNewProject(project, listMember);
-                    if(response.getTypeError() == 0){
-                        DashboardController.navigationHandler.handleNavigateToListProject();
-                        log.info("Reponse: {}", response.getStatusMsg());
-                    }else{
-                        alertDangerCV.getController().setContentAndShowAlertLabel(response);
-                        log.error("Reponse: {}", response.getStatusMsg());
-                    }
-                } catch (JsonProcessingException e) {
-                    DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
-                }*/
                 try {
                     projectRestConsume.createNewProjectTest(project, listMember);
+                    DashboardController.navigationHandler.handleNavigateToListProject();
                 }catch (ProjectException projectException){
                     alertDangerCV.getController().showErrorAlertLabel(
                             projectException.getI18nKey(),
                             projectException.getI18nValue());
-//                    alertDangerCV.getController().setContentAndShowAlertLabel();
                 } catch (JsonProcessingException jsonProcessingException) {
-                    DashboardController.navigationHandler.handleNavigateToErrorPage(jsonProcessingException.getMessage());
+                    DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
                 } catch (WebClientRequestException webClientRequestException){
-                    DashboardController.navigationHandler.handleNavigateToErrorPage(webClientRequestException.getMessage());
+                    DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);
                 }
             }else{
                 try {
-                    var response = projectRestConsume.saveProjectChange(project, listMember);
-                    if(response.getTypeError() == 0){
-                        DashboardController.navigationHandler.handleNavigateToListProject();
-                        log.info("Reponse: {}", response.getStatusMsg());
-                    }else{
-                        alertDangerCV.getController().setContentAndShowAlertLabel(response);
-                        log.error("Reponse: {}", response.getStatusMsg());
-                    }
-                } catch (JsonProcessingException e) {
-                    DashboardController.navigationHandler.handleNavigateToErrorPage(e.getMessage());
+                    projectRestConsume.updateProjectTest(project, listMember);
+                    DashboardController.navigationHandler.handleNavigateToListProject();
+                }catch (ProjectException projectException){
+                    alertDangerCV.getController().showErrorAlertLabel(
+                            projectException.getI18nKey(),
+                            projectException.getI18nValue()
+                    );
+                } catch (JsonProcessingException jsonProcessingException) {
+                    DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
+                } catch (WebClientRequestException webClientRequestException){
+                    DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);
                 }
             }
         }

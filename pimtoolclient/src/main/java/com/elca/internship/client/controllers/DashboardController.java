@@ -20,6 +20,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
+import java.security.Key;
 import java.util.ResourceBundle;
 
 @Component
@@ -91,8 +92,8 @@ public class DashboardController implements Initializable, ApplicationListener<S
             }
 
             @Override
-            public void handleNavigateToErrorPage(String msg) {
-                navigateToErrorPage(msg);
+            public void handleNavigateToErrorPage(I18nKey key) {
+                navigateToErrorPage(key);
             }
         };
 
@@ -168,15 +169,17 @@ public class DashboardController implements Initializable, ApplicationListener<S
         });
     }
 
-    public void navigateToErrorPage(String msg){
+    public void navigateToErrorPage(I18nKey msg){
 
         if(errorPageCV == null){
             errorPageCV = fxWeaver.load(ErrorPageController.class, i18nManager.bundle());
         }
         errorPageCV.getView().ifPresent(view -> {
-            MainContainer.setLeft(null);
+            MainContainer.getLeft().setVisible(false);
+            bodyContainer.getTop().setVisible(false);
             contentContainer.getChildren().clear();
-            errorPageCV.getController().setMsgError(msg);
+//            errorPageCV.getController().setMsgError(msg);
+            errorPageCV.getController().showMsgError(msg);
             contentContainer.getChildren().add(view);
 
         });

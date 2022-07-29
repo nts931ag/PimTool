@@ -133,4 +133,11 @@ public class ProjectController {
         projectAdapter.createNewProject(jsonObject);
         return ResponseEntity.status(HttpStatus.OK).body("Create project Success");
     }
+
+
+    @PutMapping(value = "/test/update", consumes = "application/json")
+    public ResponseEntity<String> saveProjectChangeTest(@RequestBody String jsonObject){
+        projectAdapter.updateProject(jsonObject);
+        return ResponseEntity.status(HttpStatus.OK).body("Create project Success");
+    }
 }

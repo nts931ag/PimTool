@@ -136,6 +136,21 @@ public class ProjectRestClient {
                 .block();
     }
 
+    private static String URI_TEST_UPDATE = "http://localhost:8080/api/projects/test/update";
+
+
+    public void updateNewProjectTest(String jsonObject) {
+        webClient.put().uri(URI_TEST_UPDATE)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(jsonObject))
+                .retrieve()
+                .onStatus(HttpStatus::is4xxClientError, clientResponse -> handle4xxError(clientResponse))
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> handle5xxError(clientResponse))
+                .bodyToMono(Void.class)
+                .onErrorStop()
+                .block();
+    }
+
     private Mono<? extends Throwable> handle5xxError(ClientResponse clientResponse) {
         Mono<ErrorResponse> errorMessage = clientResponse.bodyToMono(ErrorResponse.class);
         return errorMessage.flatMap(
@@ -149,4 +164,6 @@ public class ProjectRestClient {
                 message -> Mono.error(new ProjectException(message.getStatusMsg(), message.getI18nKey(), message.getI18nValue()))
         );
     }
+
+
 }

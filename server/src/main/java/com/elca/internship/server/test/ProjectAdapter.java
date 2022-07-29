@@ -30,4 +30,15 @@ public class ProjectAdapter {
             System.out.println(jpe.getMessage());
         }
     }
+
+    public void updateProject(String jsonObject) {
+        try {
+            var jsonNode = objectMapper.readTree(jsonObject);
+            var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
+            var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
+            projectService.updateProjectWithEmployeeVisasTest(project, listEmployeeVisa);
+        } catch (JsonProcessingException jpe) {
+            System.out.println(jpe.getMessage());
+        }
+    }
 }

@@ -25,4 +25,6 @@ public interface ProjectRestConsume {
     ObservableList<Project> retrieveProjectsWithPagination(String tfSearchValue, String cbStatusValue, int pageIndex, int itemPerPage);
 
     void createNewProjectTest(Project project, List<String> listMember) throws JsonProcessingException;
+
+    void updateProjectTest(Project project, List<String> listMember) throws JsonProcessingException;
 }

@@ -68,7 +68,19 @@ public enum I18nKey {
     /* MSG ERROR RESPONSE */
     RESPONSE_ERROR_PROJECT_NUMBER("response.error.project.number"),
     RESPONSE_ERROR_PROJECT_GROUP("response.error.project.group"),
-    RESPONSE_ERROR_PROJECT_MEMBERS("response.error.project.members");
+    RESPONSE_ERROR_PROJECT_MEMBERS("response.error.project.members"),
+
+    /* APPLICATION ERROR */
+    APPLICATION_ERROR_DATABASE("application.error.database"),
+    APPLICATION_ERROR_CONNECTION("application.error.connection"),
+
+    /* ERROR PAGE */
+    LB_ERROR_CONTENT("lb.error.content"),
+    LB_ERROR_PLEASE("lb.error.please"),
+    LB_BTN_ERROR_CONTACT("lb.btn.error.contact"),
+    LB_ERROR_OR("lb.error.or"),
+    LB_BTN_ERROR_BACK_TO_SEARCH("lb.btn.error.back.to.search")
+    ;
 
     private final String key;
 
