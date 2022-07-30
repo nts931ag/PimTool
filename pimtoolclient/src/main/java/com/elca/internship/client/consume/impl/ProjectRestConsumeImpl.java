@@ -55,17 +55,6 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
     }
 
     @Override
-    public Response createNewProject(Project project, List<String> listMember) throws JsonProcessingException {
-        var objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules();
-        var map = new HashMap<String, Object>();
-        map.put("project", project);
-        map.put("listMember", listMember);
-        var jsonObject = objectMapper.writeValueAsString(map);
-        return projectRestClient.saveNewProject(jsonObject).block();
-    }
-
-    @Override
     public void removeProjectsByIds(List<Long> listIdDelete) {
 
         var response = projectRestClient.deleteByIds(listIdDelete).block();

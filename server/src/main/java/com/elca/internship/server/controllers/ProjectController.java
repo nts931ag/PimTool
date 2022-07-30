@@ -40,28 +40,6 @@ public class ProjectController {
         return projectService.getAllProject();
     }
 
-    @PostMapping(value = "/save", consumes = "application/json")
-    public Response createNewProject(@RequestBody String jsonObject){
-        var objectMapper = new ObjectMapper();
-        objectMapper.findAndRegisterModules();
-        try {
-            var jsonNode = objectMapper.readTree(jsonObject);
-            var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
-            var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
-            log.info("Project info: {}, list employee visa: {}", project, listEmployeeVisa);
-            projectService.createNewProjectWithEmployeeVisas(project, listEmployeeVisa);
-
-            return new Response(0, "Create new project successfully!");
-
-        } catch (JsonProcessingException | ProjectNumberAlreadyExistedException  e) {
-            return new Response(1, e.getMessage());
-        } catch ( EmployeeNotExistedException enee){
-            return new Response(2, enee.getMessage());
-        } catch ( GroupNotExistedException gnee){
-            return new Response(3, gnee.getMessage());
-        }
-    }
-
     @PutMapping(value = "/update", consumes = "application/json")
     public Response saveProjectChange(@RequestBody String jsonObject){
         var objectMapper = new ObjectMapper();
@@ -128,7 +106,7 @@ public class ProjectController {
         return projectService.getProjectByCriteriaWithPagination(proCriteria, proStatus, pageNumber, pageSize);
     }
     private final ProjectAdapter projectAdapter;
-    @PostMapping(value = "/test/save", consumes = "application/json")
+    @PostMapping(value = "/save", consumes = "application/json")
     public ResponseEntity<String> createNewProjectTest(@RequestBody String jsonObject){
         log.info("Json object from client: " + jsonObject);
         projectAdapter.createNewProject(jsonObject);

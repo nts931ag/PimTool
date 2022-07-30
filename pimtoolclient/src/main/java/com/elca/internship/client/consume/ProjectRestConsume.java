@@ -16,7 +16,6 @@ public interface ProjectRestConsume {
 
     List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue);
 
-    Response createNewProject(Project project, List<String> listMember) throws JsonProcessingException;
 
     void removeProjectsByIds(List<Long> listIdDelete);
 

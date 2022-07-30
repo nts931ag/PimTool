@@ -79,16 +79,6 @@ public class ProjectRestClient {
                 .bodyToMono(Response.class);
     }
 
-    public Mono<Response> saveNewProject(String jsonObject) {
-
-        return webClient.post().uri(URI_SAVE_NEW_PROJECT)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(jsonObject))
-                .retrieve()
-                .bodyToMono(Response.class);
-
-    }
-
     public Mono<Response> deleteByIds(List<Long> listIdDelete) {
         var uri = UriComponentsBuilder.fromUriString(URI_DELETE_PROJECTS_BY_IDS)
                 .queryParam("Ids", listIdDelete)
@@ -122,10 +112,9 @@ public class ProjectRestClient {
                 .block();
     }
 
-    private static String URI_TEST_SAVE = "http://localhost:8080/api/projects/test/save";
 
     public void createNewProjectTest(String jsonObject) {
-        webClient.post().uri(URI_TEST_SAVE)
+        webClient.post().uri(URI_SAVE_NEW_PROJECT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(jsonObject))
                 .retrieve()
