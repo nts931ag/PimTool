@@ -25,4 +25,5 @@ public interface ProjectRestConsume {
     void createNewProjectTest(Project project, List<String> listMember) throws JsonProcessingException;
 
     void updateProjectTest(Project project, List<String> listMember) throws JsonProcessingException;
+
 }

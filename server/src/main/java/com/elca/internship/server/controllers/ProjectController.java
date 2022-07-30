@@ -24,16 +24,13 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final ProjectEmployeeService projectEmployeeService;
-    private final EmployeeService employeeService;
-
-    private final GroupService groupService;
+    private final ProjectAdapter projectAdapter;
 
     @GetMapping()
     public List<Project> getAllProject(){
         return projectService.getAllProject();
     }
 
-    private final ProjectAdapter projectAdapter;
     @PostMapping(value = "/save", consumes = "application/json")
     public ResponseEntity<String> createNewProjectTest(@RequestBody String jsonObject){
         log.info("Json object from client: " + jsonObject);

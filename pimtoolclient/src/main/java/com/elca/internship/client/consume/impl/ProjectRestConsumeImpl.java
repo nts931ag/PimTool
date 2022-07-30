@@ -86,4 +86,6 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
         var jsonObject = objectMapper.writeValueAsString(map);
         projectRestClient.updateNewProjectTest(jsonObject);
     }
+
+
 }

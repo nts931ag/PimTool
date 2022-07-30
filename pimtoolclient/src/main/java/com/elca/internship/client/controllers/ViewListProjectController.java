@@ -83,10 +83,11 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public Label lbBtnResetSearch;
 
     private ObservableList<ProjectTable> dataProjects;
-
     private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
     private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
     private FxControllerAndView<RemoveItemPaneController, Node> removeItemPaneCV;
+    int itemPerPage = 5;
+
 
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
@@ -171,12 +172,19 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         });
 
+        numCheckBoxesSelected.addListener(((observable, oldValue, newValue) -> {
+            if(numCheckBoxesSelected.intValue() > 0){
+                removeItemPaneCV.getController().hbLayout.setVisible(true);
+            }else{
+                removeItemPaneCV.getController().hbLayout.setVisible(false);
+            }
+        }));
+
+
     }
-    int itemPerPage = 5;
 
     private Node createPage(int pageIndex, String tfSearch, String cbStatus){
         selectedCheckBoxes.clear();
-//        numCheckBoxesSelected.dispose();
         var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,pageIndex, itemPerPage);
         dataProjects = FXCollections.observableArrayList(projects.stream()
                 .map(e ->
@@ -195,25 +203,11 @@ public class ViewListProjectController implements Initializable, ApplicationList
                         )
                 )
                 .toList());
-//        tbProject.setItems(dataProjects);
 
         for(var dataProject: dataProjects){
             if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
                 dataProject.getIcDelete().getStyleClass().add("icon-node");
-                dataProject.getIcDelete().setOnMouseClicked(event -> {
-                    var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
-                    var alertDialog = new AlertDialog(
-                            i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_TITLE)
-                            ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_HEADER_TEXT)
-                            ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_CONTENT_TEXT),
-                            Alert.AlertType.CONFIRMATION);
-                    var confirm = alertDialog.getConfirmationDeleteProjectDialog();
-                    confirm.showAndWait();
-                    if(confirm.getResult() == ButtonType.YES){
-                        dataProjects.remove(projectTableDeleted);
-                        projectRestConsume.removeProjectById(projectTableDeleted.getId());
-                    }
-                });
+                dataProject.getIcDelete().setOnMouseClicked(deleteItemHandler());
                 configureCheckBox(dataProject.getCheckBox());
             }else{
                 dataProject.setIcDelete(null);
@@ -225,17 +219,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
             });
         }
 
-
-
         tbProject.setItems(dataProjects);
 
-        numCheckBoxesSelected.addListener(((observable, oldValue, newValue) -> {
-            if(numCheckBoxesSelected.intValue() > 0){
-                removeItemPaneCV.getController().hbLayout.setVisible(true);
-            }else{
-                removeItemPaneCV.getController().hbLayout.setVisible(false);
-            }
-        }));
 
 
 
@@ -248,6 +233,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
         var projects = projectRestConsume.searchProjectByCriteriaSpecified(tfSearch, status);
         var size = projects.size();
+
+//        int sizeTemp = projectRestConsume.getNumberOfResultSearch(tfSearch, status);
         if(size % 5 == 0){
             paginationTableProject.setPageCount((size/5));
         }else{
@@ -262,8 +249,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         if(checkBox.isSelected()){
             selectedCheckBoxes.add(checkBox);
         }
-
-
         checkBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue){
                 selectedCheckBoxes.add(checkBox);
@@ -302,14 +287,33 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     }
 
+    public Alert createConfirmationDeleteProjectDialog(){
+        var alertDialog = new AlertDialog(
+                i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_TITLE)
+                ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_HEADER_TEXT)
+                ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_CONTENT_TEXT),
+                Alert.AlertType.CONFIRMATION);
+        return alertDialog.getConfirmationDeleteProjectDialog();
+    }
+
+    public EventHandler<MouseEvent> deleteItemHandler(){
+        return event -> {
+            var projectTableDeleted = dataProjects.get(tbProject.getSelectionModel().getSelectedIndex());
+            var confirm = this.createConfirmationDeleteProjectDialog();
+            confirm.showAndWait();
+            if(confirm.getResult() == ButtonType.YES){
+                if (projectTableDeleted.getCheckBox().isSelected()){
+                    selectedCheckBoxes.remove(projectTableDeleted.getCheckBox());
+                }
+                dataProjects.remove(projectTableDeleted);
+                projectRestConsume.removeProjectById(projectTableDeleted.getId());
+            }
+        };
+    }
+
     public EventHandler<MouseEvent> deleteMultiItemHandler(){
         return event -> {
-            var alertDialog = new AlertDialog(
-                    i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_TITLE)
-                    ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_HEADER_TEXT)
-                    ,i18nManager.text(I18nKey.ALERT_DIALOG_CONFIRMATION_CONTENT_TEXT),
-                    Alert.AlertType.CONFIRMATION);
-            var confirm = alertDialog.getConfirmationDeleteProjectDialog();
+            var confirm = this.createConfirmationDeleteProjectDialog();
             confirm.showAndWait();
             if(confirm.getResult() == ButtonType.YES){
                 var dataProjectDeleted = dataProjects.stream().filter(e -> e.getCheckBox().isSelected()).toList();
