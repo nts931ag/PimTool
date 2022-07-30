@@ -1,4 +1,4 @@
-package com.elca.internship.client.test;
+package com.elca.internship.client.exception;
 
 public enum ErrorResponseKey {
 

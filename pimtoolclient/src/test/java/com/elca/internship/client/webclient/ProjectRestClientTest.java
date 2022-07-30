@@ -2,7 +2,7 @@ package com.elca.internship.client.webclient;
 
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.models.entity.Project;
-import com.elca.internship.client.test.ProjectException;
+import com.elca.internship.client.exception.ProjectException;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;

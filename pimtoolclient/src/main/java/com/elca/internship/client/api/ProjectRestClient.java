@@ -2,10 +2,9 @@ package com.elca.internship.client.api;
 
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Response;
-import com.elca.internship.client.test.ErrorResponse;
-import com.elca.internship.client.test.ProjectException;
+import com.elca.internship.client.exception.ErrorResponse;
+import com.elca.internship.client.exception.ProjectException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -70,15 +69,6 @@ public class ProjectRestClient {
                 .block();
     }
 
-    public Mono<Response> updateProject(String jsonObject) {
-
-        return webClient.put().uri(URI_UPDATE_PROJECT_CHANGE)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(jsonObject))
-                .retrieve()
-                .bodyToMono(Response.class);
-    }
-
     public Mono<Response> deleteByIds(List<Long> listIdDelete) {
         var uri = UriComponentsBuilder.fromUriString(URI_DELETE_PROJECTS_BY_IDS)
                 .queryParam("Ids", listIdDelete)
@@ -125,11 +115,10 @@ public class ProjectRestClient {
                 .block();
     }
 
-    private static String URI_TEST_UPDATE = "http://localhost:8080/api/projects/test/update";
 
 
     public void updateNewProjectTest(String jsonObject) {
-        webClient.put().uri(URI_TEST_UPDATE)
+        webClient.put().uri(URI_UPDATE_PROJECT_CHANGE)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromValue(jsonObject))
                 .retrieve()

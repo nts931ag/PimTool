@@ -2,7 +2,7 @@ package com.elca.internship.server.dao.impl;
 
 import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
+import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
 import com.elca.internship.server.utils.ProjectRowMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

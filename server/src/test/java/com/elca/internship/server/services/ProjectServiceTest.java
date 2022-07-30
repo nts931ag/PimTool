@@ -1,10 +1,8 @@
 package com.elca.internship.server.services;
 
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
-import com.elca.internship.server.models.exceptions.GroupNotExistedException;
-import lombok.RequiredArgsConstructor;
-import org.junit.Assert;
+import com.elca.internship.server.exceptions.EmployeeNotExistedException;
+import com.elca.internship.server.exceptions.GroupNotExistedException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +65,6 @@ public class ProjectServiceTest {
                 2
         );
         var listEmployee = List.of("TTT", "NGU", "TRA");
-        projectService.updateProjectWithListEmployeeVisa(project, listEmployee);
     }
 
     @Test

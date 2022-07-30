@@ -1,7 +1,7 @@
 package com.elca.internship.client.config;
 
-import com.elca.internship.client.test.ErrorResponse;
-import com.elca.internship.client.test.ProjectException;
+import com.elca.internship.client.exception.ErrorResponse;
+import com.elca.internship.client.exception.ProjectException;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

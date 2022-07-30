@@ -1,4 +1,4 @@
-package com.elca.internship.client.test;
+package com.elca.internship.server.exceptions.handler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

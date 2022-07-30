@@ -1,9 +1,8 @@
-package com.elca.internship.server.test;
+package com.elca.internship.server.exceptions.handler;
 
-import com.elca.internship.server.models.Response;
-import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
-import com.elca.internship.server.models.exceptions.GroupNotExistedException;
-import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
+import com.elca.internship.server.exceptions.EmployeeNotExistedException;
+import com.elca.internship.server.exceptions.GroupNotExistedException;
+import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

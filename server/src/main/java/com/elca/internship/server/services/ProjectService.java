@@ -1,10 +1,7 @@
 package com.elca.internship.server.services;
 
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
-import com.elca.internship.server.models.exceptions.GroupNotExistedException;
-import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
-import org.springframework.data.relational.core.sql.In;
+import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
 
 import java.util.List;
 
@@ -20,10 +17,6 @@ public interface ProjectService {
     void deleteProject(Project project);
 
     List<Project> getProjectByCriteria(String proCriteria, String proStatus);
-
-    void updateProjectWithListEmployeeVisa(Project project, List<String> listEmployeeVisa) throws EmployeeNotExistedException, GroupNotExistedException;
-
-    void createNewProjectWithEmployeeVisas(Project project, List<String> listEmployeeVisa) throws ProjectNumberAlreadyExistedException, EmployeeNotExistedException, GroupNotExistedException;
 
     void deleteProjectsByIds(List<Long> Ids);
 

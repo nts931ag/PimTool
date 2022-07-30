@@ -4,7 +4,7 @@ import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.consume.GroupRestConsume;
 import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import com.elca.internship.client.consume.ProjectRestConsume;
-import com.elca.internship.client.test.ProjectException;
+import com.elca.internship.client.exception.ProjectException;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.utils.FormValidation;

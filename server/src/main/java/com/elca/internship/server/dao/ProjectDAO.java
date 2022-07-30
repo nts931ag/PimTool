@@ -1,9 +1,8 @@
 package com.elca.internship.server.dao;
 
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
+import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

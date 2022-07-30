@@ -1,4 +1,4 @@
-package com.elca.internship.server.models.exceptions;
+package com.elca.internship.server.exceptions;
 
 import java.util.List;
 

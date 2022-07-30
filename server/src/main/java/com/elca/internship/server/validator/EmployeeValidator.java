@@ -1,10 +1,9 @@
 package com.elca.internship.server.validator;
 
-import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
+import com.elca.internship.server.exceptions.EmployeeNotExistedException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class EmployeeValidator {

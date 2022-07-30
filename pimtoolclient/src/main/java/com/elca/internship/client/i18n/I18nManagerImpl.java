@@ -1,6 +1,6 @@
 package com.elca.internship.client.i18n;
 
-import com.elca.internship.client.test.ErrorResponseKey;
+import com.elca.internship.client.exception.ErrorResponseKey;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.StringExpression;
 import javafx.beans.value.ObservableValue;

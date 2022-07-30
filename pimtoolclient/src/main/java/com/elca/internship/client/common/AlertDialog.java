@@ -1,4 +1,4 @@
-package com.elca.internship.client.utils;
+package com.elca.internship.client.common;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;

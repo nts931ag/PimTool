@@ -6,25 +6,18 @@ import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.dao.ProjectEmployeeDAO;
 import com.elca.internship.server.models.entity.Group;
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.models.exceptions.EmployeeNotExistedException;
-import com.elca.internship.server.models.exceptions.GroupNotExistedException;
-import com.elca.internship.server.models.exceptions.ProjectNumberAlreadyExistedException;
+import com.elca.internship.server.exceptions.GroupNotExistedException;
+import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
 import com.elca.internship.server.services.ProjectService;
 import com.elca.internship.server.validator.EmployeeValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Service
@@ -88,56 +81,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void updateProjectWithListEmployeeVisa(Project project, List<String> listEmployeeVisa) throws EmployeeNotExistedException, GroupNotExistedException {
-        // check all visa existed
-        var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
-        var listId = new ArrayList<Long>(mapVisaId.values());
-        var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
-        employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
-        // check group is existed?
-        if(project.getGroupId() == 0){
-            var newGroupId = groupDAO.insert(new Group(0,listId.get(0),1));
-            project.setGroupId(newGroupId);
-        }else{
-            try{
-                groupDAO.findById(project.getGroupId());
-            }catch (EmptyResultDataAccessException e){
-                throw new GroupNotExistedException(project.getGroupId());
-            }
-        }
-        // update project
-        projectDAO.update(project.getId(), project);
-        projectEmployeeDAO.deleteEmployeesFromProjectEmployee(project.getId(), listId);
-        projectEmployeeDAO.saveNewEmployeesToProjectEmployee(project.getId(), listId);
-//        projectEmployeeDAO.saveProjectEmployee(project.getId(), listId);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void createNewProjectWithEmployeeVisas(Project project, List<String> listEmployeeVisa) throws ProjectNumberAlreadyExistedException, EmployeeNotExistedException, GroupNotExistedException {
-        // check all visa existed
-        var mapVisaId = employeeDAO.getMapVisaIdByListVisa(listEmployeeVisa);
-        var listId = new ArrayList<Long>(mapVisaId.values());
-        var listVisaExisted = new ArrayList<String>(mapVisaId.keySet());
-        employeeValidator.validateEmployeesExisted(listEmployeeVisa, listVisaExisted);
-        // check group is existed?
-        if(project.getGroupId() == 0){
-            var newGroupId = groupDAO.insert(new Group(0,listId.get(0),1));
-            project.setGroupId(newGroupId);
-        }else{
-            try{
-                groupDAO.findById(project.getGroupId());
-            }catch (EmptyResultDataAccessException e){
-                throw new GroupNotExistedException(project.getGroupId());
-            }
-        }
-        // create project
-        var newProjectId = projectDAO.insert(project);
-        projectEmployeeDAO.saveProjectEmployee(newProjectId, listId);
-    }
-
-    @Override
     public void deleteProjectsByIds(List<Long> Ids) {
         projectEmployeeDAO.removeProjectEmployeeByProjectIds(Ids);
         projectDAO.deleteByIds(Ids);
@@ -153,13 +96,6 @@ public class ProjectServiceImpl implements ProjectService {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(proCriteria, proStatus, pageRequest);
         return pageProject.get().toList();
-//        if(proCriteria.isBlank() && proStatus.isBlank()){
-//            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination("", "", pageRequest);
-//            return pageProject.get().toList();
-//        }else{
-//            var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(proCriteria, proStatus, pageRequest);
-//            return pageProject.get().toList();
-//        }
     }
     @Override
     public boolean checkProjectNumberExisted(Integer projectNumber){

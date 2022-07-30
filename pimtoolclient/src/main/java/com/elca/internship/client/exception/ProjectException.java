@@ -1,6 +1,5 @@
-package com.elca.internship.client.test;
+package com.elca.internship.client.exception;
 
-import com.elca.internship.client.i18n.I18nKey;
 import lombok.Data;
 
 @Data
