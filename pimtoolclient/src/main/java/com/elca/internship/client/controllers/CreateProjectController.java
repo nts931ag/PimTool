@@ -126,10 +126,10 @@ public class CreateProjectController implements Initializable, ApplicationListen
         initLayout();
         fillDefaultValueForInputForm();
         projectFormValidation = new FormValidation();
-        projectFormValidation.getFormFields().put("proNumber", false);
-        projectFormValidation.getFormFields().put("proName", false);
-        projectFormValidation.getFormFields().put("proCustomer", false);
-        projectFormValidation.getFormFields().put("proMember", false);
+        projectFormValidation.getFormFields().put("proNumber", null);
+        projectFormValidation.getFormFields().put("proName", null);
+        projectFormValidation.getFormFields().put("proCustomer", null);
+        projectFormValidation.getFormFields().put("proMember", null);
         projectFormValidation.getFormFields().put("proDate", true);
         this.addEventListeners();
 
@@ -242,7 +242,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     private boolean validateFrom() {
         var node = (HBox) alertDangerCV.getView().get();
-        if (projectFormValidation.getFormFields().containsValue(false)) {
+        if (projectFormValidation.getFormFields().containsValue(false)
+        || projectFormValidation.getFormFields().containsValue(null)) {
             node.setVisible(true);
             return false;
         } else {
@@ -452,22 +453,22 @@ public class CreateProjectController implements Initializable, ApplicationListen
         listGroups.set(0,i18nManager.text(I18nKey.GROUP_NEW));
 
         lbValidateProGroup.setText(i18nManager.text(I18nKey.LABEL_VALIDATE_PROJECT_GROUP));
-        /*if(lbValidateProCustomer.isVisible()){
+        if(projectFormValidation.getFormFields().get("proCustomer") != null){
             tfProCustomer.requestFocus();
         }
-        if(lbValidateProNum.isVisible()){
+        if(projectFormValidation.getFormFields().get("proNumber") != null){
             tfProNum.requestFocus();
         }
-        if(lbValidateProName.isVisible()){
+        if(projectFormValidation.getFormFields().get("proName") != null){
             tfProName.requestFocus();
         }
-        if(lbValidateProMember.isVisible()){
+        if(projectFormValidation.getFormFields().get("proMember") != null){
             tfProMember.requestFocus();
             lbValidateProMember.requestFocus();
         }
         if(lbValidateProDate.isVisible()){
             pickerStartDate.setValue(pickerStartDate.getValue());
-        }*/
+        }
 
         lbProEndDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_END_DATE));
         lbProStartDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_START_DATE));
