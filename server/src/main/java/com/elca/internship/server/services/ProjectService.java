@@ -29,4 +29,6 @@ public interface ProjectService {
     boolean checkProjectNumberExisted(Integer projectNumber);
 
     void updateProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa);
+
+    Integer getSizeOfResultSearch(String proCriteria, String proStatus);
 }

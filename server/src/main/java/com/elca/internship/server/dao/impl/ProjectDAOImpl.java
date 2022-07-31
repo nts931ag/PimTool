@@ -238,6 +238,33 @@ public class ProjectDAOImpl implements ProjectDAO {
         return new PageImpl<Project>(projects, pageable, count);
     }
 
+    @Override
+    public Integer calcSizeOfResultSearch(String proCriteria, String proStatus) {
+        if(proCriteria.isBlank() && proStatus.isBlank()){
+            proCriteria = "%";
+            proStatus = "%";
+        }else {
+            if(proCriteria.isBlank()){
+                proCriteria = "%";
+                proStatus = "%"+proStatus+"%";
+            }
+            if(proStatus.isBlank()){
+                proCriteria = "%"+proCriteria+"%";
+                proStatus = "%";
+            }
+        }
+
+        var sql = "SELECT DISTINCT count(*) FROM PROJECT " +
+                "WHERE (CAST(project_number as CHAR(50)) like :proCriteria or lower(name) like :proCriteria or lower(customer) like :proCriteria) " +
+                "and status like :proStatus ;";
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource()
+                .addValue("proCriteria", proCriteria)
+                .addValue("proStatus", proStatus);
+
+        return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
+    }
+
 
     @Override
     public List<Project> findByProCriteriaAndProStatus(String proCriteria, String proStatus) {

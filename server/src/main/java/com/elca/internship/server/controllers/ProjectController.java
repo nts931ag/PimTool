@@ -93,5 +93,12 @@ public class ProjectController {
         }
     }
 
+    @GetMapping(value = "/search/size")
+    public Integer getSizeOfResultSearch(
+            @RequestParam(value = "proCriteria") String proCriteria,
+            @RequestParam(value = "proStatus") String proStatus
+    ){
+        return projectService.getSizeOfResultSearch(proCriteria, proStatus);
+    }
 
 }

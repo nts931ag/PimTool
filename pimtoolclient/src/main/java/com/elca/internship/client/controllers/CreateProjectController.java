@@ -466,9 +466,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
             tfProMember.requestFocus();
             lbValidateProMember.requestFocus();
         }
-        if(lbValidateProDate.isVisible()){
-            pickerStartDate.setValue(pickerStartDate.getValue());
-        }
 
         lbProEndDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_END_DATE));
         lbProStartDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_START_DATE));

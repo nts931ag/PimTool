@@ -26,4 +26,5 @@ public interface ProjectRestConsume {
 
     void updateProjectTest(Project project, List<String> listMember) throws JsonProcessingException;
 
+    int getNumberOfResultSearch(String tfSearch, String status);
 }

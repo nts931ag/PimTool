@@ -44,4 +44,6 @@ public interface ProjectDAO {
     Page<Project> findAllProjectWithPagination(Pageable pageable);
 
     Page<Project> findAllProjectSpecifiedWithPagination(String proCriteria, String proStatus, Pageable pageable);
+
+    Integer calcSizeOfResultSearch(String proCriteria, String proStatus);
 }

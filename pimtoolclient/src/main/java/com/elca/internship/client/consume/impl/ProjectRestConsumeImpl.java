@@ -87,5 +87,10 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
         projectRestClient.updateNewProjectTest(jsonObject);
     }
 
+    @Override
+    public int getNumberOfResultSearch(String tfSearch, String status) {
+        return projectRestClient.getNumberOfResultSearch(tfSearch, status);
+    }
+
 
 }

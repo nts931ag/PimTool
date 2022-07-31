@@ -97,6 +97,12 @@ public class ProjectServiceImpl implements ProjectService {
         var pageProject = projectDAO.findAllProjectSpecifiedWithPagination(proCriteria, proStatus, pageRequest);
         return pageProject.get().toList();
     }
+
+    @Override
+    public Integer getSizeOfResultSearch(String proCriteria, String proStatus) {
+        return projectDAO.calcSizeOfResultSearch(proCriteria, proStatus);
+    }
+
     @Override
     public boolean checkProjectNumberExisted(Integer projectNumber){
         try{
@@ -154,6 +160,8 @@ public class ProjectServiceImpl implements ProjectService {
 //            projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);
         }
     }
+
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)

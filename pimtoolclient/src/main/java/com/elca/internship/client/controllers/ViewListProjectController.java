@@ -114,19 +114,30 @@ public class ViewListProjectController implements Initializable, ApplicationList
         /*tbProject.setFixedCellSize(50);
         tbProject.setPrefHeight((50.0 * (itemPerPage+1)) + 2);*/
 
-        tbProject.skinProperty().addListener(((observable, oldValue, newValue) -> {
+        /*tbProject.skinProperty().addListener(((observable, oldValue, newValue) -> {
             Pane header =(Pane) tbProject.lookup("TableHeaderRow");
             header.prefHeightProperty().bind(tbProject.heightProperty().divide(6));
-        }));
+        }));*/
+
+        tbProject.setFixedCellSize(45);
+        tbProject.prefHeightProperty().bind(tbProject.fixedCellSizeProperty().multiply(6));
+        tbProject.minHeightProperty().bind(tbProject.prefHeightProperty());
+        tbProject.maxHeightProperty().bind(tbProject.prefHeightProperty());
+
+        paginationTableProject.setPrefHeight(tbProject.getPrefHeight() + 50.0);
+        paginationTableProject.setMinWidth(tbProject.getPrefHeight() + 50.0);
+        paginationTableProject.setMaxWidth(tbProject.getPrefHeight() + 50.0);
 
         colCheck.setMinWidth(30);
         colCheck.setMaxWidth(30);
         colProNum.setMinWidth(80);
         colProNum.setMaxWidth(80);
-        colProName.setMinWidth(320);
+        colProName.setMinWidth(270);
+        colProName.setPrefWidth(270);
         colProStatus.setMinWidth(70);
         colProStatus.setMaxWidth(70);
-        colProCustomer.setMinWidth(220);
+        colProCustomer.setMinWidth(170);
+        colProCustomer.setPrefWidth(170);
         colProStart.setMinWidth(120);
         colProStart.setMaxWidth(120);
         colProDel.setMinWidth(90);
@@ -222,8 +233,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         tbProject.setItems(dataProjects);
 
 
-
-
         return vbTableView;
     }
 
@@ -231,10 +240,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public void fillDataProjectToTable(String tfSearch, String status){
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
 
-        var projects = projectRestConsume.searchProjectByCriteriaSpecified(tfSearch, status);
-        var size = projects.size();
-
-//        int sizeTemp = projectRestConsume.getNumberOfResultSearch(tfSearch, status);
+        int size = projectRestConsume.getNumberOfResultSearch(tfSearch, status);
         if(size % 5 == 0){
             paginationTableProject.setPageCount((size/5));
         }else{

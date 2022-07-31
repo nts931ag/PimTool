@@ -143,6 +143,17 @@ public class ProjectRestClient {
         );
     }
 
+    private final String URI_GET_NUMBER_OF_RESULT_SEARCH= BASE_URI + "/api/projects/search/size";
 
-
+    public int getNumberOfResultSearch(String tfSearch, String status) {
+        var uri = UriComponentsBuilder.fromUriString(URI_GET_NUMBER_OF_RESULT_SEARCH)
+                .queryParam("proCriteria", tfSearch)
+                .queryParam("proStatus", status)
+                .build().toUriString();
+        return webClient.get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(Integer.class)
+                .block();
+    }
 }
