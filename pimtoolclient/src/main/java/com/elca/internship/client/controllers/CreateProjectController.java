@@ -343,7 +343,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
 
-        listMembers = restTemplateConsume.getAllEmployeeVisa();
+//        listMembers = restTemplateConsume.getAllEmployeeVisa();
 
 
 
