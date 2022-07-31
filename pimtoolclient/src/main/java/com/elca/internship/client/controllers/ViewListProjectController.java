@@ -307,6 +307,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 }
                 dataProjects.remove(projectTableDeleted);
                 projectRestConsume.removeProjectById(projectTableDeleted.getId());
+                onBtnSearchClicked();
             }
         };
     }
@@ -322,6 +323,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 projectRestConsume.removeProjectsByIds(listIdDelete);
                 selectedCheckBoxes.clear();
                 removeItemPaneCV.getController().hbLayout.setVisible(false);
+                onBtnSearchClicked();
             }
 
         };

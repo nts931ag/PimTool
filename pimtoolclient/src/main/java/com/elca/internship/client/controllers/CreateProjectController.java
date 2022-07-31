@@ -285,7 +285,11 @@ public class CreateProjectController implements Initializable, ApplicationListen
         gpCreateProjectTab.add(node,0,1,4,1);
         node.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         node.setVisible(false);
-
+        /*lbValidateProNum.setVisible(false);
+        lbValidateProMember.setVisible(false);
+        lbValidateProName.setVisible(false);
+        lbValidateProDate.setVisible(false);
+        lbValidateProCustomer.setVisible(false);*/
 
 
     }
@@ -446,9 +450,24 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(idxStatusCurrent);
         listGroups.set(0,i18nManager.text(I18nKey.GROUP_NEW));
-//        cbProGroup.setItems(listGroups);
 
         lbValidateProGroup.setText(i18nManager.text(I18nKey.LABEL_VALIDATE_PROJECT_GROUP));
+        if(lbValidateProCustomer.isVisible()){
+            tfProCustomer.requestFocus();
+        }
+        if(lbValidateProNum.isVisible()){
+            tfProNum.requestFocus();
+        }
+        if(lbValidateProName.isVisible()){
+            tfProName.requestFocus();
+        }
+        if(lbValidateProMember.isVisible()){
+            tfProMember.requestFocus();
+            lbValidateProMember.requestFocus();
+        }
+        if(lbValidateProDate.isVisible()){
+            pickerStartDate.setValue(pickerStartDate.getValue());
+        }
 
         lbProEndDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_END_DATE));
         lbProStartDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_START_DATE));
@@ -463,7 +482,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
             btnCreate.setText(i18nManager.text(I18nKey.BUTTON_EDIT_PROJECT));
         }else{
             btnCreate.setText(i18nManager.text(I18nKey.BUTTON_SEARCH_PROJECT));
-
         }
     }
 }
