@@ -311,9 +311,10 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 if (projectTableDeleted.getCheckBox().isSelected()){
                     selectedCheckBoxes.remove(projectTableDeleted.getCheckBox());
                 }
-                dataProjects.remove(projectTableDeleted);
-                projectRestConsume.removeProjectById(projectTableDeleted.getId());
-                onBtnSearchClicked();
+                if(projectRestConsume.removeProjectById(projectTableDeleted.getId())!=null){
+                    dataProjects.remove(projectTableDeleted);
+                    onBtnSearchClicked();
+                }
             }
         };
     }

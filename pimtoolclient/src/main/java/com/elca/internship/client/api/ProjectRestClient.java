@@ -1,9 +1,12 @@
 package com.elca.internship.client.api;
 
+import com.elca.internship.client.controllers.DashboardController;
+import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Response;
 import com.elca.internship.client.exception.ErrorResponse;
 import com.elca.internship.client.exception.ProjectException;
+import javafx.application.Platform;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -52,7 +55,15 @@ public class ProjectRestClient {
     public Mono<Response> deleteById(Long projectId) {
         return webClient.delete().uri(URI_DELETE_PROJECT_BY_ID, projectId)
                 .retrieve()
-                .bodyToMono(Response.class);
+                .bodyToMono(Response.class)
+                .onErrorReturn(null)
+                .doOnError(
+                throwable -> Platform.runLater(
+                        () -> DashboardController.navigationHandler
+                                .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
+                )
+        )
+                ;
 
     }
 
@@ -76,13 +87,27 @@ public class ProjectRestClient {
         return webClient.delete()
                 .uri(uri)
                 .retrieve()
-                .bodyToMono(Response.class);
+                .bodyToMono(Response.class)
+                .doOnError(
+                        throwable -> Platform.runLater(
+                                () -> DashboardController.navigationHandler
+                                        .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
+                        )
+                )
+                .onErrorReturn(null);
     }
 
     public Mono<Long> getProjectNumber(Long projectNumber) {
         return webClient.get().uri(URI_GET_PROJECT_NUMBER, projectNumber)
                 .retrieve()
-                .bodyToMono(Long.class);
+                .bodyToMono(Long.class)
+                .doOnError(
+                        throwable -> Platform.runLater(
+                                () -> DashboardController.navigationHandler
+                                        .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
+                        )
+                )
+                .onErrorReturn(0L);
     }
 
     private static String URI_TEST = "http://localhost:8080/api/projects/test/search";
@@ -99,6 +124,13 @@ public class ProjectRestClient {
                 .retrieve()
                 .bodyToFlux(Project.class)
                 .collectList()
+                .doOnError(
+                        throwable -> Platform.runLater(
+                                () -> DashboardController.navigationHandler
+                                        .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
+                        )
+                )
+                .onErrorReturn(List.of())
                 .block();
     }
 
@@ -154,6 +186,13 @@ public class ProjectRestClient {
                 .uri(uri)
                 .retrieve()
                 .bodyToMono(Integer.class)
+                .doOnError(
+                        throwable -> Platform.runLater(
+                                () -> DashboardController.navigationHandler
+                                        .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
+                        )
+                )
+                .onErrorReturn(0)
                 .block();
     }
 }
