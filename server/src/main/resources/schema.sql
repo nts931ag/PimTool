@@ -30,13 +30,18 @@ CREATE TABLE `employee` (
   `birth_date` date NOT NULL,
   `version` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `employee`
 --
 
+LOCK TABLES `employee` WRITE;
+/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES (1,'NGU','thai','son','2001-03-09',1),(2,'TRA','hoang','thai','2001-09-11',1),(3,'NVA','van','anh','2001-01-01',1),(4,'NVB','van','bao','2001-02-02',1),(5,'NVC','van','canh','2001-03-04',1),(6,'NVD','van','danh','2001-04-04',1),(7,'NVT','van','tien','2001-05-05',1),(8,'NVP','van','phu','2001-06-06',1),(9,'NVQ','van','quoc','2001-07-07',1),(10,'NVM','van','minh','2001-08-08',1),(11,'NVN','van','nam','2001-09-09',1),(12,'NVL','van','long','2001-10-10',1),(13,'NVH','van','huy','2001-11-11',1);
+/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `project`
@@ -58,13 +63,18 @@ CREATE TABLE `project` (
   PRIMARY KEY (`id`),
   KEY `fk_team_id_idx` (`team_id`),
   CONSTRAINT `fk_team_id` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `project`
 --
 
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+INSERT INTO `project` VALUES (1,1,1234,'game android','elca','NEW','2022-07-31','2022-08-07',2),(2,2,5678,'game mobile ios','elca','FIN','2022-07-31',NULL,2),(3,3,9101,'web game','hcmus','PLA','2022-07-31','2022-08-06',1),(4,3,8989,'web market','uit','NEW','2022-07-31','2022-08-06',1),(5,4,6767,'web bank','vng','INP','2022-07-31','2022-08-06',1),(6,5,5555,'goFood','vin','NEW','2022-07-31','2022-08-06',1);
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `project_employee`
@@ -87,6 +97,11 @@ CREATE TABLE `project_employee` (
 -- Dumping data for table `project_employee`
 --
 
+LOCK TABLES `project_employee` WRITE;
+/*!40000 ALTER TABLE `project_employee` DISABLE KEYS */;
+INSERT INTO `project_employee` VALUES (1,3),(1,4),(2,3),(2,4),(3,3),(3,8),(3,1),(4,13),(4,3),(4,1),(5,4),(5,1),(6,3),(6,4),(6,1),(1,5);
+/*!40000 ALTER TABLE `project_employee` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `team`
@@ -102,14 +117,19 @@ CREATE TABLE `team` (
   PRIMARY KEY (`id`),
   KEY `fk_team_leader_id_idx` (`team_leader_id`),
   CONSTRAINT `fk_team_leader_id` FOREIGN KEY (`team_leader_id`) REFERENCES `employee` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='	';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='	';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `team`
 --
 
-
+LOCK TABLES `team` WRITE;
+/*!40000 ALTER TABLE `team` DISABLE KEYS */;
+INSERT INTO `team` VALUES (1,1,1),(2,2,1),(3,4,1),(4,3,1),(5,2,1);
+/*!40000 ALTER TABLE `team` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -119,4 +139,4 @@ CREATE TABLE `team` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-24 23:20:24
+-- Dump completed on 2022-07-31 22:30:46
