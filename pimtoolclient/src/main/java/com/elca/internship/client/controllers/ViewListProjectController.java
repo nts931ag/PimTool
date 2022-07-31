@@ -311,7 +311,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 if (projectTableDeleted.getCheckBox().isSelected()){
                     selectedCheckBoxes.remove(projectTableDeleted.getCheckBox());
                 }
-                if(projectRestConsume.removeProjectById(projectTableDeleted.getId())!=null){
+                if(projectRestConsume.removeProjectById(projectTableDeleted.getId()).getTypeError() != -1){
                     dataProjects.remove(projectTableDeleted);
                     onBtnSearchClicked();
                 }
@@ -326,11 +326,12 @@ public class ViewListProjectController implements Initializable, ApplicationList
             if(confirm.getResult() == ButtonType.YES){
                 var dataProjectDeleted = dataProjects.stream().filter(e -> e.getCheckBox().isSelected()).toList();
                 var listIdDelete = dataProjectDeleted.stream().map(ProjectTable::getId).toList();
-                dataProjects.removeAll(dataProjectDeleted);
-                projectRestConsume.removeProjectsByIds(listIdDelete);
-                selectedCheckBoxes.clear();
-                removeItemPaneCV.getController().hbLayout.setVisible(false);
-                onBtnSearchClicked();
+                if(projectRestConsume.removeProjectsByIds(listIdDelete).getTypeError()!=-1){
+                    dataProjects.removeAll(dataProjectDeleted);
+                    selectedCheckBoxes.clear();
+                    removeItemPaneCV.getController().hbLayout.setVisible(false);
+                    onBtnSearchClicked();
+                }
             }
 
         };

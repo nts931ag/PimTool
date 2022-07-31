@@ -51,22 +51,6 @@ public class ProjectRestClient {
                 .block();
     }
 
-
-    public Mono<Response> deleteById(Long projectId) {
-        return webClient.delete().uri(URI_DELETE_PROJECT_BY_ID, projectId)
-                .retrieve()
-                .bodyToMono(Response.class)
-                .onErrorReturn(null)
-                .doOnError(
-                throwable -> Platform.runLater(
-                        () -> DashboardController.navigationHandler
-                                .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
-                )
-        )
-                ;
-
-    }
-
     public List<Project> getAllProjectsByCriteriaSpecified(String tfSearchValue, String cbStatusValue) {
         var uri = UriComponentsBuilder.fromUriString(URI_GET_ALL_PROJECT_CRITERIA_SPECIFIED)
                 .queryParam("proCriteria", tfSearchValue)
@@ -80,7 +64,21 @@ public class ProjectRestClient {
                 .block();
     }
 
-    public Mono<Response> deleteByIds(List<Long> listIdDelete) {
+    public Response deleteById(Long projectId) {
+        return webClient.delete().uri(URI_DELETE_PROJECT_BY_ID, projectId)
+                .retrieve()
+                .bodyToMono(Response.class)
+                .doOnError(
+                        throwable -> Platform.runLater(
+                                () -> DashboardController.navigationHandler
+                                        .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
+                        )
+                )
+                .onErrorReturn(new Response(-1,"FAIL"))
+                .block();
+    }
+
+    public Response deleteByIds(List<Long> listIdDelete) {
         var uri = UriComponentsBuilder.fromUriString(URI_DELETE_PROJECTS_BY_IDS)
                 .queryParam("Ids", listIdDelete)
                 .build().toUriString();
@@ -94,7 +92,8 @@ public class ProjectRestClient {
                                         .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
                         )
                 )
-                .onErrorReturn(null);
+                .onErrorReturn(new Response(-1,"FAIL"))
+                .block();
     }
 
     public Mono<Long> getProjectNumber(Long projectNumber) {

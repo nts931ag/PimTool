@@ -16,7 +16,7 @@ public interface ProjectRestConsume {
     List<Project> searchProjectByCriteriaSpecified(String tfSearchValue, String cbStatusValue);
 
 
-    void removeProjectsByIds(List<Long> listIdDelete);
+    Response removeProjectsByIds(List<Long> listIdDelete);
 
     Boolean CheckProjectNumberIsExisted(Long projectNumber);
 

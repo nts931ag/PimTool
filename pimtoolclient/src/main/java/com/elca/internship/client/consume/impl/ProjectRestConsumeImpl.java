@@ -33,7 +33,7 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
 
     @Override
     public Response removeProjectById(Long projectId) {
-        return projectRestClient.deleteById(projectId).block();
+        return projectRestClient.deleteById(projectId);
     }
 
     @Override
@@ -46,9 +46,10 @@ public class ProjectRestConsumeImpl implements ProjectRestConsume {
 
 
     @Override
-    public void removeProjectsByIds(List<Long> listIdDelete) {
+    public Response removeProjectsByIds(List<Long> listIdDelete) {
 
-        var response = projectRestClient.deleteByIds(listIdDelete).block();
+        return projectRestClient.deleteByIds(listIdDelete);
+
     }
 
     @Override
