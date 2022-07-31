@@ -257,13 +257,13 @@ public class CreateProjectController implements Initializable, ApplicationListen
         gpCreateProjectTab.setHgap(10);
         var colsConstraints = gpCreateProjectTab.getColumnConstraints();
         colsConstraints.get(0).setMaxWidth(150);
-        colsConstraints.get(1).setPrefWidth(200);
-        colsConstraints.get(1).setMaxWidth(300);
+        colsConstraints.get(1).setPrefWidth(150);
+        colsConstraints.get(1).setMaxWidth(250);
         colsConstraints.get(2).setMaxWidth(150);
-        colsConstraints.get(3).setPrefWidth(200);
-        colsConstraints.get(3).setMaxWidth(300);
-        colsConstraints.get(4).setPrefWidth(450);
-        colsConstraints.get(4).setMinWidth(450);
+        colsConstraints.get(3).setPrefWidth(150);
+        colsConstraints.get(3).setMaxWidth(250);
+        colsConstraints.get(4).setPrefWidth(350);
+        colsConstraints.get(4).setMinWidth(350);
 
         cbProGroup.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         cbProStatus.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -452,7 +452,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         listGroups.set(0,i18nManager.text(I18nKey.GROUP_NEW));
 
         lbValidateProGroup.setText(i18nManager.text(I18nKey.LABEL_VALIDATE_PROJECT_GROUP));
-        if(lbValidateProCustomer.isVisible()){
+        /*if(lbValidateProCustomer.isVisible()){
             tfProCustomer.requestFocus();
         }
         if(lbValidateProNum.isVisible()){
@@ -467,7 +467,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         }
         if(lbValidateProDate.isVisible()){
             pickerStartDate.setValue(pickerStartDate.getValue());
-        }
+        }*/
 
         lbProEndDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_END_DATE));
         lbProStartDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_START_DATE));
