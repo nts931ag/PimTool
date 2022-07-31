@@ -111,6 +111,9 @@ public class ViewListProjectController implements Initializable, ApplicationList
         btnSearch.setPrefWidth(200);
         tfSearch.setFocusTraversable(false);
 
+        tbProject.setFixedCellSize(45);
+        System.out.println(tbProject.getPrefHeight());
+        System.out.println(paginationTableProject.getPrefHeight());
         /*tbProject.setFixedCellSize(50);
         tbProject.setPrefHeight((50.0 * (itemPerPage+1)) + 2);*/
 
@@ -119,7 +122,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
             header.prefHeightProperty().bind(tbProject.heightProperty().divide(6));
         }));*/
 
-        tbProject.setFixedCellSize(45);
+        /*tbProject.setFixedCellSize(45);
         tbProject.prefHeightProperty().bind(tbProject.fixedCellSizeProperty().multiply(6));
         tbProject.minHeightProperty().bind(tbProject.prefHeightProperty());
         tbProject.maxHeightProperty().bind(tbProject.prefHeightProperty());
@@ -127,7 +130,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         paginationTableProject.setPrefHeight(tbProject.getPrefHeight() + 50.0);
         paginationTableProject.setMinWidth(tbProject.getPrefHeight() + 50.0);
         paginationTableProject.setMaxWidth(tbProject.getPrefHeight() + 50.0);
-
+*/
         colCheck.setMinWidth(30);
         colCheck.setMaxWidth(30);
         colProNum.setMinWidth(80);
@@ -231,7 +234,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         }
 
         tbProject.setItems(dataProjects);
-
 
         return vbTableView;
     }
