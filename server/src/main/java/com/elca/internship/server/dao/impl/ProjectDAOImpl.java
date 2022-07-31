@@ -214,11 +214,13 @@ public class ProjectDAOImpl implements ProjectDAO {
         }else {
             if(proCriteria.isBlank()){
                 proCriteria = "%";
-                proStatus = "%"+proStatus+"%";
+            }else{
+                proCriteria = "%"+proCriteria+"%";
             }
             if(proStatus.isBlank()){
-                proCriteria = "%"+proCriteria+"%";
                 proStatus = "%";
+            }else{
+                proStatus = "%"+proStatus+"%";
             }
         }
 
@@ -246,11 +248,13 @@ public class ProjectDAOImpl implements ProjectDAO {
         }else {
             if(proCriteria.isBlank()){
                 proCriteria = "%";
-                proStatus = "%"+proStatus+"%";
+            }else{
+                proCriteria = "%"+proCriteria+"%";
             }
             if(proStatus.isBlank()){
-                proCriteria = "%"+proCriteria+"%";
                 proStatus = "%";
+            }else{
+                proStatus = "%"+proStatus+"%";
             }
         }
 

@@ -52,6 +52,7 @@ public class FormValidation {
                     valid = false;
                 }
             }
+            System.out.println(newValue.replaceAll(" ", ""));
             msg = i18nManager.text(I18nKey.MSG_VALIDATED_EMPLOYEE_VISAS, listInvalidVisa);
         }
 

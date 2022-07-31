@@ -78,7 +78,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
     }
 
     public void loadDashboardIgnoreConnection(){
-        Dimension2D dimension2DLoading = GuiUtil.getCenterSceneDim(stage, 1.5, 1.5);
+        Dimension2D dimension2DLoading = GuiUtil.getCenterSceneDim(stage, 1.25, 1.25);
         SupportedLocale locale = SupportedLocale.DEFAULT_LOCALE;
         i18nManager.setupLocale(locale);
         var bundle = i18nManager.bundle();

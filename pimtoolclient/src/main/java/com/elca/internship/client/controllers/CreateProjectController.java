@@ -451,8 +451,11 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(idxStatusCurrent);
         listGroups.set(0,i18nManager.text(I18nKey.GROUP_NEW));
-
+        if(cbProGroup.getSelectionModel().getSelectedIndex() == -1){
+            cbProGroup.getSelectionModel().select(0);
+        }
         lbValidateProGroup.setText(i18nManager.text(I18nKey.LABEL_VALIDATE_PROJECT_GROUP));
+
         if(projectFormValidation.getFormFields().get("proCustomer") != null){
             tfProCustomer.requestFocus();
         }
@@ -464,7 +467,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         }
         if(projectFormValidation.getFormFields().get("proMember") != null){
             tfProMember.requestFocus();
-            lbValidateProMember.requestFocus();
+            gpCreateProjectTab.requestFocus();
         }
 
         lbProEndDate.setText(i18nManager.text(I18nKey.LABEL_PROJECT_END_DATE));

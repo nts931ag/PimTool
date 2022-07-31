@@ -37,11 +37,6 @@ CREATE TABLE `employee` (
 -- Dumping data for table `employee`
 --
 
-LOCK TABLES `employee` WRITE;
-/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,'NGU','NGUYEN THAI','SON','2001-03-09',1),(2,'NVA','NGUYEN VAN','A','2001-01-01',1),(3,'NVB','NGUYEN VAN','B','2001-02-02',1),(4,'TVC','TRAN VAN','C','2001-03-03',1),(5,'PVD','PHAM VAN','D','2001-04-04',1),(6,'LTE','LE THI','E','2001-05-05',1);
-/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `project`
@@ -70,11 +65,6 @@ CREATE TABLE `project` (
 -- Dumping data for table `project`
 --
 
-LOCK TABLES `project` WRITE;
-/*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,1,1234,'mobile','HCMUS','NEW','2022-01-01','2023-01-01',1),(2,2,5678,'web','UIT','PLA','2022-02-02','2023-02-02',1),(3,3,2345,'game','BKU','NEW','2022-03-03','2023-03-03',1);
-/*!40000 ALTER TABLE `project` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `project_employee`
@@ -97,11 +87,6 @@ CREATE TABLE `project_employee` (
 -- Dumping data for table `project_employee`
 --
 
-LOCK TABLES `project_employee` WRITE;
-/*!40000 ALTER TABLE `project_employee` DISABLE KEYS */;
-INSERT INTO `project_employee` VALUES (1,1),(1,2),(1,3),(2,1),(1,5),(3,2),(3,6),(2,6),(2,3);
-/*!40000 ALTER TABLE `project_employee` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `team`
@@ -124,12 +109,7 @@ CREATE TABLE `team` (
 -- Dumping data for table `team`
 --
 
-LOCK TABLES `team` WRITE;
-/*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES (1,1,1),(2,3,1),(3,5,1);
-/*!40000 ALTER TABLE `team` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
