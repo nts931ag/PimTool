@@ -312,9 +312,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
         if(listMemberOfCurrentProject.size() != 0){
             var listMember = new StringBuilder();
             listMemberOfCurrentProject.forEach(e->{
-                listMember.append(e + ", ");
+                listMember.append(e + ",");
             });
-            listMember.delete(listMember.length()-2, listMember.length());
+            listMember.delete(listMember.length()-1, listMember.length());
             tfProMember.setText(listMember.toString());
         }
 
@@ -426,8 +426,15 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     public List<String> getMemberInputForm() {
-        var members = tfProMember.getText();
-        return Arrays.stream(members.split(", ")).toList();
+        var memberInput = tfProMember.getText();
+        memberInput = memberInput.replaceAll(" ", "");
+        var members = memberInput.split(",");
+        var setMembers = new LinkedHashSet<String>();
+        for(String member: members){
+            setMembers.add(member);
+        }
+        return setMembers.stream().toList();
+//        return Arrays.stream(memberInput.split(", ")).toList();
     }
 
     @FXML
