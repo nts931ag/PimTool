@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.stream.MemoryCacheImageOutputStream;
@@ -39,8 +40,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TagBarController implements Initializable {
 
-    private final ObservableList<String> tags = FXCollections.observableArrayList();
-    private final ObservableList<String> visaName = FXCollections.observableArrayList();
+    public ObservableList<String> tags;
+    public ObservableList<String> visaName;
     @FXML
     public FlowPane flowPaneLayoutTags;
     @FXML
@@ -48,9 +49,11 @@ public class TagBarController implements Initializable {
 
     private final EmployeeRestConsume employeeRestClient;
 
-    public void setTags(ObservableList<String> tags){
+    public void fillMemberIntoMembersField(ObservableList<String> tags){
         this.tags.clear();
+//        tags.get(0).toString();
         this.tags.addAll(tags);
+//        this.tags.add(tags.get(0).toString());
     }
 
     public List<String> getVisas(){
@@ -62,6 +65,8 @@ public class TagBarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tags = FXCollections.observableArrayList();
+        visaName = FXCollections.observableArrayList();
         flowPaneLayoutTags.getStyleClass().setAll("tag-bar");
         flowPaneLayoutTags.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
             tfInputTag.requestFocus();
@@ -102,8 +107,9 @@ public class TagBarController implements Initializable {
         flowPaneLayoutTags.setHgap(5);
         HBox.setHgrow(tfInputTag, Priority.ALWAYS);
         tfInputTag.setBackground(null);
-
+        var count = 0;
         tags.addListener((ListChangeListener.Change<? extends String> change) -> {
+
             while (change.next()) {
                 if (change.wasPermutated()) {
                     ArrayList<Node> newSublist = new ArrayList<>(change.getTo() - change.getFrom());
@@ -125,7 +131,10 @@ public class TagBarController implements Initializable {
                 }
             }
         });
-//        hboxLayoutTags.getChildren().add(tfInputTag);
+    }
+
+    public void test() {
+        tags.clear();
     }
 
     private class Tag extends HBox {

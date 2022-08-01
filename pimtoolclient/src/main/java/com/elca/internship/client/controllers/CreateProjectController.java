@@ -295,6 +295,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         tagBarCV = fxWeaver.load(TagBarController.class);
         tagBarCV.getView().ifPresent(view->{
             gpCreateProjectTab.add(view, 1, 6, 3,1);
+            System.out.println("here");
         });
 
 
@@ -315,7 +316,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         pickerEndDate.setValue(project.getEndDate());
 //        var listMemberOfCurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
         var listVisaAndNameEmployeeOfCurrentProject = projectEmployeeConsume.retrieveAllVisaAndNameOfEmployeeByProjectId(project.getId());
-        System.out.println(listVisaAndNameEmployeeOfCurrentProject);
+//        System.out.println(listVisaAndNameEmployeeOfCurrentProject);
+//        tagBarCV.getController().test();
         /*if(listMemberOfCurrentProject.size() != 0){
             var listMember = new StringBuilder();
             listMemberOfCurrentProject.forEach(e->{
@@ -324,7 +326,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             listMember.delete(listMember.length()-1, listMember.length());
             tfProMember.setText(listMember.toString());
         }*/
-        tagBarCV.getController().setTags(listVisaAndNameEmployeeOfCurrentProject);
+        tagBarCV.getController().fillMemberIntoMembersField(listVisaAndNameEmployeeOfCurrentProject);
         isEditMode = true;
         Platform.runLater(()->{
             tfProName.requestFocus();
