@@ -17,7 +17,7 @@ import static com.elca.internship.client.config.connection.Rest.BASE_URI;
 @RequiredArgsConstructor
 public class ProjectEmployeeRestClient {
     public static final String URI_GET_ALL_EMPLOYEE_OF_PROJECT_ID = BASE_URI + "/api/project-employee/{projectId}";
-
+    public static final String URI_GET_ALL_VISA_NAME_OF_PROJECT_ID = BASE_URI + "/api/project-employee/visa-name/{projectId}";
     private final WebClient webClient;
 
 
@@ -35,5 +35,13 @@ public class ProjectEmployeeRestClient {
                 })
                 .block();
 
+    }
+
+    public List<String> getAllVisaAndNameOfEmployeeByProjectId(Long id) {
+        return webClient.get().uri(URI_GET_ALL_VISA_NAME_OF_PROJECT_ID,id)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<String>>() {
+                })
+                .block();
     }
 }

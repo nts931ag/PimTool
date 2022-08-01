@@ -109,8 +109,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
     private FxControllerAndView<TagBarController, Node> tagBarCV;
     private ObservableList<String> listGroups;
-    private ObservableList<String> listMembers;
-    private final RestTemplateConsume restTemplateConsume;
     private final ProjectRestConsume projectRestConsume;
     private final ProjectEmployeeConsume projectEmployeeConsume;
     private final GroupRestConsume groupRestConsume;
@@ -315,16 +313,18 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.getSelectionModel().select(i18nManager.text(Status.convertStatusToI18nKey(project.getStatus())));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
-        var listMemberOfCurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
-        if(listMemberOfCurrentProject.size() != 0){
+//        var listMemberOfCurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
+        var listVisaAndNameEmployeeOfCurrentProject = projectEmployeeConsume.retrieveAllVisaAndNameOfEmployeeByProjectId(project.getId());
+        System.out.println(listVisaAndNameEmployeeOfCurrentProject);
+        /*if(listMemberOfCurrentProject.size() != 0){
             var listMember = new StringBuilder();
             listMemberOfCurrentProject.forEach(e->{
                 listMember.append(e + ",");
             });
             listMember.delete(listMember.length()-1, listMember.length());
             tfProMember.setText(listMember.toString());
-        }
-        tagBarCV.getController().setTags(listMemberOfCurrentProject);
+        }*/
+        tagBarCV.getController().setTags(listVisaAndNameEmployeeOfCurrentProject);
         isEditMode = true;
         Platform.runLater(()->{
             tfProName.requestFocus();

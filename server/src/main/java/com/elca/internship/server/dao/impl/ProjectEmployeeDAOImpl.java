@@ -4,11 +4,14 @@ import com.elca.internship.server.dao.ProjectEmployeeDAO;
 import com.elca.internship.server.models.entity.ProjectEmployee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -74,6 +77,22 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
         var params = new MapSqlParameterSource()
                 .addValue("ids", ids);
         namedParameterJdbcTemplate.update(sql,params);
+    }
+
+    @Override
+    public List<String> findVisaAndNameByProjectId(Long projectId) {
+        final var sql = "SELECT visa, first_name, last_name " +
+                "FROM employee e join project_employee pe on (e.id = pe.employee_id and pe.project_id = :projectId)";
+
+        var params = new MapSqlParameterSource()
+                .addValue("projectId", projectId);
+
+        return namedParameterJdbcTemplate.query(sql, params, new RowMapper<String>() {
+            @Override
+            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getString(1) + ": " + rs.getString(2) + " " + rs.getString(3);
+            }
+        });
     }
 
     @Override

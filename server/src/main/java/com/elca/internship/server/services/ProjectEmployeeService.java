@@ -9,4 +9,6 @@ public interface ProjectEmployeeService {
     void removeProjectEmployeeByProjectId(Long id);
 
     List<String> getAllEmployeeVisasByProjectId(Long projectId);
+
+    List<String> getAllVisaAndNameOfEmployeeByProjectId(Long projectId);
 }

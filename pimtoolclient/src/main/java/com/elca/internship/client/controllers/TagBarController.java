@@ -3,6 +3,7 @@ package com.elca.internship.client.controllers;
 import com.elca.internship.client.api.EmployeeRestClient;
 import com.elca.internship.client.consume.EmployeeRestConsume;
 import com.elca.internship.client.consume.impl.EmployeeRestConsumeImpl;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -25,6 +26,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import org.springframework.stereotype.Component;
+
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,7 @@ public class TagBarController implements Initializable {
     private final EmployeeRestConsume employeeRestClient;
 
     public void setTags(ObservableList<String> tags){
+        this.tags.clear();
         this.tags.addAll(tags);
     }
 
@@ -59,8 +63,14 @@ public class TagBarController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         flowPaneLayoutTags.getStyleClass().setAll("tag-bar");
-
-
+        flowPaneLayoutTags.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+            tfInputTag.requestFocus();
+        });
+        flowPaneLayoutTags.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue){
+                tfInputTag.requestFocus();
+            }
+        });
         /*tfInputTag.setOnAction(evt -> {
             String text = tfInputTag.getText();
             if (!text.isEmpty() && !tags.contains(text)) {

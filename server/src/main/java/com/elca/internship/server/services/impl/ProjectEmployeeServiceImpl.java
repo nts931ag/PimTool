@@ -26,4 +26,10 @@ public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
     public List<String> getAllEmployeeVisasByProjectId(Long projectId) {
         return projectEmployeeDao.findAllEmployeeVisaByProjectId(projectId);
     }
+
+    @Override
+    public List<String> getAllVisaAndNameOfEmployeeByProjectId(Long projectId) {
+
+        return projectEmployeeDao.findVisaAndNameByProjectId(projectId);
+    }
 }

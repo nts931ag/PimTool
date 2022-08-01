@@ -17,4 +17,6 @@ public interface ProjectEmployeeDAO {
     void saveNewEmployeesToProjectEmployee(Long id, ArrayList<Long> listId);
 
     void removeProjectEmployeeByProjectIds(List<Long> ids);
+
+    List<String> findVisaAndNameByProjectId(Long projectId);
 }

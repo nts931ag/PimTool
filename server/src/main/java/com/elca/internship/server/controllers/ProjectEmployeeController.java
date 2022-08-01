@@ -18,15 +18,15 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/project-employee")
+@RequestMapping("/api/project-employee/visa-name")
 public class ProjectEmployeeController {
     private final ProjectEmployeeService projectEmployeeService;
 
     @GetMapping("/{projectId}")
     public List<String> getAllEmployeesByProjectId(@PathVariable("projectId") Long projectId){
-        var result = projectEmployeeService.getAllEmployeeVisasByProjectId(projectId);
-        System.out.println(result.size());
-        return result;
+//        var result = projectEmployeeService.getAllEmployeeVisasByProjectId(projectId);
+        var result1 = projectEmployeeService.getAllVisaAndNameOfEmployeeByProjectId(projectId);
+        return result1;
 //        return projectEmployeeService.getAllEmployeeVisasByProjectId(projectId);
 
     }
