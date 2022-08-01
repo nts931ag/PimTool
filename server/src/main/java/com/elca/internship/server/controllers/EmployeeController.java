@@ -22,4 +22,9 @@ public class EmployeeController {
     public List<Employee> getAllEmployees(){
         return employeeService.getAll();
     }
+
+    @GetMapping("/visa-name")
+    public List<String> getVisaAndNameOfAllEmployees(){
+        return employeeService.getVisaAndNameOfAllEmployees();
+    }
 }

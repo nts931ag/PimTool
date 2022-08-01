@@ -24,4 +24,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> getAll() {
         return employeeDao.findAll();
     }
+
+    @Override
+    public List<String> getVisaAndNameOfAllEmployees() {
+        var listAllEmployees = getAll();
+        return listAllEmployees.stream()
+                .map(element -> element.getVisa() + ": " + element.getFirstName() + " " + element.getLastName())
+                .toList();
+    }
 }

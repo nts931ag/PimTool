@@ -3,6 +3,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.FlowPane?>
 
+
 <FlowPane fx:id="flowPaneLayoutTags" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.TagBarController">
    <children>
       <TextField fx:id="tfInputTag" />

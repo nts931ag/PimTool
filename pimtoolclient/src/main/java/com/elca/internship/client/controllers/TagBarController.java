@@ -1,23 +1,35 @@
 package com.elca.internship.client.controllers;
 
+import com.elca.internship.client.api.EmployeeRestClient;
+import com.elca.internship.client.consume.EmployeeRestConsume;
+import com.elca.internship.client.consume.impl.EmployeeRestConsumeImpl;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
 import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Component
 @FxmlView("/views/tagBar.fxml")
@@ -25,31 +37,58 @@ import java.util.ResourceBundle;
 public class TagBarController implements Initializable {
 
     private final ObservableList<String> tags = FXCollections.observableArrayList();
+    private final ObservableList<String> visaName = FXCollections.observableArrayList();
+    @FXML
     public FlowPane flowPaneLayoutTags;
+    @FXML
     public TextField tfInputTag ;
 
+    private final EmployeeRestConsume employeeRestClient;
 
-    public ObservableList<String> getTags() {
-        return tags;
+    public void setTags(ObservableList<String> tags){
+        this.tags.addAll(tags);
+    }
+
+    public List<String> getVisas(){
+        return tags.stream().map(element ->
+                element.substring(0, 3)
+        ).toList();
     }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         flowPaneLayoutTags.getStyleClass().setAll("tag-bar");
-//        getStylesheets().add(getClass().getResource("style.css").toExternalForm());
-//        tags = FXCollections.observableArrayList();
-//        inputTextField = new TextField();
-        tfInputTag.setOnAction(evt -> {
+
+
+        /*tfInputTag.setOnAction(evt -> {
             String text = tfInputTag.getText();
             if (!text.isEmpty() && !tags.contains(text)) {
                 tags.add(text);
                 tfInputTag.clear();
             }
+        });*/
+
+        visaName.addAll(employeeRestClient.retrieveVisaAndNameOfAllEmployees());
+
+
+
+
+        var autoCompletionBinding = TextFields.bindAutoCompletion(
+                tfInputTag
+                , visaName
+        );
+        autoCompletionBinding.setVisibleRowCount(3);
+        autoCompletionBinding.setOnAutoCompleted(new EventHandler<AutoCompletionBinding.AutoCompletionEvent<String>>() {
+            @Override
+            public void handle(AutoCompletionBinding.AutoCompletionEvent<String> event) {
+                String content = event.getCompletion();
+                if(!tags.contains(content)){
+                    tags.add(content);
+                }
+                tfInputTag.clear();
+            }
         });
-//        flowPaneLayoutTags.setPrefHeight(50);
-//        flowPaneLayoutTags.setPrefWrapLength(30);
-//        tfInputTag.prefHeightProperty().bind(flowPaneLayoutTags.heightProperty());
         flowPaneLayoutTags.setHgap(5);
         HBox.setHgrow(tfInputTag, Priority.ALWAYS);
         tfInputTag.setBackground(null);

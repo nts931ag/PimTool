@@ -130,7 +130,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proNumber", null);
         projectFormValidation.getFormFields().put("proName", null);
         projectFormValidation.getFormFields().put("proCustomer", null);
-        projectFormValidation.getFormFields().put("proMember", null);
+        projectFormValidation.getFormFields().put("proMember", true);
         projectFormValidation.getFormFields().put("proDate", true);
         this.addEventListeners();
 
@@ -324,7 +324,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             listMember.delete(listMember.length()-1, listMember.length());
             tfProMember.setText(listMember.toString());
         }
-
+        tagBarCV.getController().setTags(listMemberOfCurrentProject);
         isEditMode = true;
         Platform.runLater(()->{
             tfProName.requestFocus();
@@ -433,15 +433,16 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     public List<String> getMemberInputForm() {
-        var memberInput = tfProMember.getText();
+        /*var memberInput = tfProMember.getText();
         memberInput = memberInput.replaceAll(" ", "");
         var members = memberInput.split(",");
         var setMembers = new LinkedHashSet<String>();
         for(String member: members){
             setMembers.add(member);
-        }
-        return setMembers.stream().toList();
+        }*/
+//        return setMembers.stream().toList();
 //        return Arrays.stream(memberInput.split(", ")).toList();
+        return tagBarCV.getController().getVisas();
     }
 
     @FXML

@@ -8,4 +8,6 @@ public interface EmployeeService {
     List<Long> getIdsByListVisa(List<String> listVisa);
 
     List<Employee> getAll();
+
+    List<String> getVisaAndNameOfAllEmployees();
 }
