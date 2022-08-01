@@ -120,11 +120,11 @@
     -fx-pref-height: 50px;
 }*/
 
-.table-view .scroll-bar * {
+/*.table-view .scroll-bar * {
     -fx-min-width: 0;
     -fx-pref-width: 0;
     -fx-max-width: 0;
-}
+}*/
 
 .table-view .label{
     -fx-text-fill: #666666;

@@ -20,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -112,8 +113,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         tfSearch.setFocusTraversable(false);
 
         tbProject.setFixedCellSize(45);
-        System.out.println(tbProject.getPrefHeight());
-        System.out.println(paginationTableProject.getPrefHeight());
         /*tbProject.setFixedCellSize(50);
         tbProject.setPrefHeight((50.0 * (itemPerPage+1)) + 2);*/
 
@@ -131,6 +130,16 @@ public class ViewListProjectController implements Initializable, ApplicationList
         paginationTableProject.setMinWidth(tbProject.getPrefHeight() + 50.0);
         paginationTableProject.setMaxWidth(tbProject.getPrefHeight() + 50.0);
 */
+
+        tbProject.addEventFilter(ScrollEvent.ANY, event -> {
+            if (event.getDeltaX() != 0) {
+                event.consume();
+            }
+        });
+
+//        tbProject.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+
         colCheck.setMinWidth(30);
         colCheck.setMaxWidth(30);
         colProNum.setMinWidth(80);
