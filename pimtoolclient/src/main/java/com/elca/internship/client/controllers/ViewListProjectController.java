@@ -358,6 +358,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProCustomer.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_CUSTOMER));
         colProName.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_NAME));
         colProStart.setText(i18nManager.text(I18nKey.PROJECT_TABLE_COL_START_DATE));
+        removeItemPaneCV.getController().lbDeleteItemSelected.setText(i18nManager.text(I18nKey.MSG_DELETE_ITEM_SELECTED_TITLE));
     }
 
 }
