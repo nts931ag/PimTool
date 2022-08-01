@@ -126,10 +126,13 @@
     -fx-max-width: 0;
 }*/
 
+
 .table-view .label{
     -fx-text-fill: #666666;
     -fx-font-weight: 700;
 }
+
+
 
 .table-view .column-header .label{
     -fx-alignment:CENTER-LEFT;
@@ -233,4 +236,20 @@
 
 .lb-msg-remove-item-red{
     -fx-text-fill: #8c2c20;
+}
+
+.tag-bar {
+    -fx-border-color: blue;
+    -fx-spacing: 3;
+    -fx-padding: 3;
+    -fx-max-height: 30;
+}
+
+.tag-bar .tag {
+    -fx-background-color: lightblue;
+    -fx-alignment: center;
+}
+
+.tag-bar .tag .button {
+    -fx-background-color: transparent;
 }

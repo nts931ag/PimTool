@@ -107,6 +107,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     public FormValidation projectFormValidation;
     private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
+    private FxControllerAndView<TagBarController, Node> tagBarCV;
     private ObservableList<String> listGroups;
     private ObservableList<String> listMembers;
     private final RestTemplateConsume restTemplateConsume;
@@ -291,6 +292,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
         lbValidateProName.setVisible(false);
         lbValidateProDate.setVisible(false);
         lbValidateProCustomer.setVisible(false);*/
+        tfProMember.setVisible(false);
+
+        tagBarCV = fxWeaver.load(TagBarController.class);
+        tagBarCV.getView().ifPresent(view->{
+            gpCreateProjectTab.add(view, 1, 6, 3,1);
+        });
 
 
     }
