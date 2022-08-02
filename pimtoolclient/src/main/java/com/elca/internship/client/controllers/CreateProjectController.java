@@ -289,6 +289,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         AnchorPane.setRightAnchor(gpCreateProjectTab, 0.0);
         AnchorPane.setTopAnchor(gpCreateProjectTab, 10.0);
 
+
+
         alertDangerCV = fxWeaver.load(AlertDangerController.class, i18nManager.bundle());
         var node = (HBox) alertDangerCV.getView().get();
         gpCreateProjectTab.add(node,0,1,4,1);
@@ -304,6 +306,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         tagBarCV = fxWeaver.load(TagBarController.class);
         tagBarCV.getView().ifPresent(view->{
             gpCreateProjectTab.add(view, 1, 6, 3,1);
+
             var flowPaneTags = (FlowPane) view;
             flowPaneTags.getChildren();
             rowsConstraints.get(6).maxHeightProperty().bind(flowPaneTags.heightProperty());
