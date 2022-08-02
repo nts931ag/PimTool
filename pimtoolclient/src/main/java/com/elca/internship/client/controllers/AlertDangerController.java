@@ -46,24 +46,4 @@ public class AlertDangerController implements Initializable {
         alertDanger.setVisible(true);
 
     }
-
-    public void setContentAndShowAlertLabel(Response response){
-        var msg = findErrorType(response);
-        lbAlertDanger.setText(msg);
-        alertDanger.setVisible(true);
-    }
-
-    private String findErrorType(Response response) {
-        var msg = "";
-        if(response.getTypeError() == 1){
-            msg = i18nManager.text(I18nKey.RESPONSE_ERROR_PROJECT_NUMBER);
-        }else if(response.getTypeError() == 2){
-            var startIdx = response.getStatusMsg().lastIndexOf("[");
-            var listMemberNotExisted = "{" + response.getStatusMsg().substring(startIdx + 1, response.getStatusMsg().length() - 2) + "}";
-            msg = i18nManager.text(I18nKey.RESPONSE_ERROR_PROJECT_MEMBERS,listMemberNotExisted);
-        } else{
-            msg = i18nManager.text(I18nKey.RESPONSE_ERROR_PROJECT_GROUP);
-        }
-        return msg;
-    }
 }

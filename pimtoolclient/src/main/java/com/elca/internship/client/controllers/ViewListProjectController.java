@@ -302,7 +302,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         tfSearch.clear();
         cbStatus.getSelectionModel().select(-1);
         fillDataProjectToTable(null, null);
-
     }
 
     public Alert createConfirmationDeleteProjectDialog(){

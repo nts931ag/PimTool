@@ -19,12 +19,6 @@ import java.util.function.Function;
 public class ProjectConfiguration {
 
     @Bean
-    public RestTemplate restTemplate(){
-        var restTemplateBuilder = new RestTemplateBuilder();
-        return  restTemplateBuilder.build();
-    }
-
-    @Bean
     public WebClient webClient(){
 
         Function<ClientResponse, Mono<ClientResponse>> webClientResponseProcessor=

@@ -112,7 +112,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final ProjectRestConsume projectRestConsume;
     private final ProjectEmployeeConsume projectEmployeeConsume;
     private final GroupRestConsume groupRestConsume;
-    private SimpleIntegerProperty sizeOfTagBar;
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
 
@@ -124,7 +123,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        sizeOfTagBar = new SimpleIntegerProperty();
         this.initLayout();
         this.fillDefaultValueForInputForm();
         projectFormValidation = new FormValidation();
@@ -138,7 +136,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     private void addEventListeners() {
-
 
 
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
@@ -211,9 +208,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
             ).getIsValid();
             projectFormValidation.getFormFields().put("proDate", valid);
         });
-        sizeOfTagBar.addListener(((observable, oldValue, newValue) -> {
-            System.out.println(newValue);
-        }));
 
         cbProGroup.getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.intValue() == 0){
@@ -272,10 +266,14 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
 
         alertDangerCV = fxWeaver.load(AlertDangerController.class, i18nManager.bundle());
-        var node = (HBox) alertDangerCV.getView().get();
-        gpCreateProjectTab.add(node,0,1,4,1);
-        node.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        node.setVisible(false);
+
+        alertDangerCV.getView().ifPresent(view -> {
+            var node = (HBox) view;
+            gpCreateProjectTab.add(node,0,1,4,1);
+            node.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            node.setVisible(false);
+        });
+
 
         tagBarCV = fxWeaver.load(TagBarController.class);
         tagBarCV.getView().ifPresent(view->{
