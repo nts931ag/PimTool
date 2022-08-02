@@ -40,12 +40,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TagBarController implements Initializable {
 
-    public ObservableList<String> tags;
-    public ObservableList<String> visaName;
+    private ObservableList<String> tags;
+    private ObservableList<String> visaName;
     @FXML
-    public FlowPane flowPaneLayoutTags;
+    private FlowPane flowPaneLayoutTags;
     @FXML
-    public TextField tfInputTag ;
+    private TextField tfInputTag ;
 
     private final EmployeeRestConsume employeeRestClient;
 

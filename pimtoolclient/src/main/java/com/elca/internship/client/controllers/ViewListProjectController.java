@@ -112,30 +112,30 @@ public class ViewListProjectController implements Initializable, ApplicationList
         btnSearch.setPrefWidth(200);
         tfSearch.setFocusTraversable(false);
 
-        tbProject.setFixedCellSize(45);
+//        tbProject.setFixedCellSize(45);
         /*tbProject.setFixedCellSize(50);
         tbProject.setPrefHeight((50.0 * (itemPerPage+1)) + 2);*/
 
-        /*tbProject.skinProperty().addListener(((observable, oldValue, newValue) -> {
+/*        tbProject.skinProperty().addListener(((observable, oldValue, newValue) -> {
             Pane header =(Pane) tbProject.lookup("TableHeaderRow");
-            header.prefHeightProperty().bind(tbProject.heightProperty().divide(6));
+            header.prefHeightProperty().bind(tbProject.heightProperty().divide(5));
         }));*/
 
-        /*tbProject.setFixedCellSize(45);
+        tbProject.setFixedCellSize(45);
         tbProject.prefHeightProperty().bind(tbProject.fixedCellSizeProperty().multiply(6));
         tbProject.minHeightProperty().bind(tbProject.prefHeightProperty());
         tbProject.maxHeightProperty().bind(tbProject.prefHeightProperty());
-
+/*
         paginationTableProject.setPrefHeight(tbProject.getPrefHeight() + 50.0);
         paginationTableProject.setMinWidth(tbProject.getPrefHeight() + 50.0);
         paginationTableProject.setMaxWidth(tbProject.getPrefHeight() + 50.0);
 */
 
-        tbProject.addEventFilter(ScrollEvent.ANY, event -> {
+/*        tbProject.addEventFilter(ScrollEvent.ANY, event -> {
             if (event.getDeltaX() != 0) {
                 event.consume();
             }
-        });
+        });*/
 
 //        tbProject.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -206,7 +206,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     }
 
-    private Node createPage(int pageIndex, String tfSearch, String cbStatus){
+    private void createPage(int pageIndex, String tfSearch, String cbStatus){
         selectedCheckBoxes.clear();
         var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,pageIndex, itemPerPage);
         dataProjects = FXCollections.observableArrayList(projects.stream()
@@ -244,7 +244,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
         tbProject.setItems(dataProjects);
 
-        return vbTableView;
     }
 
 
@@ -258,7 +257,13 @@ public class ViewListProjectController implements Initializable, ApplicationList
             paginationTableProject.setPageCount((size/5) + 1);
         }
 
-        paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, tfSearch,status));
+        this.createPage(0, tfSearch, status);
+//        paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, tfSearch,status));
+        paginationTableProject.currentPageIndexProperty().addListener((observableValue, oldIdx, newIdx) -> {
+            if(oldIdx.intValue() != newIdx.intValue()){
+                this.createPage(newIdx.intValue(),tfSearch, status);
+            }
+        });
 
     }
 

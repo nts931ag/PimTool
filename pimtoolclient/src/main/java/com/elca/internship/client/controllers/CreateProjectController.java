@@ -113,6 +113,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
 
+
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
         this.stage = event.getStage();
@@ -120,8 +121,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initLayout();
-        fillDefaultValueForInputForm();
+        this.initLayout();
+        this.fillDefaultValueForInputForm();
         projectFormValidation = new FormValidation();
         projectFormValidation.getFormFields().put("proNumber", null);
         projectFormValidation.getFormFields().put("proName", null);
@@ -294,6 +295,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         tagBarCV.getView().ifPresent(view->{
             gpCreateProjectTab.add(view, 1, 6, 3,1);
             var flowPaneTags = (FlowPane) view;
+            flowPaneTags.getChildren();
             rowsConstraints.get(6).maxHeightProperty().bind(flowPaneTags.heightProperty());
             rowsConstraints.get(6).minHeightProperty().bind(flowPaneTags.heightProperty());
             rowsConstraints.get(6).prefHeightProperty().bind(flowPaneTags.heightProperty());
