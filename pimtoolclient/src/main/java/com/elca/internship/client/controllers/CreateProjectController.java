@@ -8,7 +8,6 @@ import com.elca.internship.client.exception.ProjectException;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.utils.FormValidation;
-import com.elca.internship.client.api.RestTemplateConsume;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Project.Status;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,7 +15,6 @@ import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -221,31 +219,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 lbValidateProMember.setVisible(false);
 
             }else{
-                /*lbValidateProGroup.setVisible(false);
-                var inputMembers = tfProMember.getText();
-                var valid = FormValidation.isProMemberValidInput(
-                        inputMembers,
-                        cbProGroup.getSelectionModel().getSelectedIndex(),
-                        lbValidateProMember,
-                        i18nManager
-                ).getIsValid();*/
-//                projectFormValidation.getFormFields().put("proMember", valid);
                 lbValidateProGroup.setVisible(false);
             }
         }));
-/*
-        tfProMember.focusedProperty().addListener(((observable, oldValue, newValue) -> {
-            if(!newValue){
-                var inputMembers = tfProMember.getText();
-                var valid = FormValidation.isProMemberValidInput(
-                        inputMembers,
-                        cbProGroup.getSelectionModel().getSelectedIndex(),
-                        lbValidateProMember,
-                        i18nManager
-                ).getIsValid();
-                projectFormValidation.getFormFields().put("proMember", valid);
-            }
-        }));*/
     }
 
     private boolean validateFrom() {
@@ -296,12 +272,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
         gpCreateProjectTab.add(node,0,1,4,1);
         node.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         node.setVisible(false);
-        /*lbValidateProNum.setVisible(false);
-        lbValidateProMember.setVisible(false);
-        lbValidateProName.setVisible(false);
-        lbValidateProDate.setVisible(false);
-        lbValidateProCustomer.setVisible(false);*/
-//        tfProMember.setVisible(false);
 
         tagBarCV = fxWeaver.load(TagBarController.class);
         tagBarCV.getView().ifPresent(view->{
@@ -329,24 +299,12 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.getSelectionModel().select(i18nManager.text(Status.convertStatusToI18nKey(project.getStatus())));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
-//        var listMemberOfCurrentProject = projectEmployeeConsume.retrieveAllEmployeeVisasByProjectId(project.getId());
         var listVisaAndNameEmployeeOfCurrentProject = projectEmployeeConsume.retrieveAllVisaAndNameOfEmployeeByProjectId(project.getId());
-//        System.out.println(listVisaAndNameEmployeeOfCurrentProject);
-//        tagBarCV.getController().test();
-        /*if(listMemberOfCurrentProject.size() != 0){
-            var listMember = new StringBuilder();
-            listMemberOfCurrentProject.forEach(e->{
-                listMember.append(e + ",");
-            });
-            listMember.delete(listMember.length()-1, listMember.length());
-            tfProMember.setText(listMember.toString());
-        }*/
         tagBarCV.getController().fillMemberIntoMembersField(listVisaAndNameEmployeeOfCurrentProject);
         isEditMode = true;
         Platform.runLater(()->{
             tfProName.requestFocus();
             tfProCustomer.requestFocus();
-//            tfProMember.requestFocus();
             gpCreateProjectTab.requestFocus();
         });
 
@@ -367,7 +325,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
 
-//        listMembers = restTemplateConsume.getAllEmployeeVisa();
 
 
 
@@ -450,15 +407,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     public List<String> getMemberInputForm() {
-        /*var memberInput = tfProMember.getText();
-        memberInput = memberInput.replaceAll(" ", "");
-        var members = memberInput.split(",");
-        var setMembers = new LinkedHashSet<String>();
-        for(String member: members){
-            setMembers.add(member);
-        }*/
-//        return setMembers.stream().toList();
-//        return Arrays.stream(memberInput.split(", ")).toList();
         return tagBarCV.getController().getVisas();
     }
 

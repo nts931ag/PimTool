@@ -37,10 +37,8 @@ public class ProjectConfiguration {
                       );
                   } else if (responseStatus.is5xxServerError()) {
                       return errorMessage.flatMap(
-//                              message -> Mono.error(new ProjectException(message.getStatusMsg(), message.getI18nKey(), message.getI18nValue()))
                               message -> Mono.error(new WebClientResponseException(clientResponse.rawStatusCode(),clientResponse.statusCode().toString(), null, null, null))
                       );
-//                      Mono.error(new WebClientResponseException());
                   }
                   return Mono.just(clientResponse);
               };

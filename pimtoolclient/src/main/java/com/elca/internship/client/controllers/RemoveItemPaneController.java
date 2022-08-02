@@ -43,9 +43,6 @@ public class RemoveItemPaneController implements Initializable {
         hbIconItem.getChildren().add(iconNode);
         iconNode.setIconSize(25);
         iconNode.getStyleClass().add("icon-node");
-        /*iconNode.setOnMouseClicked(e->{
-            hbLayout.setVisible(false);
-        });*/
 
 
     }

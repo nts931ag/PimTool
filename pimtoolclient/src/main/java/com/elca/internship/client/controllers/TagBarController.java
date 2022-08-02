@@ -1,14 +1,10 @@
 package com.elca.internship.client.controllers;
 
-import com.elca.internship.client.api.EmployeeRestClient;
 import com.elca.internship.client.consume.EmployeeRestConsume;
-import com.elca.internship.client.consume.impl.EmployeeRestConsumeImpl;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -19,21 +15,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import javax.imageio.stream.MemoryCacheImageOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 @Component
 @FxmlView("/views/tagBar.fxml")
@@ -51,9 +42,7 @@ public class TagBarController implements Initializable {
 
     public void fillMemberIntoMembersField(ObservableList<String> tags){
         this.tags.clear();
-//        tags.get(0).toString();
         this.tags.addAll(tags);
-//        this.tags.add(tags.get(0).toString());
     }
 
     public List<String> getVisas(){
@@ -94,21 +83,17 @@ public class TagBarController implements Initializable {
                 , visaName
         );
         autoCompletionBinding.setVisibleRowCount(3);
-        autoCompletionBinding.setOnAutoCompleted(new EventHandler<AutoCompletionBinding.AutoCompletionEvent<String>>() {
-            @Override
-            public void handle(AutoCompletionBinding.AutoCompletionEvent<String> event) {
-                String content = event.getCompletion();
-                if(!tags.contains(content)){
-                    tags.add(content);
-                }
-                tfInputTag.clear();
+        autoCompletionBinding.setOnAutoCompleted(event -> {
+            String content = event.getCompletion();
+            if(!tags.contains(content)){
+                tags.add(content);
             }
+            tfInputTag.clear();
         });
         flowPaneLayoutTags.setHgap(5);
         flowPaneLayoutTags.setVgap(5);
         HBox.setHgrow(tfInputTag, Priority.ALWAYS);
         tfInputTag.setBackground(null);
-        var count = 0;
         tags.addListener((ListChangeListener.Change<? extends String> change) -> {
 
             while (change.next()) {
@@ -132,10 +117,6 @@ public class TagBarController implements Initializable {
                 }
             }
         });
-    }
-
-    public void test() {
-        tags.clear();
     }
 
     private class Tag extends HBox {

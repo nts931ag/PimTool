@@ -20,10 +20,8 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
@@ -258,13 +256,11 @@ public class ViewListProjectController implements Initializable, ApplicationList
             paginationTableProject.setPageCount((size/5) + 1);
         }
         this.createPage(0, tfSearch, status);
-//        paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, tfSearch,status));
         paginationTableProject.currentPageIndexProperty().addListener((observableValue, oldIdx, newIdx) -> {
             if(oldIdx.intValue() != newIdx.intValue()){
                 this.createPage(newIdx.intValue(),tfSearch, status);
             }
         });
-//        paginationTableProject.setCurrentPageIndex(paginationTableProject.getCurrentPageIndex());
     }
 
     private void configureCheckBox(CheckBox checkBox){

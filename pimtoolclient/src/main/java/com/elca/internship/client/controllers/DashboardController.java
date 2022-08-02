@@ -21,7 +21,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
-import java.security.Key;
 import java.util.ResourceBundle;
 
 @Component
@@ -144,18 +143,6 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @FXML
     public void onLbProjectClicked(){
-        /*lbMenuObjectProperty.set(lbMenuProject);
-
-        if(projectListCV == null){
-            projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
-        }
-        projectListCV.getView().ifPresent(view ->{
-            contentContainer.getChildren().clear();
-            lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
-            contentContainer.getChildren().add(view);
-
-            projectListCV.getController().onBtnSearchClicked();
-        });*/
         navigateToListProject(true);
     }
 
@@ -213,7 +200,6 @@ public class DashboardController implements Initializable, ApplicationListener<S
             MainContainer.getLeft().setVisible(false);
             bodyContainer.getTop().setVisible(false);
             contentContainer.getChildren().clear();
-//            errorPageCV.getController().setMsgError(msg);
             errorPageCV.getController().showMsgError(msg);
             errorPageCV.getController().setNavigateBackToProjectListEvent(navigateBackToProjectListEvent());
             contentContainer.getChildren().add(view);
