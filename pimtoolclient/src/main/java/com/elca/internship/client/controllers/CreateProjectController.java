@@ -15,6 +15,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -110,6 +112,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private final ProjectRestConsume projectRestConsume;
     private final ProjectEmployeeConsume projectEmployeeConsume;
     private final GroupRestConsume groupRestConsume;
+    private SimpleIntegerProperty sizeOfTagBar;
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
 
@@ -121,6 +124,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        sizeOfTagBar = new SimpleIntegerProperty();
         this.initLayout();
         this.fillDefaultValueForInputForm();
         projectFormValidation = new FormValidation();
@@ -134,6 +138,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     private void addEventListeners() {
+
+
 
         final BooleanProperty firstTime = new SimpleBooleanProperty(true);
         tfProNum.focusedProperty().addListener(((observable, oldValue, newValue) -> {
@@ -154,7 +160,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 }
                 projectFormValidation.getFormFields().put("proNumber", valid);
             }else {
-                if(firstTime.get() == true){
+                if(firstTime.get()){
                     gpCreateProjectTab.requestFocus();
                     firstTime.setValue(false);
                 }
@@ -205,25 +211,29 @@ public class CreateProjectController implements Initializable, ApplicationListen
             ).getIsValid();
             projectFormValidation.getFormFields().put("proDate", valid);
         });
+        sizeOfTagBar.addListener(((observable, oldValue, newValue) -> {
+            System.out.println(newValue);
+        }));
 
-        /*cbProGroup.getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
+        cbProGroup.getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.intValue() == 0){
                 lbValidateProGroup.setVisible(true);
                 lbValidateProMember.setVisible(false);
 
             }else{
-                lbValidateProGroup.setVisible(false);
+                /*lbValidateProGroup.setVisible(false);
                 var inputMembers = tfProMember.getText();
                 var valid = FormValidation.isProMemberValidInput(
                         inputMembers,
                         cbProGroup.getSelectionModel().getSelectedIndex(),
                         lbValidateProMember,
                         i18nManager
-                ).getIsValid();
-                projectFormValidation.getFormFields().put("proMember", valid);
+                ).getIsValid();*/
+//                projectFormValidation.getFormFields().put("proMember", valid);
+                lbValidateProGroup.setVisible(false);
             }
         }));
-
+/*
         tfProMember.focusedProperty().addListener(((observable, oldValue, newValue) -> {
             if(!newValue){
                 var inputMembers = tfProMember.getText();

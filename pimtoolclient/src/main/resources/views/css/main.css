@@ -116,9 +116,9 @@
 
 /* table view */
 
-/*.table-view .column-header-background {
-    -fx-pref-height: 50px;
-}*/
+.table-view .column-header-background {
+    -fx-pref-height: 45;
+}
 
 .table-view .scroll-bar * {
     -fx-min-width: 0;
