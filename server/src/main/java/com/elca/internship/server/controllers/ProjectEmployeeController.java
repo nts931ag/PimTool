@@ -24,10 +24,8 @@ public class ProjectEmployeeController {
 
     @GetMapping("/{projectId}")
     public List<String> getAllEmployeesByProjectId(@PathVariable("projectId") Long projectId){
-//        var result = projectEmployeeService.getAllEmployeeVisasByProjectId(projectId);
-        var result1 = projectEmployeeService.getAllVisaAndNameOfEmployeeByProjectId(projectId);
-        return result1;
-//        return projectEmployeeService.getAllEmployeeVisasByProjectId(projectId);
+        var result = projectEmployeeService.getAllVisaAndNameOfEmployeeByProjectId(projectId);
+        return result;
 
     }
 }

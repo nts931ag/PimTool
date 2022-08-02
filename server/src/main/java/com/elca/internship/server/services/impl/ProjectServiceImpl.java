@@ -119,7 +119,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         if(listEmployeeVisa.isEmpty()){
             if(project.getGroupId() == 0){
-                // throws exception
                 throw new EmptyResultDataAccessException("Members can't be empty", 1);
             }
 
@@ -156,8 +155,6 @@ public class ProjectServiceImpl implements ProjectService {
             projectDAO.update(project.getId(), project);
             projectEmployeeDAO.deleteEmployeesFromProjectEmployee(project.getId(), listIdExisted);
             projectEmployeeDAO.saveNewEmployeesToProjectEmployee(project.getId(), listIdExisted);
-//            var newProjectId = projectDAO.insert(project);
-//            projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);
         }
     }
 
