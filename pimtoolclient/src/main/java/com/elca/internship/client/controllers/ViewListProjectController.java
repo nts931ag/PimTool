@@ -208,6 +208,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     private void createPage(int pageIndex, String tfSearch, String cbStatus){
         selectedCheckBoxes.clear();
+        paginationTableProject.setCurrentPageIndex(pageIndex);
         var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,pageIndex, itemPerPage);
         dataProjects = FXCollections.observableArrayList(projects.stream()
                 .map(e ->
@@ -256,7 +257,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
         }else{
             paginationTableProject.setPageCount((size/5) + 1);
         }
-
         this.createPage(0, tfSearch, status);
 //        paginationTableProject.setPageFactory((pageIndex)->this.createPage(pageIndex, tfSearch,status));
         paginationTableProject.currentPageIndexProperty().addListener((observableValue, oldIdx, newIdx) -> {
@@ -264,7 +264,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 this.createPage(newIdx.intValue(),tfSearch, status);
             }
         });
-
+//        paginationTableProject.setCurrentPageIndex(paginationTableProject.getCurrentPageIndex());
     }
 
     private void configureCheckBox(CheckBox checkBox){

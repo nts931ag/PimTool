@@ -105,6 +105,7 @@ public class TagBarController implements Initializable {
             }
         });
         flowPaneLayoutTags.setHgap(5);
+        flowPaneLayoutTags.setVgap(5);
         HBox.setHgrow(tfInputTag, Priority.ALWAYS);
         tfInputTag.setBackground(null);
         var count = 0;

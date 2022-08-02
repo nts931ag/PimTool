@@ -495,7 +495,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
             tfProName.requestFocus();
         }
         if(projectFormValidation.getFormFields().get("proMember") != null){
-//            tfProMember.requestFocus();
             gpCreateProjectTab.requestFocus();
         }
 
