@@ -21,6 +21,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
@@ -222,6 +224,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 lbValidateProGroup.setVisible(false);
             }
         }));
+
+
     }
 
     private boolean validateFrom() {

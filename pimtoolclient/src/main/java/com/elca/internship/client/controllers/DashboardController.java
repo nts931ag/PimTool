@@ -161,7 +161,6 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     public void navigateToListProject(boolean updateMode){
         lbMenuObjectProperty.set(lbMenuProject);
-
         if(projectListCV == null){
             projectListCV = fxWeaver.load(ViewListProjectController.class, i18nManager.bundle());
         }
