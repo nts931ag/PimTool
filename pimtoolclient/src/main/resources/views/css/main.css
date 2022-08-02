@@ -239,10 +239,14 @@
 }
 
 .tag-bar {
-    -fx-border-color: blue;
+    -fx-border-color: #d6d6d6;
+    -fx-border-radius: 5;
+    -fx-background-color: white;
+    -fx-background-radius: 5;
     -fx-spacing: 3;
     -fx-padding: 3;
     -fx-max-height: 30;
+    -fx-cursor: TEXT;
 }
 
 .tag-bar .tag {

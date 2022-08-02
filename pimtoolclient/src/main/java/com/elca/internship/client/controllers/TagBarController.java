@@ -143,6 +143,7 @@ public class TagBarController implements Initializable {
             getStyleClass().setAll("tag");
             Button removeButton = new Button("X");
             removeButton.setOnAction(evt -> tags.remove(tag));
+            removeButton.getStyleClass().add("lb-super-link");
             Text text = new Text(tag);
             HBox.setMargin(text, new Insets(0, 0, 0, 5));
             getChildren().addAll(text, removeButton);
