@@ -10,8 +10,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -29,6 +31,7 @@ import java.util.ResourceBundle;
 public class DashboardController implements Initializable, ApplicationListener<StageReadyEvent> {
 
     private final FxWeaver fxWeaver;
+    public ScrollPane scrollPane;
 
     private Stage stage;
     public static NavigationHandler navigationHandler;
@@ -75,6 +78,12 @@ public class DashboardController implements Initializable, ApplicationListener<S
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        contentContainer.maxWidthProperty().bind(scrollPane.widthProperty().subtract(10));
+        contentContainer.minWidthProperty().bind(scrollPane.widthProperty().subtract(10));
+        contentContainer.prefWidthProperty().bind(scrollPane.widthProperty().subtract(10));
+        contentContainer.maxHeightProperty().bind(scrollPane.heightProperty().subtract(10));
+        contentContainer.minHeightProperty().bind(scrollPane.heightProperty().subtract(10));
+        contentContainer.prefHeightProperty().bind(scrollPane.heightProperty().subtract(10));
         navigationHandler = new NavigationHandler() {
             @Override
             public void handleNavigateToCreateProject() {
