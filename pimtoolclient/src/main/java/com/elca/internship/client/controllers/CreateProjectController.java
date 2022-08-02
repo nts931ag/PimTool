@@ -96,8 +96,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     @FXML
     private TextField tfProCustomer;
 
-    @FXML
-    private TextField tfProMember;
 
     @FXML
     private TextField tfProName;
@@ -207,7 +205,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             projectFormValidation.getFormFields().put("proDate", valid);
         });
 
-        cbProGroup.getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
+        /*cbProGroup.getSelectionModel().selectedIndexProperty().addListener(((observable, oldValue, newValue) -> {
             if(newValue.intValue() == 0){
                 lbValidateProGroup.setVisible(true);
                 lbValidateProMember.setVisible(false);
@@ -236,7 +234,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 ).getIsValid();
                 projectFormValidation.getFormFields().put("proMember", valid);
             }
-        }));
+        }));*/
     }
 
     private boolean validateFrom() {
@@ -290,14 +288,16 @@ public class CreateProjectController implements Initializable, ApplicationListen
         lbValidateProName.setVisible(false);
         lbValidateProDate.setVisible(false);
         lbValidateProCustomer.setVisible(false);*/
-        tfProMember.setVisible(false);
+//        tfProMember.setVisible(false);
 
         tagBarCV = fxWeaver.load(TagBarController.class);
         tagBarCV.getView().ifPresent(view->{
             gpCreateProjectTab.add(view, 1, 6, 3,1);
-            System.out.println("here");
+            var flowPaneTags = (FlowPane) view;
+            rowsConstraints.get(6).maxHeightProperty().bind(flowPaneTags.heightProperty());
+            rowsConstraints.get(6).minHeightProperty().bind(flowPaneTags.heightProperty());
+            rowsConstraints.get(6).prefHeightProperty().bind(flowPaneTags.heightProperty());
         });
-
 
     }
 
@@ -331,7 +331,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         Platform.runLater(()->{
             tfProName.requestFocus();
             tfProCustomer.requestFocus();
-            tfProMember.requestFocus();
+//            tfProMember.requestFocus();
             gpCreateProjectTab.requestFocus();
         });
 
@@ -483,7 +483,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
             tfProName.requestFocus();
         }
         if(projectFormValidation.getFormFields().get("proMember") != null){
-            tfProMember.requestFocus();
+//            tfProMember.requestFocus();
             gpCreateProjectTab.requestFocus();
         }
 
