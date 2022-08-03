@@ -1,6 +1,7 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.consume.EmployeeRestConsume;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -74,6 +75,29 @@ public class TagBarController implements Initializable {
             }
         });*/
 
+
+
+        visaName.addAll(employeeRestClient.retrieveVisaAndNameOfAllEmployees());
+
+
+
+
+        var autoCompletionBinding = TextFields.bindAutoCompletion(
+                tfInputTag
+                , visaName
+        );
+        autoCompletionBinding.setVisibleRowCount(3);
+        autoCompletionBinding.minWidthProperty().bind(flowPaneLayoutTags.widthProperty().subtract(10));
+        autoCompletionBinding.maxWidthProperty().bind(flowPaneLayoutTags.widthProperty().subtract(10));
+        autoCompletionBinding.prefWidthProperty().bind(flowPaneLayoutTags.widthProperty().subtract(10));
+        autoCompletionBinding.setOnAutoCompleted(event -> {
+            String content = event.getCompletion();
+            if(!tags.contains(content)){
+                tags.add(content);
+            }
+            tfInputTag.clear();
+        });
+
         tfInputTag.setOnKeyPressed(event -> {
             if(event.getCode().equals(KeyCode.BACK_SPACE)){
                 var text = tfInputTag.getText().trim();
@@ -86,23 +110,7 @@ public class TagBarController implements Initializable {
             }
         });
 
-        visaName.addAll(employeeRestClient.retrieveVisaAndNameOfAllEmployees());
 
-
-
-
-        var autoCompletionBinding = TextFields.bindAutoCompletion(
-                tfInputTag
-                , visaName
-        );
-        autoCompletionBinding.setVisibleRowCount(3);
-        autoCompletionBinding.setOnAutoCompleted(event -> {
-            String content = event.getCompletion();
-            if(!tags.contains(content)){
-                tags.add(content);
-            }
-            tfInputTag.clear();
-        });
         flowPaneLayoutTags.setHgap(5);
         flowPaneLayoutTags.setVgap(5);
         HBox.setHgrow(tfInputTag, Priority.ALWAYS);
