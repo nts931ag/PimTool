@@ -7,9 +7,13 @@ import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import com.elca.internship.client.common.AlertDialog;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.EventHandler;
@@ -24,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
 import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
@@ -35,6 +40,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import java.net.URL;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 
@@ -140,8 +147,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
         colCheck.setMinWidth(30);
         colCheck.setMaxWidth(30);
-        colProNum.setMinWidth(80);
-        colProNum.setMaxWidth(80);
+        colProNum.setMinWidth(100);
+        colProNum.setMaxWidth(100);
         colProName.setMinWidth(270);
         colProName.setPrefWidth(270);
         colProStatus.setMinWidth(70);
@@ -201,6 +208,37 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         }));
 
+        /*final Callback<ListView<TableColumn<ProjectTable, ?>>, ListCell<TableColumn<ProjectTable, ?>>> cellFactory = new Callback<>() {
+            @Override
+            public ListCell<TableColumn<ProjectTable, ?>> call(ListView<TableColumn<ProjectTable, ?>> listView) {
+                return createListCell();
+            }
+
+            private ListCell<TableColumn<ProjectTable, ?>> createListCell() {
+                final ListCell<TableColumn<ProjectTable, ?>> cell = new ListCell<>();
+                cell.itemProperty().addListener((obs, oldColumn, newColumn) -> {
+                    if (newColumn == null) {
+                        cell.setText(null);
+                    } else {
+                        cell.setText(newColumn.getText());
+                    }
+                });
+                return cell;
+            }
+        };*/
+
+        colProNum.setComparator(new Comparator<Label>() {
+            @Override
+            public int compare(Label o1, Label o2) {
+                var proNumber1 = Long.parseLong(o1.getText());
+                var proNumber2 = Long.parseLong(o2.getText());
+                if(proNumber1 >= proNumber2){
+                    return -1;
+                }else{
+                    return 1;
+                }
+            }
+        });
 
     }
 
