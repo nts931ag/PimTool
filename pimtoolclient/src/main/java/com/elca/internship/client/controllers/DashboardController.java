@@ -236,7 +236,6 @@ public class DashboardController implements Initializable, ApplicationListener<S
     private boolean isEditProject = false;
 
     private void switchLanguage(){
-        lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
         lbMenuNew.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
         lbMenuProject.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
         lbTitleApp.setText(i18nManager.text(I18nKey.DASHBOARD_TITLE));
@@ -249,12 +248,16 @@ public class DashboardController implements Initializable, ApplicationListener<S
         Label label = lbMenuObjectProperty.get();
         if (lbMenuNew.equals(label)) {
             if(isEditProject){
+                lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_EDIT_PROJECT_TITLE));
+
                 editProjectCV.getController().switchLanguage();
             }else{
+                lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_CREATE_PROJECT_TITLE));
                 createProjectCV.getController().switchLanguage();
             }
             projectListCV.getController().switchLanguage();
         } else if (lbMenuProject.equals(label)) {
+            lbHeaderOfTab.setText(i18nManager.text(I18nKey.DASHBOARD_MENU_LIST_PROJECT_TITLE));
             projectListCV.getController().switchLanguage();
         } else {
             throw new IllegalStateException("Unexpected value: " + lbMenuObjectProperty.get());
