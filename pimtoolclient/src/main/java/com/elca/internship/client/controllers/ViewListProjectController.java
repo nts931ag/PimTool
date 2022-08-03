@@ -42,6 +42,7 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.ResourceBundle;
 
 
@@ -117,33 +118,10 @@ public class ViewListProjectController implements Initializable, ApplicationList
         btnSearch.setPrefWidth(200);
         tfSearch.setFocusTraversable(false);
 
-//        tbProject.setFixedCellSize(45);
-        /*tbProject.setFixedCellSize(50);
-        tbProject.setPrefHeight((50.0 * (itemPerPage+1)) + 2);*/
-
-/*        tbProject.skinProperty().addListener(((observable, oldValue, newValue) -> {
-            Pane header =(Pane) tbProject.lookup("TableHeaderRow");
-            header.prefHeightProperty().bind(tbProject.heightProperty().divide(5));
-        }));*/
-
         tbProject.setFixedCellSize(45);
         tbProject.prefHeightProperty().bind(tbProject.fixedCellSizeProperty().multiply(6));
         tbProject.minHeightProperty().bind(tbProject.prefHeightProperty());
         tbProject.maxHeightProperty().bind(tbProject.prefHeightProperty());
-/*
-        paginationTableProject.setPrefHeight(tbProject.getPrefHeight() + 50.0);
-        paginationTableProject.setMinWidth(tbProject.getPrefHeight() + 50.0);
-        paginationTableProject.setMaxWidth(tbProject.getPrefHeight() + 50.0);
-*/
-
-/*        tbProject.addEventFilter(ScrollEvent.ANY, event -> {
-            if (event.getDeltaX() != 0) {
-                event.consume();
-            }
-        });*/
-
-//        tbProject.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
 
         colCheck.setMinWidth(30);
         colCheck.setMaxWidth(30);
@@ -208,35 +186,13 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         }));
 
-        /*final Callback<ListView<TableColumn<ProjectTable, ?>>, ListCell<TableColumn<ProjectTable, ?>>> cellFactory = new Callback<>() {
-            @Override
-            public ListCell<TableColumn<ProjectTable, ?>> call(ListView<TableColumn<ProjectTable, ?>> listView) {
-                return createListCell();
-            }
-
-            private ListCell<TableColumn<ProjectTable, ?>> createListCell() {
-                final ListCell<TableColumn<ProjectTable, ?>> cell = new ListCell<>();
-                cell.itemProperty().addListener((obs, oldColumn, newColumn) -> {
-                    if (newColumn == null) {
-                        cell.setText(null);
-                    } else {
-                        cell.setText(newColumn.getText());
-                    }
-                });
-                return cell;
-            }
-        };*/
-
-        colProNum.setComparator(new Comparator<Label>() {
-            @Override
-            public int compare(Label o1, Label o2) {
-                var proNumber1 = Long.parseLong(o1.getText());
-                var proNumber2 = Long.parseLong(o2.getText());
-                if(proNumber1 >= proNumber2){
-                    return -1;
-                }else{
-                    return 1;
-                }
+        colProNum.setComparator((o1, o2) -> {
+            var proNumber1 = Long.parseLong(o1.getText());
+            var proNumber2 = Long.parseLong(o2.getText());
+            if(proNumber1 >= proNumber2){
+                return -1;
+            }else{
+                return 1;
             }
         });
 
@@ -283,16 +239,16 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     }
 
-
     public void fillDataProjectToTable(String tfSearch, String status){
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
-
         int size = projectRestConsume.getNumberOfResultSearch(tfSearch, status);
         if(size % 5 == 0){
             paginationTableProject.setPageCount((size/5));
         }else{
             paginationTableProject.setPageCount((size/5) + 1);
         }
+        // set contains 20 item
+
         this.createPage(0, tfSearch, status);
         paginationTableProject.currentPageIndexProperty().addListener((observableValue, oldIdx, newIdx) -> {
             if(oldIdx.intValue() != newIdx.intValue()){
@@ -300,6 +256,42 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         });
     }
+
+
+    public void getDataProjectFromServerBySearch(String tfSearch, String cbStatus){
+        var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,0, 20);
+        dataProjects = FXCollections.observableArrayList(projects.stream()
+                .map(e ->
+                        new ProjectTable(
+                                new CheckBox(),
+                                e.getId(),
+                                e.getGroupId(),
+                                e.getProjectNumber(),
+                                e.getName(),
+                                e.getCustomer(),
+                                e.getStatus(),
+                                e.getStartDate(),
+                                e.getEndDate(),
+                                e.getVersion(),
+                                new IconNode(GoogleMaterialDesignIcons.DELETE)
+                        )
+                )
+                .toList());
+
+        for(var dataProject: dataProjects){
+            if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
+                dataProject.getIcDelete().getStyleClass().add("icon-node");
+                dataProject.getIcDelete().setOnMouseClicked(deleteItemHandler());
+                configureCheckBox(dataProject.getCheckBox());
+            }else{
+                dataProject.setIcDelete(null);
+                dataProject.getCheckBox().setDisable(true);
+            }
+            dataProject.getLbProNumLink().getStyleClass().add("lb-super-link");
+            dataProject.getLbProNumLink().setOnMouseClicked(event -> DashboardController.navigationHandler.handleNavigateToEditProject(dataProject));
+        }
+    }
+
 
     private void configureCheckBox(CheckBox checkBox){
         if(checkBox.isSelected()){
