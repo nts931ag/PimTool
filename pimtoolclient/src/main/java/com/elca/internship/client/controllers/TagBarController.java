@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -72,6 +73,18 @@ public class TagBarController implements Initializable {
                 tfInputTag.clear();
             }
         });*/
+
+        tfInputTag.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.BACK_SPACE)){
+                var text = tfInputTag.getText().trim();
+                if(text.length()==0){
+                    var sizeTag = tags.size();
+                    if(sizeTag != 0){
+                        tags.remove(sizeTag-1);
+                    }
+                }
+            }
+        });
 
         visaName.addAll(employeeRestClient.retrieveVisaAndNameOfAllEmployees());
 
