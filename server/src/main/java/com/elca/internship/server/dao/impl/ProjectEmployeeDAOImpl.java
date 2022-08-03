@@ -64,10 +64,18 @@ public class ProjectEmployeeDAOImpl implements ProjectEmployeeDAO {
 
     @Override
     public void deleteEmployeesFromProjectEmployee(Long id, List<Long> values) {
+
         final var sql = "DELETE FROM project_employee where project_id = :id and employee_id NOT IN (:values)";
-        var params = new MapSqlParameterSource()
-                .addValue("id", id)
-                .addValue("values", values);
+        var params = new MapSqlParameterSource().addValue("id", id);
+
+
+        if(values.size() == 0){
+            params.addValue("values", values.size());
+        }else{
+            params.addValue("values", values);
+        }
+
+
         namedParameterJdbcTemplate.update(sql, params);
     }
 
