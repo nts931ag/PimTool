@@ -4,6 +4,7 @@ import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.dao.ProjectEmployeeDAO;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
+import com.elca.internship.server.repositories.EmployeeRepository;
 import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.services.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectDAO projectDAO;
     private final ProjectEmployeeDAO projectEmployeeDAO;
     private final ProjectRepository projectRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Override
     public Long createNewProject(Project project) throws ProjectNumberAlreadyExistedException {
@@ -156,6 +158,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createNewProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa) {
+
 
         /*var projectNumberIsExisted = checkProjectNumberExisted(project.getProjectNumber());
         if(projectNumberIsExisted){

@@ -1,6 +1,7 @@
 package com.elca.internship.server.services.impl;
 
 import com.elca.internship.server.dao.ProjectEmployeeDAO;
+import com.elca.internship.server.repositories.ProjectEmployeeRepository;
 import com.elca.internship.server.services.ProjectEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.List;
 public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
 
     private final ProjectEmployeeDAO projectEmployeeDao;
+    private final ProjectEmployeeRepository projectEmployeeRepository;
     @Override
     public void saveAllEmployeeToNewProject(Long newProjectId, List<Long> listEmployee) {
         projectEmployeeDao.saveProjectEmployee(newProjectId, listEmployee);
@@ -29,7 +31,7 @@ public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
 
     @Override
     public List<String> getAllVisaAndNameOfEmployeeByProjectId(Long projectId) {
-
+//        projectEmployeeRepository.find
         return projectEmployeeDao.findVisaAndNameByProjectId(projectId);
     }
 }
