@@ -117,7 +117,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(rollbackFor = Exception.class)
     public void updateProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa) {
 
-        if(listEmployeeVisa.isEmpty()){
+        /*if(listEmployeeVisa.isEmpty()){
             if(project.getGroupId() == 0){
                 throw new EmptyResultDataAccessException("Members can't be empty", 1);
             }
@@ -155,7 +155,7 @@ public class ProjectServiceImpl implements ProjectService {
             projectDAO.update(project.getId(), project);
             projectEmployeeDAO.deleteEmployeesFromProjectEmployee(project.getId(), listIdExisted);
             projectEmployeeDAO.saveNewEmployeesToProjectEmployee(project.getId(), listIdExisted);
-        }
+        }*/
     }
 
 
@@ -164,7 +164,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional(rollbackFor = Exception.class)
     public void createNewProjectWithEmployeeVisasTest(Project project, List<String> listEmployeeVisa) {
 
-        var projectNumberIsExisted = checkProjectNumberExisted(project.getProjectNumber());
+        /*var projectNumberIsExisted = checkProjectNumberExisted(project.getProjectNumber());
         if(projectNumberIsExisted){
             throw new ProjectNumberAlreadyExistedException(project.getProjectNumber());
         }
@@ -202,7 +202,7 @@ public class ProjectServiceImpl implements ProjectService {
 
             var newProjectId = projectDAO.insert(project);
             projectEmployeeDAO.saveProjectEmployee(newProjectId, listIdExisted);
-        }
+        }*/
     }
 
 }
