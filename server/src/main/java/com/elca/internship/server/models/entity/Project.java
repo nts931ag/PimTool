@@ -25,6 +25,7 @@ public class Project extends BaseEntity{
     @Column(name = "customer")
     private String customer;
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
     @Column(name = "start_date")
     private LocalDate startDate;

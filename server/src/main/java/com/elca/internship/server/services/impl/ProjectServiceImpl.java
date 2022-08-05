@@ -1,22 +1,16 @@
 package com.elca.internship.server.services.impl;
 
-import com.elca.internship.server.dao.EmployeeDAO;
-import com.elca.internship.server.dao.GroupDAO;
 import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.dao.ProjectEmployeeDAO;
-import com.elca.internship.server.models.entity.Group;
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.exceptions.GroupNotExistedException;
 import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
+import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.services.ProjectService;
-import com.elca.internship.server.validator.EmployeeValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -24,10 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectDAO projectDAO;
-    private final EmployeeDAO employeeDAO;
-    private final GroupDAO groupDAO;
     private final ProjectEmployeeDAO projectEmployeeDAO;
-    private final EmployeeValidator employeeValidator;
+    private final ProjectRepository projectRepository;
 
     @Override
     public Long createNewProject(Project project) throws ProjectNumberAlreadyExistedException {
@@ -46,7 +38,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getAllProject() {
-        return projectDAO.findAll();
+        return projectRepository.findAll();
+//        return projectDAO.findAll();
     }
 
     @Override
