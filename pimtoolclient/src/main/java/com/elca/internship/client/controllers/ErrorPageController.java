@@ -32,9 +32,9 @@ public class ErrorPageController implements Initializable, ApplicationListener<S
     @FXML
     public Label lbErrorPlease;
     @FXML
-    public Label lbBtnErrorContact;
-    @FXML
     public Label lbErrorOr;
+    @FXML
+    public Label lbBtnErrorContact;
     @FXML
     public Label lbBtnErrorBackToSearch;
     @FXML

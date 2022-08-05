@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <HBox fx:id="parentLayoutErrorPage" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.elca.internship.client.controllers.ErrorPageController">
    <children>
@@ -17,19 +18,28 @@
          <children>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label fx:id="lbErrorContent" text="%lb.error.content" wrapText="true" />
+                  <Label fx:id="lbErrorContent" text="%lb.error.content" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label fx:id="lbErrorPlease" text="%lb.error.please" wrapText="true" />
-                  <Label fx:id="lbBtnErrorContact" style="-fx-font-weight: bold; -fx-text-fill: #8c2c20; -fx-font-size: 16; -fx-cursor: hand;" text="%lb.btn.error.contact" />
+                  <Label fx:id="lbErrorPlease" text="%lb.error.please" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <Label fx:id="lbBtnErrorContact" style="-fx-font-weight: bold; -fx-text-fill: #8c2c20; -fx-font-size: 20; -fx-cursor: hand;" text="%lb.btn.error.contact" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT">
                <children>
-                  <Label fx:id="lbErrorOr" text="%lb.error.or" wrapText="true" />
-                  <Label fx:id="lbBtnErrorBackToSearch" style="-fx-font-weight: bold; -fx-text-fill: #2f85fa; -fx-font-size: 16; -fx-cursor: hand;" text="%lb.btn.error.back.to.search" />
+                  <Label fx:id="lbErrorOr" text="%lb.error.or" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Label>
+                  <Label fx:id="lbBtnErrorBackToSearch" style="-fx-font-weight: bold; -fx-text-fill: #2f85fa; -fx-font-size: 20; -fx-cursor: hand;" text="%lb.btn.error.back.to.search" />
                </children>
             </HBox>
          </children>

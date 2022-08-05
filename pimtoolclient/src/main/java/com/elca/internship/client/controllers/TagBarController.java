@@ -53,7 +53,7 @@ public class TagBarController implements Initializable {
         ).toList();
     }
 
-
+    AutoCompletionBinding<String> autoCompletionBinding;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         tags = FXCollections.observableArrayList();
@@ -75,14 +75,9 @@ public class TagBarController implements Initializable {
             }
         });*/
 
-
-
         visaName.addAll(employeeRestClient.retrieveVisaAndNameOfAllEmployees());
 
-
-
-
-        var autoCompletionBinding = TextFields.bindAutoCompletion(
+        autoCompletionBinding = TextFields.bindAutoCompletion(
                 tfInputTag
                 , visaName
         );
@@ -109,7 +104,6 @@ public class TagBarController implements Initializable {
                 }
             }
         });
-
 
         flowPaneLayoutTags.setHgap(5);
         flowPaneLayoutTags.setVgap(5);
@@ -145,7 +139,10 @@ public class TagBarController implements Initializable {
         public Tag(String tag) {
             getStyleClass().setAll("tag");
             Button removeButton = new Button("X");
-            removeButton.setOnAction(evt -> tags.remove(tag));
+            removeButton.setOnAction(evt -> {
+                tags.remove(tag);
+                Platform.runLater(()->tfInputTag.requestFocus());
+            });
             removeButton.getStyleClass().add("lb-super-link");
             Text text = new Text(tag);
             HBox.setMargin(text, new Insets(0, 0, 0, 5));

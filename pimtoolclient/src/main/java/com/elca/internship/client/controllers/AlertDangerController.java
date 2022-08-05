@@ -1,8 +1,6 @@
 package com.elca.internship.client.controllers;
 
-import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
-import com.elca.internship.client.models.entity.Response;
 import com.elca.internship.client.exception.ErrorResponseKey;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +12,6 @@ import jiconfont.javafx.IconNode;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 

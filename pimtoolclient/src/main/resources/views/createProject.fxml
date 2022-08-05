@@ -43,7 +43,7 @@
          </children>
       </HBox>
       <TextField fx:id="tfProNum" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-      <Label fx:id="lbValidateProNum" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <Label fx:id="lbValidateProNum" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="2" />
       <HBox alignment="CENTER_LEFT" spacing="5.0" GridPane.rowIndex="3">
          <children>
             <Label fx:id="lbProName" text="%label.project.name" />
