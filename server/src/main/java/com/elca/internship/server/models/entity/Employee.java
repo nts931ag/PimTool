@@ -3,6 +3,7 @@ package com.elca.internship.server.models.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "employee", schema = "pim_tool_db_migration")
 @Entity
 public class Employee extends BaseEntity{
@@ -24,8 +26,8 @@ public class Employee extends BaseEntity{
     @OneToOne(mappedBy = "groupLeaderId")
     private Group group;
 
-    @OneToMany(mappedBy = "employee")
-    Set<ProjectEmployee> projectEmployees;
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
+    Set<ProjectEmployee> projectEmployee;
 
     public Employee(long id, String visa, String firstName, String lastName, LocalDate birthDate, int version){
         super(id, version);

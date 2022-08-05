@@ -32,8 +32,8 @@ public class Project extends BaseEntity{
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "project")
-    Set<ProjectEmployee> projectEmployees;
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    Set<ProjectEmployee> projectEmployee;
 
     public Project(long id, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
         super(id, version);
