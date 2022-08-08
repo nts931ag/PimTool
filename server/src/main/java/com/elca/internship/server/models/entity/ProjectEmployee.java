@@ -1,15 +1,16 @@
 package com.elca.internship.server.models.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
-@AllArgsConstructor
 @Table(name = "project_employee", schema = "pim_tool_db_migration")
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProjectEmployee {
 //    private long projectId;
 //    private long employeeId;

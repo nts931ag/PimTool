@@ -1,19 +1,17 @@
 package com.elca.internship.server.models.entity;
 
 import com.elca.internship.server.models.Status;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "project", schema = "pim_tool_db_migration")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Project extends BaseEntity{
 //    @Column(name = "group_id")
     @ManyToOne
@@ -36,7 +34,7 @@ public class Project extends BaseEntity{
     @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<ProjectEmployee> projectEmployee;
 
-    public Project(long id, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
+    /*public Project(long id, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
         super(id, version);
 //        this.groupId = groupId;
         this.projectNumber = projectNumber;
@@ -45,5 +43,17 @@ public class Project extends BaseEntity{
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+    }*/
+
+    public Project(Long id, Integer version, Group group, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, Set<ProjectEmployee> projectEmployee) {
+        super(id, version);
+        this.group = group;
+        this.projectNumber = projectNumber;
+        this.name = name;
+        this.customer = customer;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.projectEmployee = projectEmployee;
     }
 }

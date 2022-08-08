@@ -1,5 +1,8 @@
 package com.elca.internship.server.services;
 
+import com.elca.internship.server.dao.ProjectDAO;
+import com.elca.internship.server.models.Status;
+import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.exceptions.EmployeeNotExistedException;
 import com.elca.internship.server.exceptions.GroupNotExistedException;
@@ -24,11 +27,8 @@ public class ProjectServiceTest {
 
     @Test
     public void createNewProject(){
-        /*var project = new Project(1L,3,"mobile","Bosch", Project.Status.INP, LocalDate.now(),LocalDate.now(),1);
-        var id = projectService.createNewProject(project);
-        project.setId(id);
-        var resProject = projectService.getProject(3L);
-        Assert.assertEquals(project, resProject);*/
+        var project = new ProjectDto(0L,9999,"mobile","Bosch", Status.NEW, LocalDate.now(),LocalDate.now());
+        projectService.createProject(project, List.of("NGU", "TRA", "DUY"));
     }
 
     @Test
@@ -53,17 +53,17 @@ public class ProjectServiceTest {
 
     @Test
     public void updateNewProject() throws GroupNotExistedException, EmployeeNotExistedException {
-        var project = new Project(
+        /*var project = new Project(
                 1L,
                 1,
                 1,
                 "mobile",
                 "HCMUS",
-                Project.Status.NEW,
+                Status.NEW,
                 LocalDate.now(),
                 LocalDate.now(),
                 2
-        );
+        );*/
         var listEmployee = List.of("TTT", "NGU", "TRA");
     }
 

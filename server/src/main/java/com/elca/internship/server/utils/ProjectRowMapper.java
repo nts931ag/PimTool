@@ -17,7 +17,7 @@ public class ProjectRowMapper implements RowMapper<Project> {
         if(date != null){
             localDate = date.toLocalDate();
         }
-        return new Project(
+        /*return new Project(
                 rs.getLong(1),
                 rs.getLong(2),
                 rs.getInt(3),
@@ -27,7 +27,8 @@ public class ProjectRowMapper implements RowMapper<Project> {
                 rs.getDate(7).toLocalDate(),
                 localDate,
                 rs.getInt(9)
-        );
+        );*/
+        return null;
 
 
     }

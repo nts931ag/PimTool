@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class EmployeeRowMapper implements RowMapper<Employee> {
     @Override
     public Employee mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new Employee(
+        /*return new Employee(
                 rs.getLong(1),
                 rs.getString(2),
                 rs.getString(3),
@@ -17,6 +17,7 @@ public class EmployeeRowMapper implements RowMapper<Employee> {
                 rs.getDate(5).toLocalDate(),
                 rs.getInt(6)
 
-        );
+        );*/
+        return null;
     }
 }

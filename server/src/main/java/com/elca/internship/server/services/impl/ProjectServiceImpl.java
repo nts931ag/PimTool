@@ -2,9 +2,14 @@ package com.elca.internship.server.services.impl;
 
 import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.dao.ProjectEmployeeDAO;
+import com.elca.internship.server.models.dto.ProjectDto;
+import com.elca.internship.server.models.entity.Group;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
+import com.elca.internship.server.models.entity.ProjectEmployee;
+import com.elca.internship.server.models.entity.ProjectEmployeeKey;
 import com.elca.internship.server.repositories.EmployeeRepository;
+import com.elca.internship.server.repositories.GroupRepository;
 import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.services.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +17,8 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.LinkedHashSet;
 import java.util.List;
 
 
@@ -22,11 +29,14 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectEmployeeDAO projectEmployeeDAO;
     private final ProjectRepository projectRepository;
     private final EmployeeRepository employeeRepository;
+    private final GroupRepository groupRepository;
 
     @Override
     public Long createNewProject(Project project) throws ProjectNumberAlreadyExistedException {
         return projectDAO.insert(project);
     }
+
+
 
     @Override
     public Project getProjectById(Long id) throws EmptyResultDataAccessException {
@@ -106,6 +116,57 @@ public class ProjectServiceImpl implements ProjectService {
         }catch (EmptyResultDataAccessException erdae){
             return false;
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void createProject(ProjectDto projectDto, List<String> listEmployeeVisa) {
+        var project = projectRepository.findByProjectNumber(projectDto.getProjectNumber());
+        project.ifPresent(p -> {
+            throw new ProjectNumberAlreadyExistedException(p.getProjectNumber());
+        });
+
+        var newProject = new Project(
+                null,
+                1,
+                null,
+                projectDto.getProjectNumber(),
+                projectDto.getName(),
+                projectDto.getCustomer(),
+                projectDto.getStatus(),
+                projectDto.getStartDate(),
+                projectDto.getEndDate(),
+                null
+        );
+
+        Group group;
+
+        if(projectDto.getGroupId() == 0){
+            group = groupRepository.save(new Group(null, 1, null, null));
+        }else{
+            var groupOpt = groupRepository.findById(projectDto.getGroupId());
+            group = groupOpt.orElseThrow();
+        }
+
+//        group.addProjectToGroup(newProject);
+        newProject.setGroup(group);
+
+        var listEmployee = employeeRepository.findAllByVisaIn(listEmployeeVisa);
+
+        var setProjectEmployee = new LinkedHashSet<ProjectEmployee>();
+
+        listEmployee.forEach(e -> {
+            var projectEmployeeKey = new ProjectEmployeeKey(null, e.getId());
+            setProjectEmployee.add(new ProjectEmployee(projectEmployeeKey, newProject, e));
+        });
+
+        newProject.setProjectEmployee(setProjectEmployee);
+
+        var projectPersist = projectRepository.save(newProject);
+        group.addProjectToGroup(projectPersist);
+
+        var groupTest = groupRepository.findById(projectPersist.getGroup().getId());
+
     }
 
     @Override

@@ -1,19 +1,16 @@
 package com.elca.internship.server.models.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "employee", schema = "pim_tool_db_migration")
 @Entity
+@Getter
+@Setter
 public class Employee extends BaseEntity{
     @Column(name = "visa")
     private String visa;
@@ -29,11 +26,12 @@ public class Employee extends BaseEntity{
     @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<ProjectEmployee> projectEmployee;
 
-    public Employee(long id, String visa, String firstName, String lastName, LocalDate birthDate, int version){
-        super(id, version);
+    /*public Employee(long id, String visa, String firstName, String lastName, LocalDate birthDate, int version){
+        *//*super(id, version);
         this.visa = visa;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthDate = birthDate;
-    }
+        this.birthDate = birthDate;*//*
+    }*/
+
 }

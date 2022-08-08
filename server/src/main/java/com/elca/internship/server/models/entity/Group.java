@@ -1,14 +1,17 @@
 package com.elca.internship.server.models.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 
-@Data
 @Table(name = "team", schema = "pim_tool_db_migration")
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Group extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "leader_id", referencedColumnName = "id")
@@ -18,5 +21,18 @@ public class Group extends BaseEntity {
     public Group(long id, long groupLeaderId, int version){
         super(id,version);
 //        this.groupLeaderId = groupLeaderId;
+    }
+
+    public Group(Long id, Integer version, Employee groupLeaderId, Set<Project> projectSet) {
+        super(id, version);
+        this.groupLeaderId = groupLeaderId;
+        this.projectSet = projectSet;
+    }
+
+    public void addProjectToGroup(Project project){
+        if(projectSet == null){
+            projectSet = new LinkedHashSet<>();
+        }
+        projectSet.add(project);
     }
 }

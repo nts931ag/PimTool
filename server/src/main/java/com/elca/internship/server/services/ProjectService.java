@@ -1,5 +1,6 @@
 package com.elca.internship.server.services;
 
+import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
 
@@ -7,6 +8,8 @@ import java.util.List;
 
 public interface ProjectService {
     Long createNewProject(Project project) throws ProjectNumberAlreadyExistedException;
+
+    void createProject(ProjectDto projectDto, List<String> listEmployeeVisa);
 
     Project getProjectById(Long id);
 
