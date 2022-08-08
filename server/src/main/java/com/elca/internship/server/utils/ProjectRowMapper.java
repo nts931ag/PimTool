@@ -1,5 +1,6 @@
 package com.elca.internship.server.utils;
 
+import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.entity.Project;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -22,7 +23,7 @@ public class ProjectRowMapper implements RowMapper<Project> {
                 rs.getInt(3),
                 rs.getString(4),
                 rs.getString(5),
-                Project.Status.valueOf(rs.getString(6)),
+                Status.valueOf(rs.getString(6)),
                 rs.getDate(7).toLocalDate(),
                 localDate,
                 rs.getInt(9)

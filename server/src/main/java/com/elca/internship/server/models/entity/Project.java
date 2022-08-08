@@ -1,5 +1,6 @@
 package com.elca.internship.server.models.entity;
 
+import com.elca.internship.server.models.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,12 +46,4 @@ public class Project extends BaseEntity{
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
-    public enum Status{
-        NEW,
-        PLA,
-        INP,
-        FIN;
-    }
-
 }
