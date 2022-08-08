@@ -18,7 +18,7 @@ public class Project extends BaseEntity{
 //    @Column(name = "group_id")
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName = "id")
-    private Group groupId;
+    private Group group;
     @Column(name = "project_number")
     private Integer projectNumber;
     @Column(name = "name")
@@ -33,7 +33,7 @@ public class Project extends BaseEntity{
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<ProjectEmployee> projectEmployee;
 
     public Project(long id, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {

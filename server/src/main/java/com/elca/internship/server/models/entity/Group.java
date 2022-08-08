@@ -13,7 +13,7 @@ public class Group extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "leader_id", referencedColumnName = "id")
     private Employee groupLeaderId;
-    @OneToMany(mappedBy = "groupId")
+    @OneToMany(mappedBy = "group")
     private Set<Project> projectSet;
     public Group(long id, long groupLeaderId, int version){
         super(id,version);

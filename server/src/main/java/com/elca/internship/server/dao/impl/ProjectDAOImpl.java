@@ -55,7 +55,7 @@ public class ProjectDAOImpl implements ProjectDAO {
             date = Date.valueOf(localDate);
         }
 
-        MapSqlParameterSource params = new MapSqlParameterSource()
+        /*MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("proId", project.getId())
                 .addValue("groupId", project.getGroupId())
                 .addValue("proNum", project.getProjectNumber())
@@ -65,10 +65,11 @@ public class ProjectDAOImpl implements ProjectDAO {
                 .addValue("proStart", Date.valueOf(project.getStartDate()))
                 .addValue("proEnd", date)
                 .addValue("proVersion", oldProject.getVersion() + 1)
-                ;
+                ;*/
 
 
-        return namedParameterJdbcTemplate.update(sql, params);
+//        return namedParameterJdbcTemplate.update(sql, params);
+        return 0;
     }
 
     @Override
@@ -77,7 +78,7 @@ public class ProjectDAOImpl implements ProjectDAO {
             simpleJdbcInsert.withTableName("project").usingGeneratedKeyColumns("id");
         }
 
-        MapSqlParameterSource params = new MapSqlParameterSource()
+        /*MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("team_id", project.getGroupId())
                 .addValue("projectNumber", project.getProjectNumber())
                 .addValue("name", project.getName())
@@ -85,16 +86,17 @@ public class ProjectDAOImpl implements ProjectDAO {
                 .addValue("status", project.getStatus().toString())
                 .addValue("start_date", Date.valueOf(project.getStartDate()))
 
-                .addValue("version", 1);
+                .addValue("version", 1);*/
 
-        if(project.getEndDate() != null){
+        /*if(project.getEndDate() != null){
             params.addValue("end_date", Date.valueOf(project.getEndDate()));
         }
         try{
             return simpleJdbcInsert.executeAndReturnKey(params).longValue();
         }catch (Exception e){
             throw new ProjectNumberAlreadyExistedException(project.getProjectNumber());
-        }
+        }*/
+        return null;
     }
 
     @Override

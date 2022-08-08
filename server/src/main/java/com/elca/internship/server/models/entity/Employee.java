@@ -26,7 +26,7 @@ public class Employee extends BaseEntity{
     @OneToOne(mappedBy = "groupLeaderId")
     private Group group;
 
-    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<ProjectEmployee> projectEmployee;
 
     public Employee(long id, String visa, String firstName, String lastName, LocalDate birthDate, int version){
