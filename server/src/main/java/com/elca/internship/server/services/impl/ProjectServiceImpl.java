@@ -2,12 +2,10 @@ package com.elca.internship.server.services.impl;
 
 import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.dao.ProjectEmployeeDAO;
+import com.elca.internship.server.exceptions.EmployeeNotExistedException;
 import com.elca.internship.server.models.dto.ProjectDto;
-import com.elca.internship.server.models.entity.Group;
-import com.elca.internship.server.models.entity.Project;
+import com.elca.internship.server.models.entity.*;
 import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
-import com.elca.internship.server.models.entity.ProjectEmployee;
-import com.elca.internship.server.models.entity.ProjectEmployeeKey;
 import com.elca.internship.server.repositories.EmployeeRepository;
 import com.elca.internship.server.repositories.GroupRepository;
 import com.elca.internship.server.repositories.ProjectRepository;
@@ -139,19 +137,29 @@ public class ProjectServiceImpl implements ProjectService {
                 null
         );
 
+        var listEmployee = employeeRepository.findAllByVisaIn(listEmployeeVisa);
+
+        if(listEmployee.size() != listEmployeeVisa.size()){
+            var listVisaEmployeeExisted = listEmployee.stream().map(Employee::getVisa).toList();
+            var listVisaEmployeeNotExisted = listEmployeeVisa.stream().filter(v -> {
+                if(!listVisaEmployeeExisted.contains(v)){
+                    return true;
+                }
+                return false;
+            }).toList();
+            throw new EmployeeNotExistedException(listVisaEmployeeNotExisted);
+        }
+
         Group group;
 
         if(projectDto.getGroupId() == 0){
-            group = groupRepository.save(new Group(null, 1, null, null));
+            group = groupRepository.save(new Group(null, 1, listEmployee.get(0), null));
+            listEmployee.remove(0);
         }else{
-            var groupOpt = groupRepository.findById(projectDto.getGroupId());
-            group = groupOpt.orElseThrow();
+            group = groupRepository.findById(projectDto.getGroupId()).orElseThrow();
         }
 
-//        group.addProjectToGroup(newProject);
         newProject.setGroup(group);
-
-        var listEmployee = employeeRepository.findAllByVisaIn(listEmployeeVisa);
 
         var setProjectEmployee = new LinkedHashSet<ProjectEmployee>();
 
@@ -164,8 +172,14 @@ public class ProjectServiceImpl implements ProjectService {
 
         var projectPersist = projectRepository.save(newProject);
         group.addProjectToGroup(projectPersist);
+    }
 
-        var groupTest = groupRepository.findById(projectPersist.getGroup().getId());
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateProject(ProjectDto projectDto, List<String> listEmployeeVisa) {
+        var project = projectRepository.findById(projectDto.getId()).orElseThrow();
+
+
 
     }
 

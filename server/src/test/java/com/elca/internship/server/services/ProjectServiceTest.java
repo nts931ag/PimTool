@@ -27,8 +27,8 @@ public class ProjectServiceTest {
 
     @Test
     public void createNewProject(){
-        var project = new ProjectDto(0L,9999,"mobile","Bosch", Status.NEW, LocalDate.now(),LocalDate.now());
-        projectService.createProject(project, List.of("NGU", "TRA", "DUY"));
+        var project = new ProjectDto(0L,8886,"mobile","Bosch", Status.NEW, LocalDate.now(),LocalDate.now());
+        projectService.createProject(project, List.of());
     }
 
     @Test

@@ -11,6 +11,8 @@ public interface ProjectService {
 
     void createProject(ProjectDto projectDto, List<String> listEmployeeVisa);
 
+    void updateProject(ProjectDto projectDto, List<String> listEmployeeVisa);
+
     Project getProjectById(Long id);
 
     int updateProject(Long id, Project project);
