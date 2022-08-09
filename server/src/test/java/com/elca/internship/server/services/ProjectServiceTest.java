@@ -6,6 +6,7 @@ import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.exceptions.EmployeeNotExistedException;
 import com.elca.internship.server.exceptions.GroupNotExistedException;
+import com.elca.internship.server.repositories.ProjectRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ import java.util.List;
 public class ProjectServiceTest {
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private ProjectRepository projectRepository;
 //    @Autowired
 //    public ProjectServiceTest(ProjectService projectService){
 //        this.projectService = projectService;
@@ -27,8 +31,8 @@ public class ProjectServiceTest {
 
     @Test
     public void createNewProject(){
-        var project = new ProjectDto(0L,8886,"mobile","Bosch", Status.NEW, LocalDate.now(),LocalDate.now());
-        projectService.createProject(project, List.of());
+        var project = new ProjectDto(0L,9301,"thaison","thaison", Status.NEW, LocalDate.now(),LocalDate.now());
+        projectService.createProject(project, List.of("NGU"));
     }
 
     @Test
@@ -37,6 +41,10 @@ public class ProjectServiceTest {
         var newProject = projectService.updateProject(1L,project);
 
         Assert.assertEquals(project.getCustomer(), newProject.getCustomer());*/
+
+        var projectDto = new ProjectDto();
+        var project = new ProjectDto(42L,1, 3936L,8886,"mobile","Bosch", Status.NEW, LocalDate.now(),LocalDate.now());
+        projectService.updateProject(project, List.of("NGU", "TRA", "DUY"));
     }
 
     @Test

@@ -1,7 +1,6 @@
 package com.elca.internship.server.models.entity;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 

@@ -19,4 +19,14 @@ public class ProjectDto extends BaseDto {
     private LocalDate startDate;
     private LocalDate endDate;
 
+    public ProjectDto(Long id, Integer version, Long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate) {
+        super(id, version);
+        this.groupId = groupId;
+        this.projectNumber = projectNumber;
+        this.name = name;
+        this.customer = customer;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }

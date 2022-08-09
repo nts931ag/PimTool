@@ -3,6 +3,7 @@ package com.elca.internship.server.services.impl;
 import com.elca.internship.server.dao.ProjectDAO;
 import com.elca.internship.server.dao.ProjectEmployeeDAO;
 import com.elca.internship.server.exceptions.EmployeeNotExistedException;
+import com.elca.internship.server.exceptions.GroupLeaderNotExistedException;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.*;
 import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
@@ -11,6 +12,7 @@ import com.elca.internship.server.repositories.GroupRepository;
 import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.services.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -137,41 +139,45 @@ public class ProjectServiceImpl implements ProjectService {
                 null
         );
 
-        var listEmployee = employeeRepository.findAllByVisaIn(listEmployeeVisa);
-
-        if(listEmployee.size() != listEmployeeVisa.size()){
-            var listVisaEmployeeExisted = listEmployee.stream().map(Employee::getVisa).toList();
-            var listVisaEmployeeNotExisted = listEmployeeVisa.stream().filter(v -> {
-                if(!listVisaEmployeeExisted.contains(v)){
-                    return true;
-                }
-                return false;
-            }).toList();
-            throw new EmployeeNotExistedException(listVisaEmployeeNotExisted);
-        }
-
-        Group group;
-
-        if(projectDto.getGroupId() == 0){
-            group = groupRepository.save(new Group(null, 1, listEmployee.get(0), null));
-            listEmployee.remove(0);
+        if(listEmployeeVisa.isEmpty() && projectDto.getGroupId() == 0){
+            throw new EmptyResultDataAccessException("Members can't be empty", 1);
         }else{
-            group = groupRepository.findById(projectDto.getGroupId()).orElseThrow();
+            var listEmployee = employeeRepository.findAllByVisaIn(listEmployeeVisa);
+
+            if(listEmployee.size() != listEmployeeVisa.size()){
+                var listVisaEmployeeExisted = listEmployee.stream().map(Employee::getVisa).toList();
+                var listVisaEmployeeNotExisted = listEmployeeVisa.stream().filter(v -> {
+                    if(!listVisaEmployeeExisted.contains(v)){
+                        return true;
+                    }
+                    return false;
+                }).toList();
+                throw new EmployeeNotExistedException(listVisaEmployeeNotExisted);
+            }
+
+            Group group;
+
+            if(projectDto.getGroupId() == 0){
+                group = groupRepository.save(new Group(null, 1, listEmployee.get(0), null));
+                listEmployee.remove(0);
+            }else{
+                group = groupRepository.findById(projectDto.getGroupId()).orElseThrow();
+            }
+
+            newProject.setGroup(group);
+
+            var setProjectEmployee = new LinkedHashSet<ProjectEmployee>();
+
+            listEmployee.forEach(e -> {
+                var projectEmployeeKey = new ProjectEmployeeKey(null, e.getId());
+                setProjectEmployee.add(new ProjectEmployee(projectEmployeeKey, newProject, e));
+            });
+
+            newProject.setProjectEmployee(setProjectEmployee);
+
+            var projectPersist = projectRepository.save(newProject);
+            group.addProjectToGroup(projectPersist);
         }
-
-        newProject.setGroup(group);
-
-        var setProjectEmployee = new LinkedHashSet<ProjectEmployee>();
-
-        listEmployee.forEach(e -> {
-            var projectEmployeeKey = new ProjectEmployeeKey(null, e.getId());
-            setProjectEmployee.add(new ProjectEmployee(projectEmployeeKey, newProject, e));
-        });
-
-        newProject.setProjectEmployee(setProjectEmployee);
-
-        var projectPersist = projectRepository.save(newProject);
-        group.addProjectToGroup(projectPersist);
     }
 
     @Override
@@ -179,6 +185,61 @@ public class ProjectServiceImpl implements ProjectService {
     public void updateProject(ProjectDto projectDto, List<String> listEmployeeVisa) {
         var project = projectRepository.findById(projectDto.getId()).orElseThrow();
 
+        var infoProjectUpdate = new Project(
+                project.getId(),
+                project.getVersion(),
+                null,
+                project.getProjectNumber(),
+                projectDto.getName(),
+                projectDto.getCustomer(),
+                projectDto.getStatus(),
+                projectDto.getStartDate(),
+                projectDto.getEndDate(),
+                null
+        );
+
+        Group group;
+        List<Employee> listEmployee = null;
+
+        if(!project.getGroup().getId().equals(projectDto.getGroupId())){
+            if(listEmployeeVisa.isEmpty() && projectDto.getId() == 0){
+                throw new EmptyResultDataAccessException("Members can't be empty", 1);
+            }
+            listEmployee = employeeRepository.findAllByVisaIn(listEmployeeVisa);
+
+            if(listEmployee.size() != listEmployeeVisa.size()){
+                var listVisaEmployeeExisted = listEmployee.stream().map(Employee::getVisa).toList();
+                var listVisaEmployeeNotExisted = listEmployeeVisa.stream().filter(v -> {
+                    if(!listVisaEmployeeExisted.contains(v)){
+                        return true;
+                    }
+                    return false;
+                }).toList();
+                throw new EmployeeNotExistedException(listVisaEmployeeNotExisted);
+            }
+
+            if(projectDto.getGroupId() == 0){
+                group = groupRepository.save(new Group(null, 1, listEmployee.get(0), null));
+                listEmployee.remove(0);
+            }else{
+                group = groupRepository.findById(projectDto.getGroupId()).orElseThrow();
+            }
+//            infoProjectUpdate.setGroup(group);
+            project.setGroup(group);
+        }
+
+
+        var setProjectEmployee = new LinkedHashSet<ProjectEmployee>();
+
+        if (listEmployee != null) {
+            listEmployee.forEach(e -> {
+                var projectEmployeeKey = new ProjectEmployeeKey(null, e.getId());
+                setProjectEmployee.add(new ProjectEmployee(projectEmployeeKey, infoProjectUpdate, e));
+            });
+        }
+
+//        infoProjectUpdate.setProjectEmployee(setProjectEmployee);
+        project.setProjectEmployee(setProjectEmployee);
 
 
     }
