@@ -2,10 +2,10 @@ package com.elca.internship.server.controllers;
 
 import com.elca.internship.server.models.Response;
 import com.elca.internship.server.models.entity.Project;
-import com.elca.internship.server.services.EmployeeService;
-import com.elca.internship.server.services.GroupService;
-import com.elca.internship.server.services.ProjectEmployeeService;
-import com.elca.internship.server.services.ProjectService;
+//import com.elca.internship.server.services.EmployeeService;
+//import com.elca.internship.server.services.GroupService;
+//import com.elca.internship.server.services.ProjectEmployeeService;
+//import com.elca.internship.server.services.ProjectService;
 import com.elca.internship.server.adapter.ProjectAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("/api/projects")
 public class ProjectController {
 
-    private final ProjectService projectService;
+    /*private final ProjectService projectService;
     private final ProjectEmployeeService projectEmployeeService;
     private final ProjectAdapter projectAdapter;
 
@@ -99,6 +99,6 @@ public class ProjectController {
             @RequestParam(value = "proStatus") String proStatus
     ){
         return projectService.getSizeOfResultSearch(proCriteria, proStatus);
-    }
+    }*/
 
 }
