@@ -12,8 +12,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectEmployee {
-//    private long projectId;
-//    private long employeeId;
     @EmbeddedId
     ProjectEmployeeKey id;
 

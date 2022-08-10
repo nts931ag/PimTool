@@ -31,8 +31,8 @@ public class ProjectServiceTest {
 
     @Test
     public void createNewProject(){
-        var project = new ProjectDto(0L,9301,"thaison","thaison", Status.NEW, LocalDate.now(),LocalDate.now());
-        projectService.createProject(project, List.of("NGU"));
+        var project = new ProjectDto(0L,6220,"thaison","thaison", Status.NEW, LocalDate.now(),LocalDate.now());
+        projectService.createProject(project, List.of("NGU", "TRA", "DUY"));
     }
 
     @Test
@@ -43,8 +43,8 @@ public class ProjectServiceTest {
         Assert.assertEquals(project.getCustomer(), newProject.getCustomer());*/
 
         var projectDto = new ProjectDto();
-        var project = new ProjectDto(42L,1, 3936L,8886,"mobile","Bosch", Status.NEW, LocalDate.now(),LocalDate.now());
-        projectService.updateProject(project, List.of("NGU", "TRA", "DUY"));
+        var project = new ProjectDto(42L,1, 11L,4545,"thaison","elca", Status.NEW, LocalDate.now(),LocalDate.now());
+        projectService.updateProject(project, List.of("NGU","BAO"));
     }
 
     @Test
