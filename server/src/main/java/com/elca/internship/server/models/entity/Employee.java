@@ -22,11 +22,11 @@ public class Employee extends BaseEntity{
     private String lastName;
     @Column(name = "birth_date")
     private LocalDate birthDate;
-    @OneToOne(mappedBy = "groupLeaderId")
-    private Group group;
+    @OneToMany(mappedBy = "groupLeaderId", fetch = FetchType.LAZY)
+    private Set<Group> group = new HashSet<>();
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    Set<ProjectEmployee> projectEmployee = new HashSet<>();
+    private Set<ProjectEmployee> projectEmployee = new HashSet<>();
 
     public void addChildProjectEmployee(ProjectEmployee childProjectEmployee){
         if(projectEmployee == null){

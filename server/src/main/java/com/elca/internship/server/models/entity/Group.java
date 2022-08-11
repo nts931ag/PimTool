@@ -13,15 +13,15 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Group extends BaseEntity {
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "leader_id", referencedColumnName = "id")
     private Employee groupLeaderId;
     @OneToMany(mappedBy = "group")
     private Set<Project> projectSet;
-    public Group(long id, long groupLeaderId, int version){
+/*    public Group(long id, long groupLeaderId, int version){
         super(id,version);
 //        this.groupLeaderId = groupLeaderId;
-    }
+    }*/
 
     public Group(Long id, Integer version, Employee groupLeaderId, Set<Project> projectSet) {
         super(id, version);
