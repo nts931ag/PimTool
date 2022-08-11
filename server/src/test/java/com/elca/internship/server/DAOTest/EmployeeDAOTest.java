@@ -1,7 +1,6 @@
 package com.elca.internship.server.DAOTest;
 
 import com.elca.internship.server.dao.EmployeeDAO;
-import com.elca.internship.server.services.ProjectService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
