@@ -139,6 +139,16 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void deleteProject(Long id) {
-        projectRepository.deleteById(id);
+        var isProjectExisted = projectRepository.existsById(id);
+        if(isProjectExisted){
+            projectRepository.deleteById(id);
+        }
     }
+
+    @Override
+    @Transactional
+    public void deleteProjects(List<Long> ids){
+        projectRepository.deleteAllByIdInBatch(ids);
+    }
+
 }

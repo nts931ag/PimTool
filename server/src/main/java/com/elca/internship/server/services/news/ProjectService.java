@@ -9,6 +9,7 @@ public interface ProjectService {
 
     Project createNewProject(ProjectDto projectDto, List<String> listVisaEmployee);
     Project updateProject(ProjectDto projectDto, List<String> listVisaEmployee);
+    void deleteProjects(List<Long> ids);
 
     void deleteProject(Long id);
 

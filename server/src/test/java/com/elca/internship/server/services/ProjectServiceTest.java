@@ -35,7 +35,7 @@ public class ProjectServiceTest {
                 null,
                 null,
                 0L,
-                111,
+                3,
                 "mobile",
                 "elca",
                 Status.NEW,
@@ -70,8 +70,12 @@ public class ProjectServiceTest {
 
     @Test
     public void deleteProject(){
-
         projectService.deleteProject(8L);
 
+    }
+
+    @Test
+    public void deleteProjects(){
+        projectService.deleteProjects(List.of(10L,11L,12L,13L));
     }
 }
