@@ -35,7 +35,7 @@ public class ProjectServiceTest {
                 null,
                 null,
                 0L,
-                2222,
+                111,
                 "mobile",
                 "elca",
                 Status.NEW,
@@ -43,9 +43,8 @@ public class ProjectServiceTest {
                 LocalDate.now()
         );
         var listEmployee = new ArrayList<String>();
-        listEmployee.add("HLO");
-        listEmployee.add("DUY");
-        listEmployee.add("SON");
+        listEmployee.add("EM1");
+        listEmployee.add("EM2");
         projectService.createNewProject(projectDto, listEmployee);
     }
 
@@ -53,10 +52,10 @@ public class ProjectServiceTest {
     public void updateProject(){
 
         var projectDto = new ProjectDto(
-                4L,
+                10L,
                 null,
-                3L,
-                2222,
+                9L,
+                111,
                 "modify1",
                 "modify",
                 Status.NEW,
@@ -64,9 +63,15 @@ public class ProjectServiceTest {
                 LocalDate.now()
         );
         var listEmployee = new ArrayList<String>();
-        listEmployee.add("HLO");
-        listEmployee.add("DUY");
-        listEmployee.add("SON");
+        listEmployee.add("EM4");
+        listEmployee.add("EM5");
         projectService.updateProject(projectDto, listEmployee);
+    }
+
+    @Test
+    public void deleteProject(){
+
+        projectService.deleteProject(8L);
+
     }
 }

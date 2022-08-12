@@ -25,12 +25,12 @@ public class Employee extends BaseEntity{
 
     @OneToMany(mappedBy = "groupLeaderId", fetch = FetchType.LAZY)
     private Set<Group> group = new HashSet<>();
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProjectEmployee> projectEmployee = new HashSet<>();
 
     public void addChildProjectEmployee(ProjectEmployee childProjectEmployee){
         if(projectEmployee == null){
-            this.projectEmployee = new LinkedHashSet<ProjectEmployee>();
+            this.projectEmployee = new HashSet<>();
         }
         this.projectEmployee.add(childProjectEmployee);
     }

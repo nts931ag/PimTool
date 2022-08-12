@@ -6,6 +6,7 @@ import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.*;
 import com.elca.internship.server.repositories.EmployeeRepository;
 import com.elca.internship.server.repositories.GroupRepository;
+import com.elca.internship.server.repositories.ProjectEmployeeRepository;
 import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.services.news.ProjectService;
 import com.elca.internship.server.validator.EmployeeValidator;
@@ -24,6 +25,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final EmployeeRepository employeeRepository;
     private final GroupRepository groupRepository;
+    private final ProjectEmployeeRepository projectEmployeeRepository;
     private final EmployeeValidator employeeValidator;
     private final ProjectValidator projectValidator;
 
@@ -84,12 +86,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProject(ProjectDto projectDto, List<String> listVisaEmployee) {
+        // bun thit nuong chay
         // validate Project existed
-        var projectUpdate = projectRepository.findProjectByProjectNumber(projectDto.getProjectNumber());
-//        var projectUpdate = projectRepository.findByProjectNumber(projectDto.getProjectNumber()).get();
+        var projectUpdate = projectRepository.findProjectByIdCustom(projectDto.getId());
+
         // validate new project member
         var listEmployeeExisted = employeeRepository.findAllByVisaIn(listVisaEmployee);
         employeeValidator.validateEmployeesExisted(listEmployeeExisted, listVisaEmployee);
+
         // validate project group
         var group = groupRepository.findById(projectDto.getGroupId()).orElseGet(() -> {
             if(listEmployeeExisted.size() != 0){
@@ -105,25 +109,36 @@ public class ProjectServiceImpl implements ProjectService {
 
         // create setProjectEmployee
 
-        var setProjectEmployee = new HashSet<ProjectEmployee>();
+        /*var setProjectEmployee = new HashSet<ProjectEmployee>();
         listEmployeeExisted.forEach(employee -> {
-            var ProjectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
+            var projectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
             setProjectEmployee.add(
-                    new ProjectEmployee(ProjectEmployeeKey,
+                    new ProjectEmployee(projectEmployeeKey,
                             projectUpdate,
                             employee)
             );
-        });
+        });*/
 
+        var em = employeeRepository.findById(5L).orElseThrow();
+        var projectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), em.getId());
+        var projectEmployee = new ProjectEmployee(projectEmployeeKey, projectUpdate, em);
+        projectUpdate.addChildProjectEmployee(projectEmployee);
 
         projectUpdate.setCustomer(projectDto.getCustomer());
         projectUpdate.setEndDate(projectDto.getEndDate());
         projectUpdate.setStartDate(projectDto.getStartDate());
         projectUpdate.setStatus(projectDto.getStatus());
         projectUpdate.setName(projectDto.getName());
-        projectUpdate.setProjectEmployee(setProjectEmployee);
+//        projectUpdate.setProjectEmployee(setProjectEmployee);
+//        setProjectEmployee.forEach(projectUpdate::addChildProjectEmployee);
+
         // save new project
         return projectRepository.save(projectUpdate);
-//        return null;
+    }
+
+    @Override
+    @Transactional
+    public void deleteProject(Long id) {
+        projectRepository.deleteById(id);
     }
 }

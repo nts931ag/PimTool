@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Project extends BaseEntity{
 //    @Column(name = "group_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group group;
     @Column(name = "project_number")

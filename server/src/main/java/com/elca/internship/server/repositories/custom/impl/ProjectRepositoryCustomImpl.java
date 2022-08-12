@@ -16,12 +16,22 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
 
     @Override
-    public Project findProjectByProjectNumber(Integer projectNumber) {
+    public Project findProjectByProjectNumberCustom(Integer projectNumber) {
         return new JPAQuery<Project>(entityManager)
                 .from(QProject.project)
-                .innerJoin(QProject.project.projectEmployee, QProjectEmployee.projectEmployee)
+                .leftJoin(QProject.project.projectEmployee, QProjectEmployee.projectEmployee)
                 .fetchJoin()
                 .where(QProject.project.projectNumber.eq(projectNumber))
                 .fetchOne();
+    }
+
+    @Override
+    public Project findProjectByIdCustom(Long projectId) {
+        return new JPAQuery<Project>(entityManager)
+                .from(QProject.project)
+                .leftJoin(QProject.project.projectEmployee, QProjectEmployee.projectEmployee)
+                .fetchJoin()
+                .where(QProject.project.id.eq(projectId))
+                .fetchFirst();
     }
 }
