@@ -1,6 +1,8 @@
 package com.elca.internship.server.adapter;
 
+import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.Project;
+import com.elca.internship.server.services.news.ProjectService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class ProjectAdapter {
-//    private final ProjectService projectService;
+    private final ProjectService projectService;
     private final ObjectMapper objectMapper;
 
     public void createNewProject(String jsonObject){
@@ -40,5 +42,23 @@ public class ProjectAdapter {
         } catch (JsonProcessingException jpe) {
             System.out.println(jpe.getMessage());
         }
+    }
+
+    public void createAndAddMembersIntoNewProject(String jsonObject){
+        try {
+            var jsonNode = objectMapper.readTree(jsonObject);
+            var project = objectMapper.treeToValue(jsonNode.get("project"), ProjectDto.class);
+            var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
+            log.info("Info new project: " + project);
+            log.info("Info list member: " + listEmployeeVisa);
+//            projectService.createNewProjectWithEmployeeVisasTest(project, listEmployeeVisa);
+
+
+
+        } catch (JsonProcessingException jpe) {
+            System.out.println(jpe.getMessage());
+        }
+
+
     }
 }

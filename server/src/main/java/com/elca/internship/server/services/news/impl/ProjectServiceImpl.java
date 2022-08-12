@@ -1,7 +1,6 @@
 package com.elca.internship.server.services.news.impl;
 
 import com.elca.internship.server.exceptions.GroupLeaderNotExistedException;
-import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.*;
 import com.elca.internship.server.repositories.EmployeeRepository;
@@ -10,9 +9,9 @@ import com.elca.internship.server.repositories.ProjectEmployeeRepository;
 import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.services.news.ProjectService;
 import com.elca.internship.server.validator.EmployeeValidator;
+import com.elca.internship.server.validator.GroupValidator;
 import com.elca.internship.server.validator.ProjectValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,30 +27,30 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectEmployeeRepository projectEmployeeRepository;
     private final EmployeeValidator employeeValidator;
     private final ProjectValidator projectValidator;
+    private final GroupValidator groupValidator;
 
 
     @Override
     @Transactional
     public Project createNewProject(ProjectDto projectDto, List<String> listVisaEmployee) {
 
-        // validate project number existed
-
-        var project = projectRepository.findByProjectNumber(projectDto.getProjectNumber());
-        project.ifPresent(p -> {throw new ProjectNumberAlreadyExistedException(projectDto.getProjectNumber());});
+        // validate project number already existed
+        projectValidator.validateProjectNumberAlreadyExisted(projectDto.getProjectNumber());
         // validate project member
-        var listEmployeeExisted = employeeRepository.findAllByVisaIn(listVisaEmployee);
-        employeeValidator.validateEmployeesExisted(listEmployeeExisted, listVisaEmployee);
+        var listEmployeeExisted = employeeValidator.validateAndGetEmployeesExisted(listVisaEmployee);
+        Group group;
         // validate project group
-        var group = groupRepository.findById(projectDto.getGroupId()).orElseGet(() -> {
-            if(listEmployeeExisted.size() != 0){
-                var newGroup = new Group(null, null,listEmployeeExisted.get(0), null);
-                listEmployeeExisted.remove(0);
-                return newGroup;
-            }else{
+        var groupId = projectDto.getGroupId();
+        if(groupId!=0){
+            group = groupValidator.validateAndGetGroupIfExisted(groupId);
+        }else{
+            if(listEmployeeExisted.isEmpty()){
                 throw new GroupLeaderNotExistedException("Group Leader must not be empty");
+            }else{
+                group = new Group(null, null,listEmployeeExisted.get(0), null);
+                listEmployeeExisted.remove(0);
             }
-        });
-
+        }
         var newProject = new Project(
                 null,
                 null,
@@ -64,11 +63,8 @@ public class ProjectServiceImpl implements ProjectService {
                 projectDto.getEndDate(),
                 null
         );
-
         newProject.setGroup(group);
-
         // create setProjectEmployee
-
         var setProjectEmployee = new HashSet<ProjectEmployee>();
         listEmployeeExisted.forEach(employee -> {
             var ProjectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
@@ -79,7 +75,6 @@ public class ProjectServiceImpl implements ProjectService {
             );
         });
         newProject.setProjectEmployee(setProjectEmployee);
-
         // save new project
         return projectRepository.save(newProject);
     }
@@ -90,26 +85,27 @@ public class ProjectServiceImpl implements ProjectService {
         // validate Project existed
         var projectUpdate = projectRepository.findProjectByIdCustom(projectDto.getId());
 
-        // validate new project member
-        var listEmployeeExisted = employeeRepository.findAllByVisaIn(listVisaEmployee);
-        employeeValidator.validateEmployeesExisted(listEmployeeExisted, listVisaEmployee);
-
+        // validate project member
+        var listEmployeeExisted = employeeValidator.validateAndGetEmployeesExisted(listVisaEmployee);
+        Group group;
         // validate project group
-        var group = groupRepository.findById(projectDto.getGroupId()).orElseGet(() -> {
-            if(listEmployeeExisted.size() != 0){
-                var newGroup = new Group(null, null,listEmployeeExisted.get(0), null);
-                listEmployeeExisted.remove(0);
-                return newGroup;
-            }else{
+        var groupId = projectDto.getGroupId();
+        if(groupId!=0){
+            group = groupValidator.validateAndGetGroupIfExisted(groupId);
+        }else{
+            if(listEmployeeExisted.isEmpty()){
                 throw new GroupLeaderNotExistedException("Group Leader must not be empty");
+            }else{
+                group = new Group(null, null,listEmployeeExisted.get(0), null);
+                listEmployeeExisted.remove(0);
             }
-        });
+        }
 
         projectUpdate.setGroup(group);
 
         // create setProjectEmployee
 
-        /*var setProjectEmployee = new HashSet<ProjectEmployee>();
+        var setProjectEmployee = new HashSet<ProjectEmployee>();
         listEmployeeExisted.forEach(employee -> {
             var projectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
             setProjectEmployee.add(
@@ -117,24 +113,19 @@ public class ProjectServiceImpl implements ProjectService {
                             projectUpdate,
                             employee)
             );
-        });*/
-
-        var em = employeeRepository.findById(5L).orElseThrow();
-        var projectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), em.getId());
-        var projectEmployee = new ProjectEmployee(projectEmployeeKey, projectUpdate, em);
-        projectUpdate.addChildProjectEmployee(projectEmployee);
+        });
 
         projectUpdate.setCustomer(projectDto.getCustomer());
         projectUpdate.setEndDate(projectDto.getEndDate());
         projectUpdate.setStartDate(projectDto.getStartDate());
         projectUpdate.setStatus(projectDto.getStatus());
         projectUpdate.setName(projectDto.getName());
-//        projectUpdate.setProjectEmployee(setProjectEmployee);
-//        setProjectEmployee.forEach(projectUpdate::addChildProjectEmployee);
+        projectUpdate.setProjectEmployee(setProjectEmployee);
 
         // save new project
         return projectRepository.save(projectUpdate);
     }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     @Transactional
