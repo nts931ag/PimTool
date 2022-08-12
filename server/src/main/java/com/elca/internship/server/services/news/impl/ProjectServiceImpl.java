@@ -101,7 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         });
 
-//        projectUpdate.setGroup(group);
+        projectUpdate.setGroup(group);
 
         // create setProjectEmployee
 
@@ -115,14 +115,13 @@ public class ProjectServiceImpl implements ProjectService {
             );
         });
 
-        projectUpdate.getProjectEmployee().clear();
 
         projectUpdate.setCustomer(projectDto.getCustomer());
         projectUpdate.setEndDate(projectDto.getEndDate());
         projectUpdate.setStartDate(projectDto.getStartDate());
         projectUpdate.setStatus(projectDto.getStatus());
         projectUpdate.setName(projectDto.getName());
-//        projectUpdate.setProjectEmployee(null);
+        projectUpdate.setProjectEmployee(setProjectEmployee);
         // save new project
         return projectRepository.save(projectUpdate);
 //        return null;

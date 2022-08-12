@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class Group extends BaseEntity {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "leader_id", referencedColumnName = "id")
     private Employee groupLeaderId;
     @OneToMany(mappedBy = "group")

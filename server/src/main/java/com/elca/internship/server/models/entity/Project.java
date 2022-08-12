@@ -33,7 +33,7 @@ public class Project extends BaseEntity{
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProjectEmployee> projectEmployee = new HashSet<>();
 
     /*public Project(long id, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
