@@ -1,5 +1,7 @@
 package com.elca.internship.server.repositories.custom;
 
-public interface ProjectRepositoryCustom {
+import com.elca.internship.server.models.entity.Project;
 
+public interface ProjectRepositoryCustom {
+    Project findProjectByProjectNumber(Integer projectNumber);
 }

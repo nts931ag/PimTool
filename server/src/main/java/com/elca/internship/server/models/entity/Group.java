@@ -3,6 +3,7 @@ package com.elca.internship.server.models.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class Group extends BaseEntity {
     @JoinColumn(name = "leader_id", referencedColumnName = "id")
     private Employee groupLeaderId;
     @OneToMany(mappedBy = "group")
-    private Set<Project> projectSet;
+    private Set<Project> projectSet = new HashSet<>();
 /*    public Group(long id, long groupLeaderId, int version){
         super(id,version);
 //        this.groupLeaderId = groupLeaderId;

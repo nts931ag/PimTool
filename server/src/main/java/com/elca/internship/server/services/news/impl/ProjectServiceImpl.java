@@ -27,17 +27,18 @@ public class ProjectServiceImpl implements ProjectService {
     private final EmployeeValidator employeeValidator;
     private final ProjectValidator projectValidator;
 
+
     @Override
     @Transactional
     public Project createNewProject(ProjectDto projectDto, List<String> listVisaEmployee) {
 
         // validate project number existed
+
         var project = projectRepository.findByProjectNumber(projectDto.getProjectNumber());
         project.ifPresent(p -> {throw new ProjectNumberAlreadyExistedException(projectDto.getProjectNumber());});
         // validate project member
         var listEmployeeExisted = employeeRepository.findAllByVisaIn(listVisaEmployee);
         employeeValidator.validateEmployeesExisted(listEmployeeExisted, listVisaEmployee);
-
         // validate project group
         var group = groupRepository.findById(projectDto.getGroupId()).orElseGet(() -> {
             if(listEmployeeExisted.size() != 0){
@@ -83,6 +84,47 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProject(ProjectDto projectDto, List<String> listVisaEmployee) {
-        return null;
+        // validate Project existed
+        var projectUpdate = projectRepository.findProjectByProjectNumber(projectDto.getProjectNumber());
+//        var projectUpdate = projectRepository.findByProjectNumber(projectDto.getProjectNumber()).get();
+        // validate new project member
+        var listEmployeeExisted = employeeRepository.findAllByVisaIn(listVisaEmployee);
+        employeeValidator.validateEmployeesExisted(listEmployeeExisted, listVisaEmployee);
+        // validate project group
+        var group = groupRepository.findById(projectDto.getGroupId()).orElseGet(() -> {
+            if(listEmployeeExisted.size() != 0){
+                var newGroup = new Group(null, null,listEmployeeExisted.get(0), null);
+                listEmployeeExisted.remove(0);
+                return newGroup;
+            }else{
+                throw new GroupLeaderNotExistedException("Group Leader must not be empty");
+            }
+        });
+
+//        projectUpdate.setGroup(group);
+
+        // create setProjectEmployee
+
+        var setProjectEmployee = new HashSet<ProjectEmployee>();
+        listEmployeeExisted.forEach(employee -> {
+            var ProjectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
+            setProjectEmployee.add(
+                    new ProjectEmployee(ProjectEmployeeKey,
+                            projectUpdate,
+                            employee)
+            );
+        });
+
+        projectUpdate.getProjectEmployee().clear();
+
+        projectUpdate.setCustomer(projectDto.getCustomer());
+        projectUpdate.setEndDate(projectDto.getEndDate());
+        projectUpdate.setStartDate(projectDto.getStartDate());
+        projectUpdate.setStatus(projectDto.getStatus());
+        projectUpdate.setName(projectDto.getName());
+//        projectUpdate.setProjectEmployee(null);
+        // save new project
+        return projectRepository.save(projectUpdate);
+//        return null;
     }
 }

@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class Project extends BaseEntity{
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    Set<ProjectEmployee> projectEmployee;
+    private Set<ProjectEmployee> projectEmployee = new HashSet<>();
 
     /*public Project(long id, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
         super(id, version);
@@ -48,7 +49,7 @@ public class Project extends BaseEntity{
 
     public void addChildProjectEmployee(ProjectEmployee childProjectEmployee){
         if(projectEmployee == null){
-            this.projectEmployee = new LinkedHashSet<ProjectEmployee>();
+            this.projectEmployee = new HashSet<>();
         }
         this.projectEmployee.add(childProjectEmployee);
     }
