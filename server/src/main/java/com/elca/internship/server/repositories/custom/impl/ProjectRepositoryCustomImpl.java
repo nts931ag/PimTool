@@ -38,7 +38,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
     }
 
     @Override
-    public List<Project> findProjectByCriteriaAndStatusCustom(String criteria, Status status) {
+    public List<Project> findAllProjectByCriteriaAndStatusCustom(String criteria, Status status) {
         return new JPAQuery<Project>(entityManager)
                 .from(QProject.project)
                 .where(
@@ -47,5 +47,24 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                                 .or(QProject.project.customer.like(criteria))
                                 .and(QProject.project.status.eq(status))))
                 .fetch();
+    }
+
+    @Override
+    public List<Project> findAllProjectByStatusCustom(Status status) {
+        return new JPAQuery<Project>(entityManager)
+                .from(QProject.project)
+                .where(QProject.project.status.eq(status))
+                .fetch();
+    }
+
+    @Override
+    public List<Project> findAllProjectByCriteriaCustom(String criteria) {
+        return new JPAQuery<Project>(entityManager)
+                .from(QProject.project)
+                .where(
+                        (QProject.project.name.like(criteria)
+                                .or(QProject.project.projectNumber.like(criteria))
+                                .or(QProject.project.customer.like(criteria))))
+                                .fetch();
     }
 }

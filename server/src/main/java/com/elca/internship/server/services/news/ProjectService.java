@@ -13,5 +13,6 @@ public interface ProjectService {
     void deleteProjects(List<Long> ids);
     void deleteProject(Long id);
     List<ProjectDto> getAllProjectsByCriteriaAndStatus(String criteria, Status status);
-
+    List<ProjectDto> getAllProjectByCriteria(String criteria);
+    List<ProjectDto> getAllProjectByStatus(Status status);
 }

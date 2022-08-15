@@ -10,5 +10,10 @@ public interface ProjectRepositoryCustom {
 
     Project findProjectByIdCustom(Long projectId);
 
-    List<Project> findProjectByCriteriaAndStatusCustom(String criteria, Status status);
+    List<Project> findAllProjectByCriteriaAndStatusCustom(String criteria, Status status);
+
+
+    List<Project> findAllProjectByStatusCustom(Status status);
+
+    List<Project> findAllProjectByCriteriaCustom(String criteria);
 }
