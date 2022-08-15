@@ -1,13 +1,10 @@
 package com.elca.internship.server.services.news.impl;
 
-import com.elca.internship.server.exceptions.GroupLeaderNotExistedException;
+import com.elca.internship.server.exceptions.GroupWithoutGroupLeaderException;
 import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.*;
-import com.elca.internship.server.repositories.EmployeeRepository;
-import com.elca.internship.server.repositories.GroupRepository;
-import com.elca.internship.server.repositories.ProjectEmployeeRepository;
 import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.services.news.ProjectService;
 import com.elca.internship.server.validator.EmployeeValidator;
@@ -17,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -57,7 +53,7 @@ public class ProjectServiceImpl implements ProjectService {
             group = groupValidator.validateAndGetGroupIfExisted(groupId);
         }else{
             if(listEmployeeExisted.isEmpty()){
-                throw new GroupLeaderNotExistedException("Group Leader must not be empty");
+                throw new GroupWithoutGroupLeaderException("Group don't have group leader");
             }else{
                 group = new Group(null, null,listEmployeeExisted.get(0), null);
                 listEmployeeExisted.remove(0);
@@ -77,15 +73,6 @@ public class ProjectServiceImpl implements ProjectService {
         );
         newProject.setGroup(group);
         // create setProjectEmployee
-        /*var setProjectEmployee = new HashSet<ProjectEmployee>();
-        listEmployeeExisted.forEach(employee -> {
-            var ProjectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
-            setProjectEmployee.add(
-                    new ProjectEmployee(ProjectEmployeeKey,
-                            newProject,
-                            employee)
-            );
-        });*/
         var setProjectEmployee = createSetProjectEmployee(newProject, listEmployeeExisted);
         newProject.setProjectEmployee(setProjectEmployee);
         // save new project
@@ -107,7 +94,7 @@ public class ProjectServiceImpl implements ProjectService {
             group = groupValidator.validateAndGetGroupIfExisted(groupId);
         }else{
             if(listEmployeeExisted.isEmpty()){
-                throw new GroupLeaderNotExistedException("Group Leader must not be empty");
+                throw new GroupWithoutGroupLeaderException("Group Leader must not be empty");
             }else{
                 group = new Group(null, null,listEmployeeExisted.get(0), null);
                 listEmployeeExisted.remove(0);
@@ -117,17 +104,7 @@ public class ProjectServiceImpl implements ProjectService {
         projectUpdate.setGroup(group);
 
         // create setProjectEmployee
-
-        /*var setProjectEmployee = new HashSet<ProjectEmployee>();
-        listEmployeeExisted.forEach(employee -> {
-            var projectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
-            var projectEmployee = new ProjectEmployee(projectEmployeeKey, projectUpdate, employee);
-
-            setProjectEmployee.add(projectEmployee);
-        });*/
-
         var setProjectEmployee = createSetProjectEmployee(projectUpdate, listEmployeeExisted);
-
 
         projectUpdate.setCustomer(projectDto.getCustomer());
         projectUpdate.setEndDate(projectDto.getEndDate());
@@ -176,6 +153,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void deleteProjects(List<Long> ids){
-        projectRepository.deleteAllByIdInBatch(ids);
+        projectRepository.deleteAllById(ids);
+//        projectRepository.deleteAllByIdInBatch(ids);
     }
 }

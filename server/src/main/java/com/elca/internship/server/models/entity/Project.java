@@ -36,17 +36,6 @@ public class Project extends BaseEntity{
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProjectEmployee> projectEmployee = new HashSet<>();
 
-    /*public Project(long id, long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
-        super(id, version);
-//        this.groupId = groupId;
-        this.projectNumber = projectNumber;
-        this.name = name;
-        this.customer = customer;
-        this.status = status;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }*/
-
     public void addChildProjectEmployee(ProjectEmployee childProjectEmployee){
         if(projectEmployee == null){
             this.projectEmployee = new HashSet<>();

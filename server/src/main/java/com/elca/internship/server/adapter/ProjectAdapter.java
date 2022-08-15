@@ -32,14 +32,15 @@ public class ProjectAdapter {
         }
     }
 
-    public void updateProject(String jsonObject) {
+    public void updateAndModifyMemberOfProjectSpecified(String jsonObject) {
         try {
             var jsonNode = objectMapper.readTree(jsonObject);
-            var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
+            var project = objectMapper.treeToValue(jsonNode.get("project"), ProjectDto.class);
             var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
             log.info("Info new project: " + project);
             log.info("Info list member: " + listEmployeeVisa);
 //            projectService.updateProjectWithEmployeeVisasTest(project, listEmployeeVisa);
+            projectService.updateProject(project, listEmployeeVisa);
         } catch (JsonProcessingException jpe) {
             System.out.println(jpe.getMessage());
         }
@@ -53,7 +54,7 @@ public class ProjectAdapter {
             log.info("Info new project: " + project);
             log.info("Info list member: " + listEmployeeVisa);
 //            projectService.createNewProjectWithEmployeeVisasTest(project, listEmployeeVisa);
-
+            projectService.createNewProject(project, listEmployeeVisa);
 
 
         } catch (JsonProcessingException jpe) {

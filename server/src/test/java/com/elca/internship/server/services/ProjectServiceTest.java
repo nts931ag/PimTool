@@ -36,7 +36,6 @@ public class ProjectServiceTest {
 
     public void createEmployee(int size){
         var listEmployee = new ArrayList<Employee>();
-
         for(int i = 0; i < size; ++i){
             listEmployee.add(
                     new Employee(
@@ -56,7 +55,6 @@ public class ProjectServiceTest {
 
     public void createProjectDto(int size){
         var listProject = new ArrayList<ProjectDto>();
-
         for(int i=0;i<size;++i){
             listProject.add(
                     new ProjectDto(
@@ -72,8 +70,6 @@ public class ProjectServiceTest {
                     )
             );
         }
-
-
     }
 
     @Test
@@ -124,6 +120,11 @@ public class ProjectServiceTest {
                     System.out::println
             );
         }
+    }
+
+    @Test
+    public void deleteProjectById(){
+        projectService.deleteProject(1L);
     }
 
 }
