@@ -38,7 +38,7 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
     }
 
     @Override
-    public List<Project> findProjectByCriteriaOrStatusCustom(String criteria, Status status) {
+    public List<Project> findProjectByCriteriaAndStatusCustom(String criteria, Status status) {
         return new JPAQuery<Project>(entityManager)
                 .from(QProject.project)
                 .where(

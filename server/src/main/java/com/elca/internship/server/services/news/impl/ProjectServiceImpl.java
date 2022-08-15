@@ -137,8 +137,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDto> getAllProjectsByCriteriaOrStatus(String criteria, Status status) {
-        var listProjectSpecified = projectRepository.findProjectByCriteriaOrStatusCustom(criteria, status);
+    public List<ProjectDto> getAllProjectsByCriteriaAndStatus(String criteria, Status status) {
+        var listProjectSpecified = projectRepository.findProjectByCriteriaAndStatusCustom(criteria, status);
 
         return null;
     }

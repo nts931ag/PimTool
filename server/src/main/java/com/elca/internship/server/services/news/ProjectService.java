@@ -12,6 +12,6 @@ public interface ProjectService {
     Project updateProject(ProjectDto projectDto, List<String> listVisaEmployee);
     void deleteProjects(List<Long> ids);
     void deleteProject(Long id);
-    List<ProjectDto> getAllProjectsByCriteriaOrStatus(String criteria, Status status);
+    List<ProjectDto> getAllProjectsByCriteriaAndStatus(String criteria, Status status);
 
 }
