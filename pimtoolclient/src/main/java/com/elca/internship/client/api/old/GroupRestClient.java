@@ -1,4 +1,4 @@
-package com.elca.internship.client.api;
+package com.elca.internship.client.api.old;
 
 import com.elca.internship.client.controllers.DashboardController;
 import com.elca.internship.client.i18n.I18nKey;

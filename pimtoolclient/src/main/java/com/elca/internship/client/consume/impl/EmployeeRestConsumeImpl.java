@@ -1,13 +1,11 @@
 package com.elca.internship.client.consume.impl;
 
-import com.elca.internship.client.api.EmployeeRestClient;
+import com.elca.internship.client.api.old.EmployeeRestClient;
 import com.elca.internship.client.consume.EmployeeRestConsume;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

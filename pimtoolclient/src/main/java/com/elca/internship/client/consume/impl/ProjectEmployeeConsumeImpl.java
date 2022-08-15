@@ -1,6 +1,6 @@
 package com.elca.internship.client.consume.impl;
 
-import com.elca.internship.client.api.ProjectEmployeeRestClient;
+import com.elca.internship.client.api.old.ProjectEmployeeRestClient;
 import com.elca.internship.client.consume.ProjectEmployeeConsume;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

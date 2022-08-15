@@ -1,6 +1,7 @@
 package com.elca.internship.client.consume.impl;
 
-import com.elca.internship.client.api.ProjectRestClient;
+import com.elca.internship.client.api.news.ProjectApi;
+import com.elca.internship.client.api.old.ProjectRestClient;
 import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.Response;
@@ -19,9 +20,11 @@ import java.util.List;
 public class ProjectRestConsumeImpl implements ProjectRestConsume {
 
     private final ProjectRestClient projectRestClient;
+    private final ProjectApi projectApi;
 
     @Override
     public ObservableList<Project> retrieveAllProjects() {
+        projectApi.getAllProject();
         return FXCollections.observableArrayList(projectRestClient.getAllProjects());
     }
 

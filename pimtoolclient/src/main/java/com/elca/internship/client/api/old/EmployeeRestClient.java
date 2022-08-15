@@ -1,4 +1,4 @@
-package com.elca.internship.client.api;
+package com.elca.internship.client.api.old;
 
 import com.elca.internship.client.models.entity.Employee;
 import lombok.RequiredArgsConstructor;

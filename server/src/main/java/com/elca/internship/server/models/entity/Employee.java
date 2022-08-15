@@ -1,6 +1,7 @@
 package com.elca.internship.server.models.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Employee extends BaseEntity{
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "birth_date")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "groupLeaderId", fetch = FetchType.LAZY)

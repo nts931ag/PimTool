@@ -99,6 +99,11 @@ public class ProjectController {
     private final ProjectAdapter projectAdapter;
     private final ProjectService projectService;
 
+    @GetMapping
+    public List<ProjectDto> getAllProjectExisted(){
+        return projectService.getAllProject();
+    }
+
     @GetMapping("/search")
     public List<ProjectDto> searchProjectByCriteriaAndStatusSpecified(@RequestParam(value = "proCriteria") String proCriteria, @RequestParam(value = "proStatus") String proStatus){
         return projectAdapter.getProjectByCriteriaAndStatusSpecified(proCriteria, proStatus);

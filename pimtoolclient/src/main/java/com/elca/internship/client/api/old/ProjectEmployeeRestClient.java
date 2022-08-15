@@ -1,4 +1,4 @@
-package com.elca.internship.client.api;
+package com.elca.internship.client.api.old;
 
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;

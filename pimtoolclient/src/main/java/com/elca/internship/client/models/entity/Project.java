@@ -2,6 +2,7 @@ package com.elca.internship.client.models.entity;
 
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +16,9 @@ public class Project extends BaseEntity{
     private String name;
     private String customer;
     private Status status;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate endDate;
 
     public Project(long groupId, int projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate, int version) {
