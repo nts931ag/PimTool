@@ -1,8 +1,6 @@
 package com.elca.internship.client.api;
 
 import com.elca.internship.client.models.entity.Employee;
-import com.elca.internship.client.models.entity.Project;
-import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;

@@ -201,7 +201,9 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private void createPage(int pageIndex, String tfSearch, String cbStatus){
         selectedCheckBoxes.clear();
         paginationTableProject.setCurrentPageIndex(pageIndex);
-        var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,pageIndex, itemPerPage);
+//        var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,pageIndex, itemPerPage);
+        var projects = projectRestConsume.retrieveAllProjects();
+
         dataProjects = FXCollections.observableArrayList(projects.stream()
                 .map(e ->
                         new ProjectTable(

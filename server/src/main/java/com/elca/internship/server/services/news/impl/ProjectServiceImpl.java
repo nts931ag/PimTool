@@ -146,7 +146,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<ProjectDto> getAllProject() {
-        var listProjectSpecified = projectRepository.findAll();
+        var listProjectSpecified = projectRepository.findAllCustom();
         return projectMapperCustom.listEntityToListDto(listProjectSpecified);
     }
 

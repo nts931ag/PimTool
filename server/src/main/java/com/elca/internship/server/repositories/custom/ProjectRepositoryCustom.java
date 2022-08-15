@@ -16,4 +16,6 @@ public interface ProjectRepositoryCustom {
     List<Project> findAllProjectByStatusCustom(Status status);
 
     List<Project> findAllProjectByCriteriaCustom(String criteria);
+
+    List<Project> findAllCustom();
 }

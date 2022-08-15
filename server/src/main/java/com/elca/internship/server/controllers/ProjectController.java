@@ -115,7 +115,7 @@ public class ProjectController {
     public ResponseEntity<String> updateProject(@RequestBody String jsonObject) {
         log.info("Json object from client: " + jsonObject);
         projectAdapter.updateAndModifyMemberOfProjectSpecified(jsonObject);
-        return ResponseEntity.status(HttpStatus.OK).body("Create project Success");
+        return ResponseEntity.status(HttpStatus.OK).body("update project Success");
     }
 
     @DeleteMapping(value = "/{id}")

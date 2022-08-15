@@ -18,9 +18,9 @@ public class ProjectDto extends BaseDto {
     private String name;
     private String customer;
     private Status status;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate startDate;
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate endDate;
 
     public ProjectDto(Long id, Integer version, Long groupId, Integer projectNumber, String name, String customer, Status status, LocalDate startDate, LocalDate endDate) {
