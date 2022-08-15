@@ -14,5 +14,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long>, Queryds
     Optional<Project> findByProjectNumber(Integer projectNumber);
 
 
-
 }

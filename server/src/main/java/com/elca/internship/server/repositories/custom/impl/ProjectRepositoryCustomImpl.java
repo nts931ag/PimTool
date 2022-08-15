@@ -1,5 +1,6 @@
 package com.elca.internship.server.repositories.custom.impl;
 
+import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.entity.QProject;
 import com.elca.internship.server.models.entity.QProjectEmployee;
@@ -8,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
@@ -33,5 +35,17 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
                 .fetchJoin()
                 .where(QProject.project.id.eq(projectId))
                 .fetchFirst();
+    }
+
+    @Override
+    public List<Project> findProjectByCriteriaOrStatusCustom(String criteria, Status status) {
+        return new JPAQuery<Project>(entityManager)
+                .from(QProject.project)
+                .where(
+                        (QProject.project.name.like(criteria)
+                                .or(QProject.project.projectNumber.like(criteria))
+                                .or(QProject.project.customer.like(criteria))
+                                .and(QProject.project.status.eq(status))))
+                .fetch();
     }
 }

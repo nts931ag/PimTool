@@ -1,6 +1,7 @@
 package com.elca.internship.server.services.news.impl;
 
 import com.elca.internship.server.exceptions.GroupLeaderNotExistedException;
+import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.*;
 import com.elca.internship.server.repositories.EmployeeRepository;
@@ -125,7 +126,6 @@ public class ProjectServiceImpl implements ProjectService {
         // save new project
         return projectRepository.save(projectUpdate);
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     @Transactional
@@ -134,6 +134,13 @@ public class ProjectServiceImpl implements ProjectService {
         if(isProjectExisted){
             projectRepository.deleteById(id);
         }
+    }
+
+    @Override
+    public List<ProjectDto> getAllProjectsByCriteriaOrStatus(String criteria, Status status) {
+        var listProjectSpecified = projectRepository.findProjectByCriteriaOrStatusCustom(criteria, status);
+
+        return null;
     }
 
     @Override
