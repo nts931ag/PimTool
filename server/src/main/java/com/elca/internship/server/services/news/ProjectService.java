@@ -15,4 +15,6 @@ public interface ProjectService {
     List<ProjectDto> getAllProjectsByCriteriaAndStatus(String criteria, Status status);
     List<ProjectDto> getAllProjectByCriteria(String criteria);
     List<ProjectDto> getAllProjectByStatus(Status status);
+
+    List<ProjectDto> getAllProject();
 }

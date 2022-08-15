@@ -70,4 +70,5 @@ public class Project extends BaseEntity{
         this.endDate = endDate;
         this.projectEmployee = projectEmployee;
     }
+
 }

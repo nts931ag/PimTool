@@ -1,5 +1,6 @@
 package com.elca.internship.server.adapter;
 
+import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.services.news.ProjectService;
@@ -60,5 +61,17 @@ public class ProjectAdapter {
         }
 
 
+    }
+
+    public List<ProjectDto> getProjectByCriteriaAndStatusSpecified(String proCriteria, String proStatus) {
+        if(!proCriteria.isBlank() && !proStatus.isBlank()){
+            return projectService.getAllProjectsByCriteriaAndStatus(proCriteria, Status.valueOf(proStatus));
+        }else if(proCriteria.isBlank() && proStatus.isBlank()){
+            return projectService.getAllProject();
+        }else if(proCriteria.isBlank()){
+            return projectService.getAllProjectByStatus(Status.valueOf(proStatus));
+        }else {
+            return projectService.getAllProjectByCriteria(proCriteria);
+        }
     }
 }

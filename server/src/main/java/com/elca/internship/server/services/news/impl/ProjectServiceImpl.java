@@ -1,6 +1,7 @@
 package com.elca.internship.server.services.news.impl;
 
 import com.elca.internship.server.exceptions.GroupLeaderNotExistedException;
+import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.*;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -23,12 +25,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
-    private final EmployeeRepository employeeRepository;
-    private final GroupRepository groupRepository;
-    private final ProjectEmployeeRepository projectEmployeeRepository;
+    private final ProjectMapperCustom projectMapperCustom;
     private final EmployeeValidator employeeValidator;
     private final ProjectValidator projectValidator;
     private final GroupValidator groupValidator;
+
+    private HashSet<ProjectEmployee> createSetProjectEmployee(Project project, List<Employee> listEmployeeExisted){
+
+        var setProjectEmployee = new HashSet<ProjectEmployee>();
+        listEmployeeExisted.forEach(employee -> {
+            var projectEmployeeKey = new ProjectEmployeeKey(project.getId(), employee.getId());
+            var projectEmployee = new ProjectEmployee(projectEmployeeKey, project, employee);
+            setProjectEmployee.add(projectEmployee);
+        });
+        return setProjectEmployee;
+    }
 
 
     @Override
@@ -66,7 +77,7 @@ public class ProjectServiceImpl implements ProjectService {
         );
         newProject.setGroup(group);
         // create setProjectEmployee
-        var setProjectEmployee = new HashSet<ProjectEmployee>();
+        /*var setProjectEmployee = new HashSet<ProjectEmployee>();
         listEmployeeExisted.forEach(employee -> {
             var ProjectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
             setProjectEmployee.add(
@@ -74,7 +85,8 @@ public class ProjectServiceImpl implements ProjectService {
                             newProject,
                             employee)
             );
-        });
+        });*/
+        var setProjectEmployee = createSetProjectEmployee(newProject, listEmployeeExisted);
         newProject.setProjectEmployee(setProjectEmployee);
         // save new project
         return projectRepository.save(newProject);
@@ -106,23 +118,24 @@ public class ProjectServiceImpl implements ProjectService {
 
         // create setProjectEmployee
 
-        var setProjectEmployee = new HashSet<ProjectEmployee>();
+        /*var setProjectEmployee = new HashSet<ProjectEmployee>();
         listEmployeeExisted.forEach(employee -> {
             var projectEmployeeKey = new ProjectEmployeeKey(projectDto.getId(), employee.getId());
-            setProjectEmployee.add(
-                    new ProjectEmployee(projectEmployeeKey,
-                            projectUpdate,
-                            employee)
-            );
-        });
+            var projectEmployee = new ProjectEmployee(projectEmployeeKey, projectUpdate, employee);
+
+            setProjectEmployee.add(projectEmployee);
+        });*/
+
+        var setProjectEmployee = createSetProjectEmployee(projectUpdate, listEmployeeExisted);
+
 
         projectUpdate.setCustomer(projectDto.getCustomer());
         projectUpdate.setEndDate(projectDto.getEndDate());
         projectUpdate.setStartDate(projectDto.getStartDate());
         projectUpdate.setStatus(projectDto.getStatus());
         projectUpdate.setName(projectDto.getName());
-        projectUpdate.setProjectEmployee(setProjectEmployee);
-
+        projectUpdate.getProjectEmployee().clear();
+        projectUpdate.getProjectEmployee().addAll(setProjectEmployee);
         // save new project
         return projectRepository.save(projectUpdate);
     }
@@ -139,20 +152,25 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectDto> getAllProjectsByCriteriaAndStatus(String criteria, Status status) {
         var listProjectSpecified = projectRepository.findAllProjectByCriteriaAndStatusCustom(criteria, status);
-        return null;
+        return projectMapperCustom.listEntityToListDto(listProjectSpecified);
     }
 
     @Override
     public List<ProjectDto> getAllProjectByCriteria(String criteria) {
         var listProjectSpecified = projectRepository.findAllProjectByCriteriaCustom(criteria);
-
-        return null;
+        return projectMapperCustom.listEntityToListDto(listProjectSpecified);
     }
 
     @Override
     public List<ProjectDto> getAllProjectByStatus(Status status) {
         var listProjectSpecified = projectRepository.findAllProjectByStatusCustom(status);
-        return null;
+        return projectMapperCustom.listEntityToListDto(listProjectSpecified);
+    }
+
+    @Override
+    public List<ProjectDto> getAllProject() {
+        var listProjectSpecified = projectRepository.findAll();
+        return projectMapperCustom.listEntityToListDto(listProjectSpecified);
     }
 
     @Override
@@ -160,5 +178,4 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProjects(List<Long> ids){
         projectRepository.deleteAllByIdInBatch(ids);
     }
-
 }

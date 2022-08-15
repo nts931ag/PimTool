@@ -2,6 +2,9 @@ package com.elca.internship.server.services;
 
 import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.dto.ProjectDto;
+import com.elca.internship.server.models.entity.Employee;
+import com.elca.internship.server.models.entity.Project;
+import com.elca.internship.server.repositories.EmployeeRepository;
 import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.services.news.ProjectService;
 import lombok.AllArgsConstructor;
@@ -21,6 +24,8 @@ import java.util.List;
 public class ProjectServiceTest {
 
     @Autowired
+    private EmployeeRepository employeeRepository;
+    @Autowired
     private ProjectService projectService;
     @Autowired
     private ProjectRepository projectRepository;
@@ -29,53 +34,96 @@ public class ProjectServiceTest {
 
     }
 
+    public void createEmployee(int size){
+        var listEmployee = new ArrayList<Employee>();
+
+        for(int i = 0; i < size; ++i){
+            listEmployee.add(
+                    new Employee(
+                            null,
+                            null,
+                            "EM" + i,
+                            "EM" + i,
+                            "EM" + i,
+                            LocalDate.now(),
+                            null,
+                            null
+                    )
+            );
+        }
+        employeeRepository.saveAll(listEmployee);
+    }
+
+    public void createProjectDto(int size){
+        var listProject = new ArrayList<ProjectDto>();
+
+        for(int i=0;i<size;++i){
+            listProject.add(
+                    new ProjectDto(
+                            null,
+                            null,
+                            0L,
+                            i,
+                            "project"+i,
+                            "project"+i,
+                            Status.NEW,
+                            LocalDate.now(),
+                            LocalDate.now()
+                    )
+            );
+        }
+
+
+    }
+
     @Test
-    public void createNewProject(){
-        var projectDto = new ProjectDto(
+    public void createProject(){
+        createEmployee(5);
+        var listVisa = List.of(
+                "EM1",
+                "EM2",
+                "EM3"
+        );
+        var newProjectDto = new ProjectDto(
                 null,
                 null,
                 0L,
-                333,
-                "mobile",
-                "elca",
+                1,
+                "project",
+                "project",
                 Status.NEW,
                 LocalDate.now(),
                 LocalDate.now()
         );
-        var listEmployee = new ArrayList<String>();
-        listEmployee.add("EM1");
-        listEmployee.add("EM2");
-        projectService.createNewProject(projectDto, listEmployee);
+        projectService.createNewProject(newProjectDto, listVisa);
     }
-
     @Test
     public void updateProject(){
-
-        var projectDto = new ProjectDto(
-                10L,
+        var newProjectDto = new ProjectDto(
+                1L,
                 null,
-                9L,
-                111,
-                "modify1",
-                "modify",
+                1L,
+                1,
+                "project modify",
+                "project modify",
                 Status.NEW,
                 LocalDate.now(),
                 LocalDate.now()
         );
-        var listEmployee = new ArrayList<String>();
-        listEmployee.add("EM4");
-        listEmployee.add("EM5");
-        projectService.updateProject(projectDto, listEmployee);
+        var listVisa = List.of(
+                "EM4"
+        );
+        projectService.updateProject(newProjectDto, listVisa);
     }
 
     @Test
-    public void deleteProject(){
-        projectService.deleteProject(8L);
-
+    public void getProjectByCriteriaAndStatus(){
+        var listProjectDto = projectService.getAllProjectsByCriteriaAndStatus("", Status.NEW);
+        if(!listProjectDto.isEmpty()){
+            listProjectDto.forEach(
+                    System.out::println
+            );
+        }
     }
 
-    @Test
-    public void deleteProjects(){
-        projectService.deleteProjects(List.of(10L,11L,12L,13L));
-    }
 }

@@ -1,17 +1,10 @@
 package com.elca.internship.server.controllers;
 
-import com.elca.internship.server.models.Response;
-import com.elca.internship.server.models.entity.Project;
-//import com.elca.internship.server.services.EmployeeService;
-//import com.elca.internship.server.services.GroupService;
-//import com.elca.internship.server.services.ProjectEmployeeService;
-//import com.elca.internship.server.services.ProjectService;
+import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.adapter.ProjectAdapter;
+import com.elca.internship.server.services.news.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -101,4 +94,11 @@ public class ProjectController {
         return projectService.getSizeOfResultSearch(proCriteria, proStatus);
     }*/
 
+    private final ProjectAdapter projectAdapter;
+    private final ProjectService projectService;
+
+    @GetMapping("/search")
+    public List<ProjectDto> searchProjectByCriteriaAndStatusSpecified(@RequestParam(value = "proCriteria") String proCriteria, @RequestParam(value = "proStatus") String proStatus){
+        return projectAdapter.getProjectByCriteriaAndStatusSpecified(proCriteria, proStatus);
+    }
 }

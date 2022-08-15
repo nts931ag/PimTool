@@ -39,12 +39,13 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
     @Override
     public List<Project> findAllProjectByCriteriaAndStatusCustom(String criteria, Status status) {
+        var expression = "%" + criteria + "%";
         return new JPAQuery<Project>(entityManager)
                 .from(QProject.project)
                 .where(
-                        (QProject.project.name.like(criteria)
-                                .or(QProject.project.projectNumber.like(criteria))
-                                .or(QProject.project.customer.like(criteria))
+                        (QProject.project.name.like(expression)
+                                .or(QProject.project.projectNumber.like(expression))
+                                .or(QProject.project.customer.like(expression))
                                 .and(QProject.project.status.eq(status))))
                 .fetch();
     }
@@ -59,12 +60,13 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
     @Override
     public List<Project> findAllProjectByCriteriaCustom(String criteria) {
+        var expression = "%" + criteria + "%";
         return new JPAQuery<Project>(entityManager)
                 .from(QProject.project)
                 .where(
-                        (QProject.project.name.like(criteria)
-                                .or(QProject.project.projectNumber.like(criteria))
-                                .or(QProject.project.customer.like(criteria))))
+                        (QProject.project.name.like(expression)
+                                .or(QProject.project.projectNumber.like(expression))
+                                .or(QProject.project.customer.like(expression))))
                                 .fetch();
     }
 }

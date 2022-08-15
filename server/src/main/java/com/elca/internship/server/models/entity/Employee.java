@@ -13,6 +13,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Employee extends BaseEntity{
     @Column(name = "visa")
     private String visa;
@@ -25,7 +26,7 @@ public class Employee extends BaseEntity{
 
     @OneToMany(mappedBy = "groupLeaderId", fetch = FetchType.LAZY)
     private Set<Group> group = new HashSet<>();
-    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY/*, cascade = CascadeType.ALL, orphanRemoval = true*/)
     private Set<ProjectEmployee> projectEmployee = new HashSet<>();
 
     public void addChildProjectEmployee(ProjectEmployee childProjectEmployee){
@@ -38,6 +39,16 @@ public class Employee extends BaseEntity{
     public void removeChildProjectEmployee(ProjectEmployee childProjectEmployee){
         this.projectEmployee.remove(childProjectEmployee);
 
+    }
+
+    public Employee(Long id, Integer version, String visa, String firstName, String lastName, LocalDate birthDate, Set<Group> group, Set<ProjectEmployee> projectEmployee) {
+        super(id, version);
+        this.visa = visa;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.group = group;
+        this.projectEmployee = projectEmployee;
     }
 
     /*public Employee(long id, String visa, String firstName, String lastName, LocalDate birthDate, int version){
