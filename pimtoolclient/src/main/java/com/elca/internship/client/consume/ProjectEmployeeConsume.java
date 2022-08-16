@@ -1,10 +1,10 @@
-package com.elca.internship.client.consume;
-
-import javafx.collections.ObservableList;
-
-public interface ProjectEmployeeConsume {
-
-    ObservableList<String> retrieveAllEmployeeVisasByProjectId(Long id);
-
-    ObservableList<String> retrieveAllVisaAndNameOfEmployeeByProjectId(long id);
-}
+//package com.elca.internship.client.consume;
+//
+//import javafx.collections.ObservableList;
+//
+//public interface ProjectEmployeeConsume {
+//
+//    ObservableList<String> retrieveAllEmployeeVisasByProjectId(Long id);
+//
+//    ObservableList<String> retrieveAllVisaAndNameOfEmployeeByProjectId(long id);
+//}

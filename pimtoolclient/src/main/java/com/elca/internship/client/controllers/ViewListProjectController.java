@@ -1,19 +1,16 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
-import com.elca.internship.client.consume.ProjectRestConsume;
+//import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.adapter.ProjectAdapter;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Project;
 import com.elca.internship.client.models.entity.ProjectTable;
 import com.elca.internship.client.common.AlertDialog;
-import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 import javafx.event.EventHandler;
@@ -28,7 +25,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
 import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
@@ -40,9 +36,6 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import java.net.URL;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.ResourceBundle;
 
 
@@ -52,7 +45,7 @@ import java.util.ResourceBundle;
 @Slf4j
 public class ViewListProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
-    private final ProjectRestConsume projectRestConsume;
+//    private final ProjectRestConsume projectRestConsume;
     private Stage stage;
     private final I18nManager i18nManager;
     @FXML
@@ -198,52 +191,20 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     }
 
+    private final ProjectAdapter projectAdapter;
+
     private void createPage(int pageIndex, String tfSearch, String cbStatus){
         selectedCheckBoxes.clear();
         paginationTableProject.setCurrentPageIndex(pageIndex);
-//        var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,pageIndex, itemPerPage);
-        var projects = projectRestConsume.retrieveAllProjects();
-
-        dataProjects = FXCollections.observableArrayList(projects.stream()
-                .map(e ->
-                        new ProjectTable(
-                                new CheckBox(),
-                                e.getId(),
-                                e.getGroupId(),
-                                e.getProjectNumber(),
-                                e.getName(),
-                                e.getCustomer(),
-                                e.getStatus(),
-                                e.getStartDate(),
-                                e.getEndDate(),
-                                e.getVersion(),
-                                new IconNode(GoogleMaterialDesignIcons.DELETE)
-                        )
-                )
-                .toList());
-
-        for(var dataProject: dataProjects){
-            if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
-                dataProject.getIcDelete().getStyleClass().add("icon-node");
-                dataProject.getIcDelete().setOnMouseClicked(deleteItemHandler());
-                configureCheckBox(dataProject.getCheckBox());
-            }else{
-                dataProject.setIcDelete(null);
-                dataProject.getCheckBox().setDisable(true);
-            }
-            dataProject.getLbProNumLink().getStyleClass().add("lb-super-link");
-            dataProject.getLbProNumLink().setOnMouseClicked(event -> {
-                DashboardController.navigationHandler.handleNavigateToEditProject(dataProject);
-            });
-        }
-
+        dataProjects = projectAdapter.getAndConfigAllProjectTableData(this);
         tbProject.setItems(dataProjects);
 
     }
 
     public void fillDataProjectToTable(String tfSearch, String status){
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
-        int size = projectRestConsume.getNumberOfResultSearch(tfSearch, status);
+//        int size = projectRestConsume.getNumberOfResultSearch(tfSearch, status);
+        int size = 20;
         if(size % 5 == 0){
             paginationTableProject.setPageCount((size/5));
         }else{
@@ -259,43 +220,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         });
     }
 
-
-    public void getDataProjectFromServerBySearch(String tfSearch, String cbStatus){
-        var projects = projectRestConsume.retrieveProjectsWithPagination(tfSearch, cbStatus,0, 20);
-        dataProjects = FXCollections.observableArrayList(projects.stream()
-                .map(e ->
-                        new ProjectTable(
-                                new CheckBox(),
-                                e.getId(),
-                                e.getGroupId(),
-                                e.getProjectNumber(),
-                                e.getName(),
-                                e.getCustomer(),
-                                e.getStatus(),
-                                e.getStartDate(),
-                                e.getEndDate(),
-                                e.getVersion(),
-                                new IconNode(GoogleMaterialDesignIcons.DELETE)
-                        )
-                )
-                .toList());
-
-        for(var dataProject: dataProjects){
-            if(dataProject.getStatus().toString().equalsIgnoreCase("new")){
-                dataProject.getIcDelete().getStyleClass().add("icon-node");
-                dataProject.getIcDelete().setOnMouseClicked(deleteItemHandler());
-                configureCheckBox(dataProject.getCheckBox());
-            }else{
-                dataProject.setIcDelete(null);
-                dataProject.getCheckBox().setDisable(true);
-            }
-            dataProject.getLbProNumLink().getStyleClass().add("lb-super-link");
-            dataProject.getLbProNumLink().setOnMouseClicked(event -> DashboardController.navigationHandler.handleNavigateToEditProject(dataProject));
-        }
-    }
-
-
-    private void configureCheckBox(CheckBox checkBox){
+    public void configureCheckBox(CheckBox checkBox){
         if(checkBox.isSelected()){
             selectedCheckBoxes.add(checkBox);
         }
@@ -307,8 +232,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         }));
     }
-
-
 
     @FXML
     public void onBtnSearchClicked() {
@@ -327,7 +250,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
             }
         }
     }
-
 
     @FXML
     public void onLbBtnResetSearchClicked(MouseEvent mouseEvent) {
@@ -354,10 +276,16 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 if (projectTableDeleted.getCheckBox().isSelected()){
                     selectedCheckBoxes.remove(projectTableDeleted.getCheckBox());
                 }
-                if(projectRestConsume.removeProjectById(projectTableDeleted.getId()).getTypeError() != -1){
+                /*if(projectRestConsume.removeProjectById(projectTableDeleted.getId()).getTypeError() != -1){
                     dataProjects.remove(projectTableDeleted);
                     onBtnSearchClicked();
-                }
+                }*/
+
+                projectAdapter.deleteProjectById(projectTableDeleted.getId());
+                // check if delete success
+                dataProjects.remove(projectTableDeleted);
+                onBtnSearchClicked();
+
             }
         };
     }
@@ -369,12 +297,20 @@ public class ViewListProjectController implements Initializable, ApplicationList
             if(confirm.getResult() == ButtonType.YES){
                 var dataProjectDeleted = dataProjects.stream().filter(e -> e.getCheckBox().isSelected()).toList();
                 var listIdDelete = dataProjectDeleted.stream().map(ProjectTable::getId).toList();
-                if(projectRestConsume.removeProjectsByIds(listIdDelete).getTypeError()!=-1){
+                /*if(projectRestConsume.removeProjectsByIds(listIdDelete).getTypeError()!=-1){
                     dataProjects.removeAll(dataProjectDeleted);
                     selectedCheckBoxes.clear();
                     removeItemPaneCV.getController().hbLayout.setVisible(false);
                     onBtnSearchClicked();
-                }
+                }*/
+
+                projectAdapter.deleteProjectByIds(listIdDelete);
+
+                dataProjects.removeAll(dataProjectDeleted);
+                selectedCheckBoxes.clear();
+                removeItemPaneCV.getController().hbLayout.setVisible(false);
+                onBtnSearchClicked();
+
             }
 
         };

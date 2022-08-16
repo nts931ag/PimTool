@@ -1,6 +1,6 @@
 package com.elca.internship.client.controllers;
 
-import com.elca.internship.client.consume.EmployeeRestConsume;
+//import com.elca.internship.client.consume.EmployeeRestConsume;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -40,7 +40,7 @@ public class TagBarController implements Initializable {
     @FXML
     private TextField tfInputTag ;
 
-    private final EmployeeRestConsume employeeRestClient;
+//    private final EmployeeRestConsume employeeRestClient;
 
     public void fillMemberIntoMembersField(ObservableList<String> tags){
         this.tags.clear();
@@ -75,7 +75,7 @@ public class TagBarController implements Initializable {
             }
         });*/
 
-        visaName.addAll(employeeRestClient.retrieveVisaAndNameOfAllEmployees());
+//        visaName.addAll(employeeRestClient.retrieveVisaAndNameOfAllEmployees());
 
         autoCompletionBinding = TextFields.bindAutoCompletion(
                 tfInputTag

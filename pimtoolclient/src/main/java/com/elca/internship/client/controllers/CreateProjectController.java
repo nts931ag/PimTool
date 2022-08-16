@@ -1,9 +1,9 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
-import com.elca.internship.client.consume.GroupRestConsume;
-import com.elca.internship.client.consume.ProjectEmployeeConsume;
-import com.elca.internship.client.consume.ProjectRestConsume;
+//import com.elca.internship.client.consume.GroupRestConsume;
+//import com.elca.internship.client.consume.ProjectEmployeeConsume;
+//import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.exception.ProjectException;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
@@ -14,15 +14,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
@@ -109,9 +106,9 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
     private FxControllerAndView<TagBarController, Node> tagBarCV;
     private ObservableList<String> listGroups;
-    private final ProjectRestConsume projectRestConsume;
-    private final ProjectEmployeeConsume projectEmployeeConsume;
-    private final GroupRestConsume groupRestConsume;
+//    private final ProjectRestConsume projectRestConsume;
+//    private final ProjectEmployeeConsume projectEmployeeConsume;
+//    private final GroupRestConsume groupRestConsume;
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
 
@@ -148,7 +145,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
                         i18nManager
                 ).getIsValid();
                 if(valid){
-                    var isExisted = projectRestConsume.CheckProjectNumberIsExisted(Long.parseLong(inputNumber));
+//                    var isExisted = projectRestConsume.CheckProjectNumberIsExisted(Long.parseLong(inputNumber));
+                    var isExisted = false;
                     valid = FormValidation.isProNumberNotExisted(
                             isExisted,
                             lbValidateProNum,
@@ -303,8 +301,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.getSelectionModel().select(i18nManager.text(Status.convertStatusToI18nKey(project.getStatus())));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
-        var listVisaAndNameEmployeeOfCurrentProject = projectEmployeeConsume.retrieveAllVisaAndNameOfEmployeeByProjectId(project.getId());
-        tagBarCV.getController().fillMemberIntoMembersField(listVisaAndNameEmployeeOfCurrentProject);
+//        var listVisaAndNameEmployeeOfCurrentProject = projectEmployeeConsume.retrieveAllVisaAndNameOfEmployeeByProjectId(project.getId());
+//        tagBarCV.getController().fillMemberIntoMembersField(listVisaAndNameEmployeeOfCurrentProject);
         isEditMode = true;
         Platform.runLater(()->{
             tfProName.requestFocus();
@@ -325,7 +323,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
         listGroups = FXCollections.observableArrayList(i18nManager.text(I18nKey.GROUP_NEW));
-        listGroups.addAll(groupRestConsume.retrieveObsListAllGroupIds());
+//        listGroups.addAll(groupRestConsume.retrieveObsListAllGroupIds());
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
 
@@ -346,27 +344,27 @@ public class CreateProjectController implements Initializable, ApplicationListen
             log.info("Input form list member: {}", listMember);
             if(!isEditMode){
                 try {
-                    projectRestConsume.createNewProjectTest(project, listMember);
+//                    projectRestConsume.createNewProjectTest(project, listMember);
                     DashboardController.navigationHandler.handleNavigateToListProject(true);
                 }catch (ProjectException projectException){
                     alertDangerCV.getController().showErrorAlertLabel(
                             projectException.getI18nKey(),
                             projectException.getI18nValue());
-                } catch (JsonProcessingException | WebClientResponseException jsonProcessingException) {
+                } catch (/*JsonProcessingException | */WebClientResponseException jsonProcessingException) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
                 } catch (WebClientRequestException webClientRequestException){
                     DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);
                 }
             }else{
                 try {
-                    projectRestConsume.updateProjectTest(project, listMember);
+//                    projectRestConsume.updateProjectTest(project, listMember);
                     DashboardController.navigationHandler.handleNavigateToListProject(true);
                 }catch (ProjectException projectException){
                     alertDangerCV.getController().showErrorAlertLabel(
                             projectException.getI18nKey(),
                             projectException.getI18nValue()
                     );
-                } catch (JsonProcessingException | WebClientResponseException jsonProcessingException) {
+                } catch (/*JsonProcessingException | */WebClientResponseException jsonProcessingException) {
                     DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
                 } catch (WebClientRequestException webClientRequestException){
                     DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);
