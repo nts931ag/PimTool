@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface EmployeeService {
     List<Employee> getAllEmployee();
+
+    List<Employee> getAllEmployeeByProjectId(Long projectId);
 }

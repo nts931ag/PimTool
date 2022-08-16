@@ -99,4 +99,5 @@ public class ProjectAdapterImpl implements ProjectAdapter {
         var jsonObject = convertToJsonString(project, listMember);
         projectRest.updateProject(jsonObject);
     }
+
 }

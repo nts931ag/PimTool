@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,6 +18,16 @@ public class EmployeeAdapterImpl implements EmployeeAdapter {
     @Override
     public ObservableList<String> retrieveVisaAndNameOfAllEmployee() {
         var listEmployee = employeeRest.getAllEmployee().collectList().block();
+        return FXCollections.observableArrayList(
+                listEmployee.stream()
+                        .map(employee -> employee.getVisa() + ": " + employee.getFirstName() + " " + employee.getLastName())
+                        .collect(Collectors.toList())
+        );
+    }
+
+    @Override
+    public ObservableList<String> retrieveVisaAndNameOfMemberInCurrentProject(Long currentProjectId) {
+        var listEmployee = employeeRest.getAllEmployeeOfCurrentProject(currentProjectId).collectList().block();
         return FXCollections.observableArrayList(
                 listEmployee.stream()
                         .map(employee -> employee.getVisa() + ": " + employee.getFirstName() + " " + employee.getLastName())

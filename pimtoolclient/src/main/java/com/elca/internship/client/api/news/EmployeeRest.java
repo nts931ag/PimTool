@@ -8,4 +8,5 @@ import java.util.List;
 public interface EmployeeRest {
     Flux<Employee> getAllEmployee();
 
+    Flux<Employee> getAllEmployeeOfCurrentProject(Long currentProjectId);
 }

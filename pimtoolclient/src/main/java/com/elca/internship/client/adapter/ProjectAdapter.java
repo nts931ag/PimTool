@@ -19,4 +19,5 @@ public interface ProjectAdapter {
     void createNewProject(Project project, List<String> listMember) throws JsonProcessingException;
 
     void updateProject(Project project, List<String> listMember) throws JsonProcessingException;
+
 }

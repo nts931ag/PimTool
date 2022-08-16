@@ -20,6 +20,7 @@ public class ProjectAdapter {
     private final ProjectService projectService;
     private final ObjectMapper objectMapper;
     private final ProjectMapperCustom projectMapperCustom;
+    private final EmployeeAdapter employeeAdapter;
 
     public void createNewProject(String jsonObject){
         try {

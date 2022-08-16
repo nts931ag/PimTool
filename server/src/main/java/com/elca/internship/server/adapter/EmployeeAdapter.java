@@ -18,4 +18,8 @@ public class EmployeeAdapter {
     public List<EmployeeDto> getAllEmployees() {
         return employeeMapperCustom.listEntityToListDto(employeeService.getAllEmployee());
     }
+
+    public List<EmployeeDto> getAllEmployeesByProjectId(Long projectId) {
+        return employeeMapperCustom.listEntityToListDto(employeeService.getAllEmployeeByProjectId(projectId));
+    }
 }

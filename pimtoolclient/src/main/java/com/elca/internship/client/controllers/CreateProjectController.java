@@ -4,6 +4,7 @@ import com.elca.internship.client.StageReadyEvent;
 //import com.elca.internship.client.consume.GroupRestConsume;
 //import com.elca.internship.client.consume.ProjectEmployeeConsume;
 //import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.adapter.EmployeeAdapter;
 import com.elca.internship.client.adapter.ProjectAdapter;
 import com.elca.internship.client.adapter.GroupAdapter;
 import com.elca.internship.client.exception.ProjectException;
@@ -113,6 +114,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
     private final ProjectAdapter projectAdapter;
+    private final EmployeeAdapter employeeAdapter;
 
 
 
@@ -307,9 +309,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
 
-
-//        var listVisaAndNameEmployeeOfCurrentProject = projectEmployeeConsume.retrieveAllVisaAndNameOfEmployeeByProjectId(project.getId());
-//        tagBarCV.getController().fillMemberIntoMembersField(listVisaAndNameEmployeeOfCurrentProject);
+        var listMemberOfCurrentProject = employeeAdapter.retrieveVisaAndNameOfMemberInCurrentProject(currentIdEdit);
+        tagBarCV.getController().fillMemberIntoMembersField(listMemberOfCurrentProject);
         isEditMode = true;
         Platform.runLater(()->{
             tfProName.requestFocus();
