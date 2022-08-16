@@ -4,6 +4,8 @@ import com.elca.internship.client.StageReadyEvent;
 //import com.elca.internship.client.consume.GroupRestConsume;
 //import com.elca.internship.client.consume.ProjectEmployeeConsume;
 //import com.elca.internship.client.consume.ProjectRestConsume;
+import com.elca.internship.client.adapter.ProjectAdapter;
+import com.elca.internship.client.adapter.GroupAdapter;
 import com.elca.internship.client.exception.ProjectException;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
@@ -22,6 +24,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
@@ -34,6 +37,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @FxmlView("/views/createProject.fxml")
@@ -106,11 +110,10 @@ public class CreateProjectController implements Initializable, ApplicationListen
     private FxControllerAndView<AlertDangerController, Node> alertDangerCV;
     private FxControllerAndView<TagBarController, Node> tagBarCV;
     private ObservableList<String> listGroups;
-//    private final ProjectRestConsume projectRestConsume;
-//    private final ProjectEmployeeConsume projectEmployeeConsume;
-//    private final GroupRestConsume groupRestConsume;
     private boolean isEditMode;
     private Long currentIdEdit = 0L;
+    private final ProjectAdapter projectAdapter;
+
 
 
     @Override
@@ -120,6 +123,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        isEditMode = false;
         this.initLayout();
         this.fillDefaultValueForInputForm();
         projectFormValidation = new FormValidation();
@@ -129,8 +133,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         projectFormValidation.getFormFields().put("proMember", true);
         projectFormValidation.getFormFields().put("proDate", true);
         this.addEventListeners();
-
     }
+
 
     private void addEventListeners() {
 
@@ -146,7 +150,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 ).getIsValid();
                 if(valid){
 //                    var isExisted = projectRestConsume.CheckProjectNumberIsExisted(Long.parseLong(inputNumber));
-                    var isExisted = false;
+
+                    var isExisted = projectAdapter.checkProjectNumberIsExisted(Integer.parseInt(inputNumber));
                     valid = FormValidation.isProNumberNotExisted(
                             isExisted,
                             lbValidateProNum,
@@ -233,7 +238,6 @@ public class CreateProjectController implements Initializable, ApplicationListen
     }
 
     public void initLayout() {
-        isEditMode = false;
         gpCreateProjectTab.setVgap(15);
         gpCreateProjectTab.setHgap(10);
         var colsConstraints = gpCreateProjectTab.getColumnConstraints();
@@ -284,7 +288,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
             rowsConstraints.get(6).prefHeightProperty().bind(flowPaneTags.heightProperty());
         });
 
-
+        formatDisplayDateInDatePicker(pickerStartDate);
+        formatDisplayDateInDatePicker(pickerEndDate);
 
     }
 
@@ -301,6 +306,8 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.getSelectionModel().select(i18nManager.text(Status.convertStatusToI18nKey(project.getStatus())));
         pickerStartDate.setValue(project.getStartDate());
         pickerEndDate.setValue(project.getEndDate());
+
+
 //        var listVisaAndNameEmployeeOfCurrentProject = projectEmployeeConsume.retrieveAllVisaAndNameOfEmployeeByProjectId(project.getId());
 //        tagBarCV.getController().fillMemberIntoMembersField(listVisaAndNameEmployeeOfCurrentProject);
         isEditMode = true;
@@ -312,6 +319,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
 
     }
 
+    private final GroupAdapter groupAdapter;
 
     public void fillDefaultValueForInputForm() {
         var listStatus = FXCollections.observableArrayList(
@@ -323,15 +331,29 @@ public class CreateProjectController implements Initializable, ApplicationListen
         cbProStatus.setItems(listStatus);
         cbProStatus.getSelectionModel().select(0);
         listGroups = FXCollections.observableArrayList(i18nManager.text(I18nKey.GROUP_NEW));
-//        listGroups.addAll(groupRestConsume.retrieveObsListAllGroupIds());
+        listGroups.addAll(groupAdapter.retrieveObsListIdsGroup());
         cbProGroup.setItems(listGroups);
         cbProGroup.getSelectionModel().select(0);
+        pickerStartDate.setValue(LocalDate.now());
+    }
 
+    private void formatDisplayDateInDatePicker(DatePicker datePicker){
+        datePicker.setConverter(
+                new StringConverter<>() {
+                    final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+                    @Override
+                    public String toString(LocalDate date) {
+                        return (date != null) ? dateFormatter.format(date) : "";
+                    }
 
-
-        var curDate = LocalDate.now();
-        pickerStartDate.setValue(curDate);
+                    @Override
+                    public LocalDate fromString(String string) {
+                        return (string != null && !string.isEmpty())
+                                ? LocalDate.parse(string, dateFormatter)
+                                : null;
+                    }
+                });
     }
 
     @FXML
@@ -342,35 +364,27 @@ public class CreateProjectController implements Initializable, ApplicationListen
             var listMember = getMemberInputForm();
             log.info("Input form project: {}", project);
             log.info("Input form list member: {}", listMember);
-            if(!isEditMode){
-                try {
-//                    projectRestConsume.createNewProjectTest(project, listMember);
-                    DashboardController.navigationHandler.handleNavigateToListProject(true);
-                }catch (ProjectException projectException){
-                    alertDangerCV.getController().showErrorAlertLabel(
-                            projectException.getI18nKey(),
-                            projectException.getI18nValue());
-                } catch (/*JsonProcessingException | */WebClientResponseException jsonProcessingException) {
-                    DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
-                } catch (WebClientRequestException webClientRequestException){
-                    DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);
+            try {
+                if(!isEditMode){
+                    projectAdapter.createNewProject(project, listMember);
+                }else{
+                    projectAdapter.updateProject(project, listMember);
                 }
-            }else{
-                try {
-//                    projectRestConsume.updateProjectTest(project, listMember);
-                    DashboardController.navigationHandler.handleNavigateToListProject(true);
-                }catch (ProjectException projectException){
-                    alertDangerCV.getController().showErrorAlertLabel(
-                            projectException.getI18nKey(),
-                            projectException.getI18nValue()
-                    );
-                } catch (/*JsonProcessingException | */WebClientResponseException jsonProcessingException) {
-                    DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
-                } catch (WebClientRequestException webClientRequestException){
-                    DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);
-                }
+                DashboardController.navigationHandler.handleNavigateToListProject(true);
+            }catch (ProjectException projectException){
+                alertDangerCV.getController().showErrorAlertLabel(
+                        projectException.getI18nKey(),
+                        projectException.getI18nValue());
+            } catch (JsonProcessingException | WebClientResponseException jsonProcessingException) {
+                System.out.println(jsonProcessingException.getMessage());
+                DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
+            } catch (WebClientRequestException webClientRequestException){
+                DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);
             }
         }
+
+
+
     }
 
     public Project getProjectInputForm() {

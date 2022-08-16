@@ -12,9 +12,11 @@ public interface ProjectService {
     Project updateProject(ProjectDto projectDto, List<String> listVisaEmployee);
     void deleteProjects(List<Long> ids);
     void deleteProject(Long id);
-    List<ProjectDto> getAllProjectsByCriteriaAndStatus(String criteria, Status status);
-    List<ProjectDto> getAllProjectByCriteria(String criteria);
-    List<ProjectDto> getAllProjectByStatus(Status status);
+    List<Project> getAllProjectsByCriteriaAndStatus(String criteria, Status status);
+    List<Project> getAllProjectByCriteria(String criteria);
+    List<Project> getAllProjectByStatus(Status status);
 
-    List<ProjectDto> getAllProject();
+    List<Project> getAllProject();
+
+    Project getProjectByProjectNumber(Integer projectNumber);
 }

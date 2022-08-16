@@ -2,6 +2,7 @@ package com.elca.internship.server.controllers;
 
 
 import com.elca.internship.server.models.entity.Group;
+import com.elca.internship.server.services.news.GroupService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,4 +23,11 @@ public class GroupController {
 //    public List<Group> getAllGroups(){
 //        return groupService.getAll();
 //    }
+
+    private final GroupService groupService;
+
+    @GetMapping("/ids")
+    public List<Long> getAllGroups(){
+        return groupService.getAllIdsGroup();
+    }
 }

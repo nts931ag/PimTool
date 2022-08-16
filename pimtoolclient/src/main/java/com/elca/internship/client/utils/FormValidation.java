@@ -24,9 +24,6 @@ public class FormValidation {
 
     public FormValidation(){formFields = new HashMap<>();}
 
-
-
-
     public Map<String, Boolean> getFormFields(){
         return formFields;
     }

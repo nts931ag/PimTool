@@ -1,6 +1,8 @@
 package com.elca.internship.server.controllers;
 
 
+import com.elca.internship.server.adapter.EmployeeAdapter;
+import com.elca.internship.server.models.dto.EmployeeDto;
 import com.elca.internship.server.models.entity.Employee;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,4 +28,11 @@ public class EmployeeController {
     public List<String> getVisaAndNameOfAllEmployees(){
         return employeeService.getVisaAndNameOfAllEmployees();
     }*/
+    private final EmployeeAdapter employeeAdapter;
+
+    @GetMapping
+    public List<EmployeeDto> getAllEmployees(){
+        return employeeAdapter.getAllEmployees();
+    }
+
 }

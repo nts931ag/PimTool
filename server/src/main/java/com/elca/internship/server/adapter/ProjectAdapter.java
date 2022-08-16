@@ -1,5 +1,6 @@
 package com.elca.internship.server.adapter;
 
+import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.Project;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ProjectAdapter {
     private final ProjectService projectService;
     private final ObjectMapper objectMapper;
+    private final ProjectMapperCustom projectMapperCustom;
 
     public void createNewProject(String jsonObject){
         try {
@@ -53,7 +55,6 @@ public class ProjectAdapter {
             var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
             log.info("Info new project: " + project);
             log.info("Info list member: " + listEmployeeVisa);
-//            projectService.createNewProjectWithEmployeeVisasTest(project, listEmployeeVisa);
             projectService.createNewProject(project, listEmployeeVisa);
 
 
@@ -65,14 +66,22 @@ public class ProjectAdapter {
     }
 
     public List<ProjectDto> getProjectByCriteriaAndStatusSpecified(String proCriteria, String proStatus) {
+        List<Project> listProjectEntity;
         if(!proCriteria.isBlank() && !proStatus.isBlank()){
-            return projectService.getAllProjectsByCriteriaAndStatus(proCriteria, Status.valueOf(proStatus));
+            listProjectEntity = projectService.getAllProjectsByCriteriaAndStatus(proCriteria, Status.valueOf(proStatus));
         }else if(proCriteria.isBlank() && proStatus.isBlank()){
-            return projectService.getAllProject();
+            listProjectEntity = projectService.getAllProject();
         }else if(proCriteria.isBlank()){
-            return projectService.getAllProjectByStatus(Status.valueOf(proStatus));
+            listProjectEntity = projectService.getAllProjectByStatus(Status.valueOf(proStatus));
         }else {
-            return projectService.getAllProjectByCriteria(proCriteria);
+            listProjectEntity = projectService.getAllProjectByCriteria(proCriteria);
         }
+
+        return projectMapperCustom.listEntityToListDto(listProjectEntity);
+    }
+
+    public ProjectDto getProjectByProjectNumber(Integer projectNumber) {
+        var project = projectService.getProjectByProjectNumber(projectNumber);
+        return projectMapperCustom.entityToDto(project);
     }
 }

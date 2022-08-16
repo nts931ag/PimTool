@@ -33,9 +33,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 
@@ -68,7 +73,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     @FXML
     public TableColumn<ProjectTable,String> colProCustomer;
     @FXML
-    public TableColumn<ProjectTable, String> colProStart;
+    public TableColumn<ProjectTable, LocalDate> colProStart;
     @FXML
     public TableColumn<ProjectTable, IconNode> colProDel;
     @FXML
@@ -83,8 +88,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
     public Label lbBtnResetSearch;
 
     private ObservableList<ProjectTable> dataProjects;
-    private ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
-    private IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
+    private final ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
+    private final IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
     private FxControllerAndView<RemoveItemPaneController, Node> removeItemPaneCV;
     int itemPerPage = 5;
 
@@ -138,6 +143,23 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
         colProStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        colProStart.setCellFactory(column -> {
+            TableCell<ProjectTable, LocalDate> cell = new TableCell<ProjectTable, LocalDate>() {
+                private final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                @Override
+                protected void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if(empty) {
+                        setText(null);
+                    }
+                    else {
+                        setText(format.format(item));
+                    }
+                }
+            };
+
+            return cell;
+        });
 
         colCheck.getStyleClass().add("table-column-align-center");
         colProDel.getStyleClass().add("table-column-align-center");
@@ -172,11 +194,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         });
 
         numCheckBoxesSelected.addListener(((observable, oldValue, newValue) -> {
-            if(numCheckBoxesSelected.intValue() > 0){
-                removeItemPaneCV.getController().hbLayout.setVisible(true);
-            }else{
-                removeItemPaneCV.getController().hbLayout.setVisible(false);
-            }
+            removeItemPaneCV.getController().hbLayout.setVisible(numCheckBoxesSelected.intValue() > 0);
         }));
 
         colProNum.setComparator((o1, o2) -> {

@@ -1,5 +1,6 @@
 package com.elca.internship.server.controllers;
 
+import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.adapter.ProjectAdapter;
 import com.elca.internship.server.services.news.ProjectService;
@@ -99,9 +100,11 @@ public class ProjectController {
     private final ProjectAdapter projectAdapter;
     private final ProjectService projectService;
 
+    private final ProjectMapperCustom projectMapperCustom;
+
     @GetMapping
     public List<ProjectDto> getAllProjectExisted(){
-        return projectService.getAllProject();
+        return projectMapperCustom.listEntityToListDto(projectService.getAllProject());
     }
 
     @GetMapping("/search")
@@ -133,5 +136,11 @@ public class ProjectController {
     public void deleteProjects(@RequestParam(value = "Ids") List<Long> Ids){
         log.info("List id project will be deleted: ", Ids);
         projectService.deleteProjects(Ids);
+    }
+
+    @GetMapping(value = "/{projectNumber}")
+    public ProjectDto getProjectByProjectNumber(@PathVariable("projectNumber") Integer projectNumber){
+        projectAdapter.getProjectByProjectNumber(projectNumber);
+        return null;
     }
 }

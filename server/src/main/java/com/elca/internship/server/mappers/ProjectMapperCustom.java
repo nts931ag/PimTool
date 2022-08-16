@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 public class ProjectMapperCustom {
 
     public ProjectDto entityToDto(Project entity){
+        if(entity == null){
+            return null;
+        }
         return new ProjectDto(
                 entity.getId(),
                 entity.getVersion(),
@@ -26,6 +29,9 @@ public class ProjectMapperCustom {
     }
 
     public List<ProjectDto> listEntityToListDto(List<Project> listEntity){
+        if(listEntity == null){
+            return null;
+        }
         var listDto = new ArrayList<ProjectDto>();
         listEntity.stream().forEach(project -> {
             listDto.add(

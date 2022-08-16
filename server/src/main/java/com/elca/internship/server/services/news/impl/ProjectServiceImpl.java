@@ -127,27 +127,28 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDto> getAllProjectsByCriteriaAndStatus(String criteria, Status status) {
-        var listProjectSpecified = projectRepository.findAllProjectByCriteriaAndStatusCustom(criteria, status);
-        return projectMapperCustom.listEntityToListDto(listProjectSpecified);
+    public List<Project> getAllProjectsByCriteriaAndStatus(String criteria, Status status) {
+        return projectRepository.findAllProjectByCriteriaAndStatusCustom(criteria, status);
     }
 
     @Override
-    public List<ProjectDto> getAllProjectByCriteria(String criteria) {
-        var listProjectSpecified = projectRepository.findAllProjectByCriteriaCustom(criteria);
-        return projectMapperCustom.listEntityToListDto(listProjectSpecified);
+    public List<Project> getAllProjectByCriteria(String criteria) {
+        return projectRepository.findAllProjectByCriteriaCustom(criteria);
     }
 
     @Override
-    public List<ProjectDto> getAllProjectByStatus(Status status) {
-        var listProjectSpecified = projectRepository.findAllProjectByStatusCustom(status);
-        return projectMapperCustom.listEntityToListDto(listProjectSpecified);
+    public List<Project> getAllProjectByStatus(Status status) {
+        return projectRepository.findAllProjectByStatusCustom(status);
     }
 
     @Override
-    public List<ProjectDto> getAllProject() {
-        var listProjectSpecified = projectRepository.findAllCustom();
-        return projectMapperCustom.listEntityToListDto(listProjectSpecified);
+    public List<Project> getAllProject() {
+        return projectRepository.findAllCustom();
+    }
+
+    @Override
+    public Project getProjectByProjectNumber(Integer projectNumber) {
+        return projectRepository.findProjectByProjectNumberCustom(projectNumber);
     }
 
     @Override

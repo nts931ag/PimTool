@@ -7,8 +7,6 @@ import javafx.stage.Stage;
 
 public class GuiUtil {
 private static double titleLabelHeight = GuiUtil.getScreenHeight() * 0.05;
-    // Screen bounds Getter
-    // Note: getVisualBounds() uncovers the taskbar
     public static double getScreenWidth(){
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         return screenBounds.getWidth();
@@ -18,15 +16,6 @@ private static double titleLabelHeight = GuiUtil.getScreenHeight() * 0.05;
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         return screenBounds.getHeight();
     }
-
-//    // Screen Width: 1024 X 768 for Testing
-//    public static double getScreenWidth(){
-//       return 1366.00;
-//    }
-//
-//    public static double getScreenHeight(){
-//        return 768.00;
-//    }
 
     public static double getContentAreaWidth(){
         return GuiUtil.getScreenWidth() * 0.85;
