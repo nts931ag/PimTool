@@ -229,7 +229,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
             paginationTableProject.setPageCount((size/5) + 1);
         }
         // set contains 20 item
-
         this.createPage(0, tfSearch, status);
         paginationTableProject.currentPageIndexProperty().addListener((observableValue, oldIdx, newIdx) -> {
             if(oldIdx.intValue() != newIdx.intValue()){

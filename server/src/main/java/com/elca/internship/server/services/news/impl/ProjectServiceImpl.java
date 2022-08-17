@@ -11,6 +11,9 @@ import com.elca.internship.server.validator.EmployeeValidator;
 import com.elca.internship.server.validator.GroupValidator;
 import com.elca.internship.server.validator.ProjectValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -127,18 +130,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getAllProjectsByCriteriaAndStatus(String criteria, Status status) {
-        return projectRepository.findAllProjectByCriteriaAndStatusCustom(criteria, status);
-    }
-
-    @Override
-    public List<Project> getAllProjectByCriteria(String criteria) {
-        return projectRepository.findAllProjectByCriteriaCustom(criteria);
-    }
-
-    @Override
-    public List<Project> getAllProjectByStatus(Status status) {
-        return projectRepository.findAllProjectByStatusCustom(status);
+    public List<Project> getAllProjectByCriteriaAndStatusWithPagination(String criteria, Status status, Pageable pageable) {
+        var pageProject = projectRepository.findAllProjectByCriteriaAndStatusWithPaginationCustom(criteria, status, pageable);
+        return pageProject.toList();
     }
 
     @Override

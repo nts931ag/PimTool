@@ -9,6 +9,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -57,8 +60,6 @@ public class ProjectAdapter {
             log.info("Info new project: " + project);
             log.info("Info list member: " + listEmployeeVisa);
             projectService.createNewProject(project, listEmployeeVisa);
-
-
         } catch (JsonProcessingException jpe) {
             System.out.println(jpe.getMessage());
         }
@@ -66,18 +67,14 @@ public class ProjectAdapter {
 
     }
 
-    public List<ProjectDto> getProjectByCriteriaAndStatusSpecified(String proCriteria, String proStatus) {
-        List<Project> listProjectEntity;
-        if(!proCriteria.isBlank() && !proStatus.isBlank()){
-            listProjectEntity = projectService.getAllProjectsByCriteriaAndStatus(proCriteria, Status.valueOf(proStatus));
-        }else if(proCriteria.isBlank() && proStatus.isBlank()){
-            listProjectEntity = projectService.getAllProject();
-        }else if(proCriteria.isBlank()){
-            listProjectEntity = projectService.getAllProjectByStatus(Status.valueOf(proStatus));
-        }else {
-            listProjectEntity = projectService.getAllProjectByCriteria(proCriteria);
+    public List<ProjectDto> getProjectByCriteriaAndStatusSpecified(String proCriteria, String proStatus,Integer limit, Integer offset) {
+        Pageable page = PageRequest.of(offset, limit, Sort.by("projectNumber").ascending());
+        var criteriaExp = "%" + proCriteria.trim() + "%";
+        Status status = null;
+        if(!proStatus.isBlank()){
+            status = Status.valueOf(proStatus);
         }
-
+        var listProjectEntity = projectService.getAllProjectByCriteriaAndStatusWithPagination(criteriaExp, status, page);
         return projectMapperCustom.listEntityToListDto(listProjectEntity);
     }
 

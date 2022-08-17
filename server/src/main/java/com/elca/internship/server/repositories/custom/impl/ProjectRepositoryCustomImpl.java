@@ -5,18 +5,28 @@ import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.models.entity.QGroup;
 import com.elca.internship.server.models.entity.QProject;
 import com.elca.internship.server.models.entity.QProjectEmployee;
+import com.elca.internship.server.repositories.ProjectRepository;
 import com.elca.internship.server.repositories.custom.ProjectRepositoryCustom;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilderFactory;
 import com.querydsl.jpa.impl.JPAQuery;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.Querydsl;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     @Override
     public Project findProjectByProjectNumberCustom(Integer projectNumber) {
@@ -43,44 +53,34 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
     }
 
     @Override
-    public List<Project> findAllProjectByCriteriaAndStatusCustom(String criteria, Status status) {
-        var expression = "%" + criteria + "%";
-        return new JPAQuery<Project>(entityManager)
-                .from(QProject.project)
-                .where(
-                        (QProject.project.name.like(expression)
-                                .or(QProject.project.projectNumber.like(expression))
-                                .or(QProject.project.customer.like(expression))
-                                .and(QProject.project.status.eq(status))))
-                .fetch();
-    }
-
-    @Override
-    public List<Project> findAllProjectByStatusCustom(Status status) {
-        return new JPAQuery<Project>(entityManager)
-                .from(QProject.project)
-                .where(QProject.project.status.eq(status))
-                .fetch();
-    }
-
-    @Override
-    public List<Project> findAllProjectByCriteriaCustom(String criteria) {
-        var expression = "%" + criteria + "%";
-        return new JPAQuery<Project>(entityManager)
-                .from(QProject.project)
-                .where(
-                        (QProject.project.name.like(expression)
-                                .or(QProject.project.projectNumber.like(expression))
-                                .or(QProject.project.customer.like(expression))))
-                                .fetch();
-    }
-
-    @Override
     public List<Project> findAllCustom() {
         return new JPAQuery<Project>(entityManager)
                 .from(QProject.project)
                 .leftJoin(QProject.project.group, QGroup.group)
                 .fetchJoin()
                 .fetch();
+    }
+
+    @Override
+    public Page<Project> findAllProjectByCriteriaAndStatusWithPaginationCustom(String criteria, Status status, Pageable page) {
+        var querydsl = new Querydsl(entityManager, (new PathBuilderFactory()).create(Project.class));
+        var root = QProject.project;
+
+        var predicate = root.projectNumber.like(criteria)
+                .or(root.name.likeIgnoreCase(criteria))
+                .or(root.customer.likeIgnoreCase(criteria));
+
+        if(status!= null){
+            predicate = predicate.and(root.status.eq(status));
+        }
+
+        var query = new JPAQuery<Project>(entityManager)
+                .from(QProject.project)
+                .leftJoin(QProject.project.group, QGroup.group)
+                .where(predicate);
+        var result = querydsl.applyPagination(page,query).fetch();
+        var totalElements = result.size();
+
+        return new PageImpl<>(result, page, totalElements);
     }
 }

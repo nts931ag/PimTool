@@ -2,6 +2,8 @@ package com.elca.internship.server.repositories.custom;
 
 import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.entity.Project;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -10,12 +12,7 @@ public interface ProjectRepositoryCustom {
 
     Project findProjectByIdCustom(Long projectId);
 
-    List<Project> findAllProjectByCriteriaAndStatusCustom(String criteria, Status status);
-
-
-    List<Project> findAllProjectByStatusCustom(Status status);
-
-    List<Project> findAllProjectByCriteriaCustom(String criteria);
-
     List<Project> findAllCustom();
+
+    Page<Project> findAllProjectByCriteriaAndStatusWithPaginationCustom(String criteria, Status status, Pageable page);
 }

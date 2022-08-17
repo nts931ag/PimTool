@@ -114,17 +114,16 @@ public class ProjectServiceTest {
 
     @Test
     public void getProjectByCriteriaAndStatus(){
-        var listProjectDto = projectService.getAllProjectsByCriteriaAndStatus("", Status.NEW);
-        if(!listProjectDto.isEmpty()){
-            listProjectDto.forEach(
-                    System.out::println
-            );
-        }
+
     }
 
     @Test
     public void deleteProjectById(){
         projectService.deleteProject(1L);
+    }
+
+    @Test
+    public void getAllProjectWithPagination(){
     }
 
 }
