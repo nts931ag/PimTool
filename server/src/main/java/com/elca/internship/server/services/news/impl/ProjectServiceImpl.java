@@ -130,9 +130,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getAllProjectByCriteriaAndStatusWithPagination(String criteria, Status status, Pageable pageable) {
-        var pageProject = projectRepository.findAllProjectByCriteriaAndStatusWithPaginationCustom(criteria, status, pageable);
-        return pageProject.toList();
+    public Page<Project> getAllProjectByCriteriaAndStatusWithPagination(String criteria, Status status, Pageable pageable) {
+        return projectRepository.findAllProjectByCriteriaAndStatusWithPaginationCustom(criteria, status, pageable);
+
     }
 
     @Override

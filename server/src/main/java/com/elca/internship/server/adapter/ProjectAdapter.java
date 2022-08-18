@@ -1,7 +1,9 @@
 package com.elca.internship.server.adapter;
 
+import com.elca.internship.server.mappers.PageProjectMapperCustom;
 import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.Status;
+import com.elca.internship.server.models.dto.PageProjectDto;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.services.news.ProjectService;
@@ -14,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -23,29 +27,15 @@ public class ProjectAdapter {
     private final ProjectService projectService;
     private final ObjectMapper objectMapper;
     private final ProjectMapperCustom projectMapperCustom;
-    private final EmployeeAdapter employeeAdapter;
-
-    public void createNewProject(String jsonObject){
-        try {
-            var jsonNode = objectMapper.readTree(jsonObject);
-            var project = objectMapper.treeToValue(jsonNode.get("project"), Project.class);
-            var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
-            log.info("Info new project: " + project);
-            log.info("Info list member: " + listEmployeeVisa);
-//            projectService.createNewProjectWithEmployeeVisasTest(project, listEmployeeVisa);
-        } catch (JsonProcessingException jpe) {
-            System.out.println(jpe.getMessage());
-        }
-    }
+    private final PageProjectMapperCustom pageProjectMapperCustom;
 
     public void updateAndModifyMemberOfProjectSpecified(String jsonObject) {
         try {
             var jsonNode = objectMapper.readTree(jsonObject);
             var project = objectMapper.treeToValue(jsonNode.get("project"), ProjectDto.class);
             var listEmployeeVisa = objectMapper.treeToValue(jsonNode.get("listMember"), List.class);
-            log.info("Info new project: " + project);
-            log.info("Info list member: " + listEmployeeVisa);
-//            projectService.updateProjectWithEmployeeVisasTest(project, listEmployeeVisa);
+            log.info("Info project update: " + project);
+            log.info("Info list member update: " + listEmployeeVisa);
             projectService.updateProject(project, listEmployeeVisa);
         } catch (JsonProcessingException jpe) {
             System.out.println(jpe.getMessage());
@@ -63,19 +53,20 @@ public class ProjectAdapter {
         } catch (JsonProcessingException jpe) {
             System.out.println(jpe.getMessage());
         }
-
-
     }
 
-    public List<ProjectDto> getProjectByCriteriaAndStatusSpecified(String proCriteria, String proStatus,Integer limit, Integer offset) {
+    public PageProjectDto getProjectByCriteriaAndStatusSpecified(String proCriteria, String proStatus, Integer limit, Integer offset) {
         Pageable page = PageRequest.of(offset, limit, Sort.by("projectNumber").ascending());
-        var criteriaExp = "%" + proCriteria.trim() + "%";
         Status status = null;
-        if(!proStatus.isBlank()){
+        var statusList = Arrays.stream(Status.values()).collect(Collectors.toList())
+                .stream().map(Object::toString).collect(Collectors.toList());
+
+        if(statusList.contains(proStatus)){
             status = Status.valueOf(proStatus);
         }
-        var listProjectEntity = projectService.getAllProjectByCriteriaAndStatusWithPagination(criteriaExp, status, page);
-        return projectMapperCustom.listEntityToListDto(listProjectEntity);
+
+        var pageProjectDto = projectService.getAllProjectByCriteriaAndStatusWithPagination(proCriteria, status, page);
+        return pageProjectMapperCustom.pageProjectToPageProjectDto(pageProjectDto);
     }
 
     public ProjectDto getProjectByProjectNumber(Integer projectNumber) {

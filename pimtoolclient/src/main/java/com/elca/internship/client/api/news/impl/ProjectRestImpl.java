@@ -5,6 +5,7 @@ import com.elca.internship.client.controllers.DashboardController;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.models.entity.Project;
 import javafx.application.Platform;
+import javafx.collections.ObservableSet;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ public class ProjectRestImpl implements ProjectRest {
     private static final String URI_DELETE_PROJECTS_BY_IDS = "http://localhost:8080/api/projects/delete";
     private static final String URI_CREATE_NEW_PROJECT = "http://localhost:8080/api/projects/save";
     private static final String URI_UPDATE_PROJECT = "http://localhost:8080/api/projects/update";
+    private static final String URI_SEARCH_PROJECT_WITH_PAGINATION = "http://localhost:8080/api/projects/update";
 
 
     @Override
@@ -87,18 +89,6 @@ public class ProjectRestImpl implements ProjectRest {
                 );
     }
 
-    //    public void createNewProjectTest(String jsonObject) {
-//        webClient.post().uri(URI_SAVE_NEW_PROJECT)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(BodyInserters.fromValue(jsonObject))
-//                .retrieve()
-////                .onStatus(HttpStatus::is4xxClientError, clientResponse -> handle4xxError(clientResponse))
-////                .onStatus(HttpStatus::is5xxServerError, clientResponse -> handle5xxError(clientResponse))
-//                .bodyToMono(Void.class)
-//                .onErrorStop()
-//                .block();
-//    }
-
     @Override
     public void createNewProject(String jsonObject) {
         webClient.post().uri(URI_CREATE_NEW_PROJECT)
@@ -119,5 +109,29 @@ public class ProjectRestImpl implements ProjectRest {
                 .bodyToMono(Void.class)
                 .onErrorStop()
                 .block();
+    }
+
+    @Override
+    public ObservableSet<Project> getProjectWithPagination(String tfSearchValue, String cbStatusValue, int limit, int offset) {
+        var uri = UriComponentsBuilder.fromUriString(URI_SEARCH_PROJECT_WITH_PAGINATION)
+                .queryParam("proCriteria", tfSearchValue)
+                .queryParam("proStatus", cbStatusValue)
+                .queryParam("limit", offset)
+                .queryParam("offset", limit)
+                .build().toUriString();
+        var result = webClient.get()
+                .uri(uri)
+                .retrieve()
+                .bodyToFlux(Project.class)
+                .collectList()
+                .doOnError(
+                        throwable -> Platform.runLater(
+                                () -> DashboardController.navigationHandler
+                                        .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
+                        )
+                )
+                .onErrorReturn(List.of())
+                .block();
+        return null;
     }
 }

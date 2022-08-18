@@ -67,8 +67,8 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         var root = QProject.project;
 
         var predicate = root.projectNumber.like(criteria)
-                .or(root.name.likeIgnoreCase(criteria))
-                .or(root.customer.likeIgnoreCase(criteria));
+                .or(root.name.containsIgnoreCase(criteria))
+                .or(root.customer.containsIgnoreCase(criteria));
 
         if(status!= null){
             predicate = predicate.and(root.status.eq(status));
@@ -77,9 +77,12 @@ public class ProjectRepositoryCustomImpl implements ProjectRepositoryCustom {
         var query = new JPAQuery<Project>(entityManager)
                 .from(QProject.project)
                 .leftJoin(QProject.project.group, QGroup.group)
+                .fetchJoin()
                 .where(predicate);
-        var result = querydsl.applyPagination(page,query).fetch();
-        var totalElements = result.size();
+
+        var applyPagination = querydsl.applyPagination(page, query);
+        var totalElements = applyPagination.fetchCount();
+        var result = applyPagination.fetch();
 
         return new PageImpl<>(result, page, totalElements);
     }

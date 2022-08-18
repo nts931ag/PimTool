@@ -1,6 +1,7 @@
 package com.elca.internship.server.controllers;
 
 import com.elca.internship.server.mappers.ProjectMapperCustom;
+import com.elca.internship.server.models.dto.PageProjectDto;
 import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.adapter.ProjectAdapter;
 import com.elca.internship.server.services.news.ProjectService;
@@ -29,7 +30,7 @@ public class ProjectController {
     }
 
     @GetMapping("/search")
-    public List<ProjectDto> searchProjectByCriteriaAndStatusSpecified(
+    public PageProjectDto searchProjectByCriteriaAndStatusSpecified(
             @RequestParam(value = "proCriteria") String proCriteria, @RequestParam(value = "proStatus") String proStatus,
             @RequestParam(value = "limit") Integer limit, @RequestParam(value = "offset") Integer offset){
         return projectAdapter.getProjectByCriteriaAndStatusSpecified(proCriteria, proStatus, limit, offset);

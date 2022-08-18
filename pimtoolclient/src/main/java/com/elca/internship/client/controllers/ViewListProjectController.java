@@ -1,8 +1,8 @@
 package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
-//import com.elca.internship.client.consume.ProjectRestConsume;
 import com.elca.internship.client.adapter.ProjectAdapter;
+import com.elca.internship.client.api.news.ProjectRest;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.models.entity.Project;
@@ -33,14 +33,11 @@ import lombok.extern.slf4j.Slf4j;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 
@@ -50,7 +47,6 @@ import java.util.ResourceBundle;
 @Slf4j
 public class ViewListProjectController implements Initializable, ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
-//    private final ProjectRestConsume projectRestConsume;
     private Stage stage;
     private final I18nManager i18nManager;
     @FXML
@@ -92,6 +88,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     private final IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
     private FxControllerAndView<RemoveItemPaneController, Node> removeItemPaneCV;
     int itemPerPage = 5;
+    private final ProjectAdapter projectAdapter;
 
 
     @Override
@@ -143,23 +140,20 @@ public class ViewListProjectController implements Initializable, ApplicationList
         colProCustomer.setCellValueFactory(new PropertyValueFactory<>("customer"));
         colProStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         colProStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        colProStart.setCellFactory(column -> {
-            TableCell<ProjectTable, LocalDate> cell = new TableCell<ProjectTable, LocalDate>() {
-                private final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                @Override
-                protected void updateItem(LocalDate item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if(empty) {
-                        setText(null);
-                    }
-                    else {
-                        setText(format.format(item));
+        colProStart.setCellFactory(column -> new TableCell<>() {
+                    private final DateTimeFormatter format = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                    @Override
+                    protected void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(format.format(item));
+                        }
                     }
                 }
-            };
-
-            return cell;
-        });
+        );
 
         colCheck.getStyleClass().add("table-column-align-center");
         colProDel.getStyleClass().add("table-column-align-center");
@@ -209,7 +203,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
     }
 
-    private final ProjectAdapter projectAdapter;
 
     private void createPage(int pageIndex, String tfSearch, String cbStatus){
         selectedCheckBoxes.clear();
@@ -223,11 +216,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
         IconFontFX.register(GoogleMaterialDesignIcons.getIconFont());
 //        int size = projectRestConsume.getNumberOfResultSearch(tfSearch, status);
         int size = 20;
-        if(size % 5 == 0){
-            paginationTableProject.setPageCount((size/5));
-        }else{
-            paginationTableProject.setPageCount((size/5) + 1);
-        }
+        paginationTableProject.setPageCount((size/5));
         // set contains 20 item
         this.createPage(0, tfSearch, status);
         paginationTableProject.currentPageIndexProperty().addListener((observableValue, oldIdx, newIdx) -> {
@@ -235,19 +224,6 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 this.createPage(newIdx.intValue(),tfSearch, status);
             }
         });
-    }
-
-    public void configureCheckBox(CheckBox checkBox){
-        if(checkBox.isSelected()){
-            selectedCheckBoxes.add(checkBox);
-        }
-        checkBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
-            if(newValue){
-                selectedCheckBoxes.add(checkBox);
-            }else{
-                selectedCheckBoxes.remove(checkBox);
-            }
-        }));
     }
 
     @FXML
@@ -266,6 +242,9 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 fillDataProjectToTable(tfSearchValue, null);
             }
         }
+
+//        projectSetCurrent = projectRest.getProjectWithPagination(tfSearchValue, cbStatusValue, 20,0);
+
     }
 
     @FXML
@@ -305,6 +284,19 @@ public class ViewListProjectController implements Initializable, ApplicationList
 
             }
         };
+    }
+
+    public void configureCheckBox(CheckBox checkBox){
+        if(checkBox.isSelected()){
+            selectedCheckBoxes.add(checkBox);
+        }
+        checkBox.selectedProperty().addListener(((observable, oldValue, newValue) -> {
+            if(newValue){
+                selectedCheckBoxes.add(checkBox);
+            }else{
+                selectedCheckBoxes.remove(checkBox);
+            }
+        }));
     }
 
     public EventHandler<MouseEvent> deleteMultiItemHandler(){
