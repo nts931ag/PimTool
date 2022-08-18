@@ -31,10 +31,21 @@ public class ProjectController {
 
     @GetMapping("/search")
     public PageProjectDto searchProjectByCriteriaAndStatusSpecified(
-            @RequestParam(value = "proCriteria") String proCriteria, @RequestParam(value = "proStatus") String proStatus,
-            @RequestParam(value = "limit") Integer limit, @RequestParam(value = "offset") Integer offset){
-        return projectAdapter.getProjectByCriteriaAndStatusSpecified(proCriteria, proStatus, limit, offset);
+            /*@RequestParam(value = "proCriteria") String proCriteria, @RequestParam(value = "proStatus") String proStatus,
+            @RequestParam(value = "limit") Integer limit, @RequestParam(value = "offset") Integer offset*/
+        SearchForm searchForm
+    ){
+//        return projectAdapter.getProjectByCriteriaAndStatusSpecified(proCriteria, proStatus, limit, offset);
+
+        return projectAdapter.getProjectByCriteriaAndStatusSpecified(
+                searchForm.proCriteria,
+                searchForm.proStatus,
+                searchForm.limit,
+                searchForm.offset
+        );
     }
+
+    record SearchForm(String proCriteria, String proStatus, Integer limit, Integer offset){}
 
     @PostMapping(value = "/save", consumes = "application/json")
     public ResponseEntity<String> createNewProject(@RequestBody String jsonObject){

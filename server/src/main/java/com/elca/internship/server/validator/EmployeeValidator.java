@@ -6,8 +6,6 @@ import com.elca.internship.server.repositories.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +15,7 @@ public class EmployeeValidator {
 
     private final EmployeeRepository employeeRepository;
 
-    public List<Employee> validateAndGetEmployeesExisted(List<String> listVisaValidate) throws EmployeeNotExistedException {
+    public List<Employee> validateAndGetEmployeesIfExisted(List<String> listVisaValidate) throws EmployeeNotExistedException {
         List<Employee> listEmployee = employeeRepository.findAllByVisaIn(listVisaValidate);
         if(listEmployee.size() != listVisaValidate.size()){
            var listVisaValid = listEmployee.stream().map(Employee::getVisa).collect(Collectors.toList());

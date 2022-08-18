@@ -226,6 +226,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
         });
     }
 
+    private ObservableSet projectDataTable;
+
     @FXML
     public void onBtnSearchClicked() {
         var tfSearchValue = tfSearch.getText();
@@ -242,9 +244,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
                 fillDataProjectToTable(tfSearchValue, null);
             }
         }
-
-//        projectSetCurrent = projectRest.getProjectWithPagination(tfSearchValue, cbStatusValue, 20,0);
-
+        projectDataTable = projectAdapter.retrieveProjectWithCriteriaAndStatusSpecified(tfSearchValue, cbStatusValue);
     }
 
     @FXML

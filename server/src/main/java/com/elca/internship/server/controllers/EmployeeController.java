@@ -37,7 +37,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{projectId}")
-    public List<EmployeeDto> getAllEmployeesByProjectId(@PathVariable("projectId") Long projectId){
+    public List<EmployeeDto> getAllEmployeesByProjectId(@PathVariable("projectId") Long projectId) {
         return employeeAdapter.getAllEmployeesByProjectId(projectId);
     }
 

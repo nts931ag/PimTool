@@ -5,7 +5,6 @@ import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.dto.PageProjectDto;
 import com.elca.internship.server.models.dto.ProjectDto;
-import com.elca.internship.server.models.entity.Project;
 import com.elca.internship.server.services.news.ProjectService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

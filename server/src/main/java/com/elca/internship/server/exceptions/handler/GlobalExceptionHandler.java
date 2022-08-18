@@ -2,6 +2,7 @@ package com.elca.internship.server.exceptions.handler;
 
 import com.elca.internship.server.exceptions.EmployeeNotExistedException;
 import com.elca.internship.server.exceptions.GroupNotExistedException;
+import com.elca.internship.server.exceptions.ProjectNotExistedException;
 import com.elca.internship.server.exceptions.ProjectNumberAlreadyExistedException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -56,6 +57,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 projectNumberAlreadyExistedException.getMessage(),
                 ErrorResponseKey.ERROR_RESPONSE_PROJECT_NUMBER_EXISTED,
                 projectNumberAlreadyExistedException.getProjectNumber().toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(ProjectNotExistedException.class)
+    public ResponseEntity<ErrorResponse> handleProjectNotExistedException(ProjectNotExistedException projectNotExistedException){
+        var errorResponse = new ErrorResponse(
+                HttpStatus.NOT_FOUND.toString(),
+                projectNotExistedException.getMessage(),
+                ErrorResponseKey.ERROR_RESPONSE_PROJECT_NUMBER_EXISTED,
+                projectNotExistedException.getProjectId().toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 

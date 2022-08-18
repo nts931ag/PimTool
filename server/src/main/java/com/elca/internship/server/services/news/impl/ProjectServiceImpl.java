@@ -12,7 +12,6 @@ import com.elca.internship.server.validator.GroupValidator;
 import com.elca.internship.server.validator.ProjectValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +47,7 @@ public class ProjectServiceImpl implements ProjectService {
         // validate project number already existed
         projectValidator.validateProjectNumberAlreadyExisted(projectDto.getProjectNumber());
         // validate project member
-        var listEmployeeExisted = employeeValidator.validateAndGetEmployeesExisted(listVisaEmployee);
+        var listEmployeeExisted = employeeValidator.validateAndGetEmployeesIfExisted(listVisaEmployee);
         Group group;
         // validate project group
         var groupId = projectDto.getGroupId();
@@ -86,10 +85,9 @@ public class ProjectServiceImpl implements ProjectService {
     public Project updateProject(ProjectDto projectDto, List<String> listVisaEmployee) {
         // bun thit nuong chay
         // validate Project existed
-        var projectUpdate = projectRepository.findProjectByIdCustom(projectDto.getId());
-
+        var projectUpdate = projectValidator.validateProjectIfExisted(projectDto.getId());
         // validate project member
-        var listEmployeeExisted = employeeValidator.validateAndGetEmployeesExisted(listVisaEmployee);
+        var listEmployeeExisted = employeeValidator.validateAndGetEmployeesIfExisted(listVisaEmployee);
         Group group;
         // validate project group
         var groupId = projectDto.getGroupId();

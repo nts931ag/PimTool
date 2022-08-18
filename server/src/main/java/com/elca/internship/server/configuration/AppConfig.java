@@ -1,6 +1,7 @@
 package com.elca.internship.server.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -26,7 +27,8 @@ public class AppConfig {
 
     @Bean
     ObjectMapper objectMapper(){
-        return new ObjectMapper().findAndRegisterModules();
+        return new ObjectMapper()
+                .registerModule(new JavaTimeModule());
     }
 
 }

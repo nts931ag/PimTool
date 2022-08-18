@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.scene.control.CheckBox;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
 import jiconfont.javafx.IconNode;
@@ -98,6 +99,12 @@ public class ProjectAdapterImpl implements ProjectAdapter {
     public void updateProject(Project project, List<String> listMember) throws JsonProcessingException {
         var jsonObject = convertToJsonString(project, listMember);
         projectRest.updateProject(jsonObject);
+    }
+
+    @Override
+    public ObservableSet retrieveProjectWithCriteriaAndStatusSpecified(String tfSearchValue, String cbStatusValue) {
+
+        return null;
     }
 
 }
