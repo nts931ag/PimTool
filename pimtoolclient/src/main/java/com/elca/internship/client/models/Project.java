@@ -1,11 +1,10 @@
-package com.elca.internship.client.models.entity;
+package com.elca.internship.client.models;
 
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -59,7 +58,7 @@ public class Project extends BaseEntity{
                 return Status.INP;
             }else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.PROJECT_STATUS_PLANNED))){
                 return Status.PLA;
-            }/*else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.COMBOBOX_FINISHED_PROJECT_STATUS))){
+            }/*else if(value.equalsIgnoreCase(i18nManager.text(I18nKey.PROJECT_STATUS_FINISHED))){
                 return Status.FIN;
             }*/else{
                 return Status.FIN;

@@ -1,6 +1,6 @@
 package com.elca.internship.client;
 
-import com.elca.internship.client.utils.GuiUtil;
+import com.elca.internship.client.common.GuiUtil;
 import com.elca.internship.client.controllers.DashboardController;
 import com.elca.internship.client.i18n.I18nManager;
 import com.elca.internship.client.i18n.SupportedLocale;
@@ -8,19 +8,13 @@ import javafx.geometry.Dimension2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import lombok.RequiredArgsConstructor;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxWeaver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.TimeUnit;
 
 
 @Component

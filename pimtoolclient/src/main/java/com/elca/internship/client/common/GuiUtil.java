@@ -1,4 +1,4 @@
-package com.elca.internship.client.utils;
+package com.elca.internship.client.common;
 
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Rectangle2D;

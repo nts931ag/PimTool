@@ -1,8 +1,8 @@
-package com.elca.internship.client.api.news.impl;
+package com.elca.internship.client.api.impl;
 
 
-import com.elca.internship.client.api.news.GroupRest;
-import com.elca.internship.client.models.entity.Group;
+import com.elca.internship.client.api.GroupRest;
+import com.elca.internship.client.models.Group;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;

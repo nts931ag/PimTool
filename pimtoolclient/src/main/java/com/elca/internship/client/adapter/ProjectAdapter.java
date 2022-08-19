@@ -1,9 +1,8 @@
 package com.elca.internship.client.adapter;
 
 import com.elca.internship.client.controllers.ViewListProjectController;
-import com.elca.internship.client.models.entity.Project;
-import com.elca.internship.client.models.entity.ProjectTable;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.elca.internship.client.models.Project;
+import com.elca.internship.client.models.ProjectTable;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 
@@ -17,9 +16,9 @@ public interface ProjectAdapter {
 
     Boolean checkProjectNumberIsExisted(Integer parseLong);
 
-    void createNewProject(Project project, List<String> listMember) throws JsonProcessingException;
+    void createNewProject(Project project, List<String> listMember);
 
-    void updateProject(Project project, List<String> listMember) throws JsonProcessingException;
+    void updateProject(Project project, List<String> listMember);
 
-    ObservableSet retrieveProjectWithCriteriaAndStatusSpecified(String tfSearchValue, String cbStatusValue);
+    ObservableSet retrieveProjectWithCriteriaAndStatusSpecified(String tfSearchValue, String cbStatusValue, int limit, int offset);
 }

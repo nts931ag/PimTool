@@ -1,12 +1,9 @@
-package com.elca.internship.client.utils;
+package com.elca.internship.client.common;
 
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import jiconfont.icons.google_material_design_icons.GoogleMaterialDesignIcons;
@@ -14,7 +11,6 @@ import jiconfont.javafx.IconFontFX;
 import jiconfont.javafx.IconNode;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

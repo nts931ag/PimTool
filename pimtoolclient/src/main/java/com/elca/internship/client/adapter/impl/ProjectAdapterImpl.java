@@ -1,13 +1,12 @@
 package com.elca.internship.client.adapter.impl;
 
 import com.elca.internship.client.adapter.ProjectAdapter;
-import com.elca.internship.client.api.news.ProjectRest;
+import com.elca.internship.client.api.ProjectRest;
 import com.elca.internship.client.controllers.DashboardController;
 import com.elca.internship.client.controllers.ViewListProjectController;
-import com.elca.internship.client.models.entity.Project;
-import com.elca.internship.client.models.entity.ProjectTable;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.elca.internship.client.models.Project;
+import com.elca.internship.client.models.ProjectFormRecord;
+import com.elca.internship.client.models.ProjectTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
@@ -17,14 +16,12 @@ import jiconfont.javafx.IconNode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class ProjectAdapterImpl implements ProjectAdapter {
     private final ProjectRest projectRest;
-    private final ObjectMapper objectMapper;
 
     @Override
     public ObservableList<ProjectTable> getAndConfigAllProjectTableData(ViewListProjectController viewListProjectController) {
@@ -44,11 +41,11 @@ public class ProjectAdapterImpl implements ProjectAdapter {
                     new IconNode(GoogleMaterialDesignIcons.DELETE)
             );
 
-            if(projectTable.getStatus().toString().equalsIgnoreCase("new")){
+            if (projectTable.getStatus().toString().equalsIgnoreCase("new")) {
                 projectTable.getIcDelete().getStyleClass().add("icon-node");
                 projectTable.getIcDelete().setOnMouseClicked(viewListProjectController.deleteItemHandler());
                 viewListProjectController.configureCheckBox(projectTable.getCheckBox());
-            }else{
+            } else {
                 projectTable.setIcDelete(null);
                 projectTable.getCheckBox().setDisable(true);
             }
@@ -76,33 +73,26 @@ public class ProjectAdapterImpl implements ProjectAdapter {
     @Override
     public Boolean checkProjectNumberIsExisted(Integer projectNumber) {
         var project = projectRest.getProjectByProjectNumber(projectNumber).block();
-        if(project == null ){
+        if (project == null) {
             return false;
         }
         return true;
     }
 
-    private String convertToJsonString(Project project, List<String> listMember) throws JsonProcessingException {
-        var map = new HashMap<String, Object>();
-        map.put("project", project);
-        map.put("listMember", listMember);
-        return objectMapper.writeValueAsString(map);
+    @Override
+    public void createNewProject(Project project, List<String> listMember) {
+        var projectFormRecord = new ProjectFormRecord(project, listMember);
+        projectRest.createNewProject(projectFormRecord);
     }
 
     @Override
-    public void createNewProject(Project project, List<String> listMember) throws JsonProcessingException {
-        var jsonObject = convertToJsonString(project, listMember);
-        projectRest.createNewProject(jsonObject);
+    public void updateProject(Project project, List<String> listMember) {
+        var projectFormRecord = new ProjectFormRecord(project, listMember);
+        projectRest.updateProject(projectFormRecord);
     }
 
     @Override
-    public void updateProject(Project project, List<String> listMember) throws JsonProcessingException {
-        var jsonObject = convertToJsonString(project, listMember);
-        projectRest.updateProject(jsonObject);
-    }
-
-    @Override
-    public ObservableSet retrieveProjectWithCriteriaAndStatusSpecified(String tfSearchValue, String cbStatusValue) {
+    public ObservableSet retrieveProjectWithCriteriaAndStatusSpecified(String tfSearchValue, String cbStatusValue, int limit, int offset) {
 
         return null;
     }

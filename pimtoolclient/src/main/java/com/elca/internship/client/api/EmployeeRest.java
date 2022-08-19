@@ -1,9 +1,7 @@
-package com.elca.internship.client.api.news;
+package com.elca.internship.client.api;
 
-import com.elca.internship.client.models.entity.Employee;
+import com.elca.internship.client.models.Employee;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
 
 public interface EmployeeRest {
     Flux<Employee> getAllEmployee();

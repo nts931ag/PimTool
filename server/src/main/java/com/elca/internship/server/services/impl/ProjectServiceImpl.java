@@ -1,7 +1,6 @@
 package com.elca.internship.server.services.impl;
 
 import com.elca.internship.server.exceptions.GroupWithoutGroupLeaderException;
-import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.Status;
 import com.elca.internship.server.models.entity.*;
 import com.elca.internship.server.models.record.ProjectRecord;
@@ -118,14 +117,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void deleteProject(Long id) {
-        var isProjectExisted = projectRepository.existsById(id);
-        if(isProjectExisted){
-            projectRepository.deleteById(id);
-        }
-    }
-
-    @Override
     public Page<Project> getAllProjectByCriteriaAndStatusWithPagination(String criteria, Status status, Pageable pageable) {
         return projectRepository.findAllProjectByCriteriaAndStatusWithPaginationCustom(criteria, status, pageable);
 
@@ -139,6 +130,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project getProjectByProjectNumber(Integer projectNumber) {
         return projectRepository.findProjectByProjectNumberCustom(projectNumber);
+    }
+
+    @Override
+    public void deleteProject(Long id) {
+        var isProjectExisted = projectRepository.existsById(id);
+        if(isProjectExisted){
+            projectRepository.deleteById(id);
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.elca.internship.client.models.entity;
+package com.elca.internship.client.models;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;

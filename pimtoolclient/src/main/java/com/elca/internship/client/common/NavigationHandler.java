@@ -1,7 +1,7 @@
-package com.elca.internship.client.utils;
+package com.elca.internship.client.common;
 
 import com.elca.internship.client.i18n.I18nKey;
-import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.Project;
 
 public interface NavigationHandler {
     void handleNavigateToCreateProject();

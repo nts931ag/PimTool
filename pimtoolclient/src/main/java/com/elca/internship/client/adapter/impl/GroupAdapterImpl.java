@@ -1,14 +1,12 @@
 package com.elca.internship.client.adapter.impl;
 
 import com.elca.internship.client.adapter.GroupAdapter;
-import com.elca.internship.client.api.news.GroupRest;
-import com.elca.internship.client.models.entity.Group;
+import com.elca.internship.client.api.GroupRest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Component

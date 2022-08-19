@@ -1,7 +1,6 @@
 package com.elca.internship.client.webclient;
 
-import com.elca.internship.client.models.entity.Project;
-import org.junit.Assert;
+import com.elca.internship.client.models.Project;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

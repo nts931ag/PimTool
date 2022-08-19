@@ -10,10 +10,9 @@ import com.elca.internship.client.adapter.GroupAdapter;
 import com.elca.internship.client.exception.ProjectException;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
-import com.elca.internship.client.utils.FormValidation;
-import com.elca.internship.client.models.entity.Project;
-import com.elca.internship.client.models.entity.Project.Status;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.elca.internship.client.common.FormValidation;
+import com.elca.internship.client.models.Project;
+import com.elca.internship.client.models.Project.Status;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -376,8 +375,7 @@ public class CreateProjectController implements Initializable, ApplicationListen
                 alertDangerCV.getController().showErrorAlertLabel(
                         projectException.getI18nKey(),
                         projectException.getI18nValue());
-            } catch (JsonProcessingException | WebClientResponseException jsonProcessingException) {
-                System.out.println(jsonProcessingException.getMessage());
+            } catch (WebClientResponseException webClientResponseException) {
                 DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_DATABASE);
             } catch (WebClientRequestException webClientRequestException){
                 DashboardController.navigationHandler.handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION);

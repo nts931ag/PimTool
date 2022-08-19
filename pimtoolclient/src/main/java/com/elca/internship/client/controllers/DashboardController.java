@@ -2,15 +2,14 @@ package com.elca.internship.client.controllers;
 
 import com.elca.internship.client.StageReadyEvent;
 import com.elca.internship.client.i18n.SupportedLocale;
-import com.elca.internship.client.models.entity.Project;
-import com.elca.internship.client.utils.NavigationHandler;
+import com.elca.internship.client.models.Project;
+import com.elca.internship.client.common.NavigationHandler;
 import com.elca.internship.client.i18n.I18nKey;
 import com.elca.internship.client.i18n.I18nManager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;

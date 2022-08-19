@@ -1,6 +1,6 @@
-package com.elca.internship.client.api.news;
+package com.elca.internship.client.api;
 
-import com.elca.internship.client.models.entity.Group;
+import com.elca.internship.client.models.Group;
 import reactor.core.publisher.Flux;
 
 public interface GroupRest {

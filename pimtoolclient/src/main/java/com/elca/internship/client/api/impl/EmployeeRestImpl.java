@@ -1,13 +1,11 @@
-package com.elca.internship.client.api.news.impl;
+package com.elca.internship.client.api.impl;
 
-import com.elca.internship.client.api.news.EmployeeRest;
-import com.elca.internship.client.models.entity.Employee;
+import com.elca.internship.client.api.EmployeeRest;
+import com.elca.internship.client.models.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

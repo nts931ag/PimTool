@@ -3,6 +3,7 @@ package com.elca.internship.client.config;
 import com.elca.internship.client.exception.ErrorResponse;
 import com.elca.internship.client.exception.ProjectException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,10 +44,4 @@ public class ProjectConfiguration {
                 .build();
     }
 
-    @Bean
-    public ObjectMapper objectMapper(){
-        return new ObjectMapper().findAndRegisterModules();
-    }
-
-    
 }

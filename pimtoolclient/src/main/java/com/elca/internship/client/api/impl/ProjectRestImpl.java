@@ -1,9 +1,11 @@
-package com.elca.internship.client.api.news.impl;
+package com.elca.internship.client.api.impl;
 
-import com.elca.internship.client.api.news.ProjectRest;
+import com.elca.internship.client.api.ProjectRest;
 import com.elca.internship.client.controllers.DashboardController;
 import com.elca.internship.client.i18n.I18nKey;
-import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.Project;
+import com.elca.internship.client.models.ProjectFormRecord;
+import com.elca.internship.client.models.ProjectPageRecord;
 import javafx.application.Platform;
 import javafx.collections.ObservableSet;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +30,7 @@ public class ProjectRestImpl implements ProjectRest {
     private static final String URI_DELETE_PROJECTS_BY_IDS = "http://localhost:8080/api/projects/delete";
     private static final String URI_CREATE_NEW_PROJECT = "http://localhost:8080/api/projects/save";
     private static final String URI_UPDATE_PROJECT = "http://localhost:8080/api/projects/update";
-    private static final String URI_SEARCH_PROJECT_WITH_PAGINATION = "http://localhost:8080/api/projects/update";
+    private static final String URI_SEARCH_PROJECT_WITH_PAGINATION = "http://localhost:8080/api/projects/search";
 
 
     @Override
@@ -90,10 +92,10 @@ public class ProjectRestImpl implements ProjectRest {
     }
 
     @Override
-    public void createNewProject(String jsonObject) {
+    public void createNewProject(ProjectFormRecord projectFormRecord) {
         webClient.post().uri(URI_CREATE_NEW_PROJECT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(jsonObject))
+                .body(BodyInserters.fromValue(projectFormRecord))
                 .retrieve()
                 .bodyToMono(Void.class)
                 .onErrorStop()
@@ -101,10 +103,10 @@ public class ProjectRestImpl implements ProjectRest {
     }
 
     @Override
-    public void updateProject(String jsonObject) {
+    public void updateProject(ProjectFormRecord projectFormRecord) {
         webClient.put().uri(URI_UPDATE_PROJECT)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(BodyInserters.fromValue(jsonObject))
+                .body(BodyInserters.fromValue(projectFormRecord))
                 .retrieve()
                 .bodyToMono(Void.class)
                 .onErrorStop()
@@ -133,5 +135,26 @@ public class ProjectRestImpl implements ProjectRest {
                 .onErrorReturn(List.of())
                 .block();
         return null;
+    }
+
+    @Override
+    public ProjectPageRecord searchProjectByCriteriaAndStatusWithPagination(String tfSearchValue, String status, long limit, long offset) {
+        var uri = UriComponentsBuilder.fromUriString(URI_SEARCH_PROJECT_WITH_PAGINATION)
+                .queryParam("proCriteria", tfSearchValue)
+                .queryParam("proStatus", status)
+                .queryParam("limit", limit)
+                .queryParam("offset", offset)
+                .build().toUriString();
+        return webClient.get()
+                .uri(uri)
+                .retrieve()
+                .bodyToMono(ProjectPageRecord.class)
+                .doOnError(
+                        throwable -> Platform.runLater(
+                                () -> DashboardController.navigationHandler
+                                        .handleNavigateToErrorPage(I18nKey.APPLICATION_ERROR_CONNECTION)
+                        )
+                )
+                .block();
     }
 }

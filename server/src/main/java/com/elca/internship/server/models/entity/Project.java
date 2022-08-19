@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Table(name = "project", schema = "pim_tool_db_migration")

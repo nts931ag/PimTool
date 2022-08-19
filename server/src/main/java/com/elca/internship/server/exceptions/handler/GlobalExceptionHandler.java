@@ -65,7 +65,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         var errorResponse = new ErrorResponse(
                 HttpStatus.NOT_FOUND.toString(),
                 projectNotExistedException.getMessage(),
-                ErrorResponseKey.ERROR_RESPONSE_PROJECT_NUMBER_EXISTED,
+                ErrorResponseKey.ERROR_RESPONSE_PROJECT_NOT_EXISTED,
                 projectNotExistedException.getProjectId().toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }

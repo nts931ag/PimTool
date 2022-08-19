@@ -1,25 +1,15 @@
 package com.elca.internship.server.services;
 
-import com.elca.internship.server.models.Status;
-import com.elca.internship.server.models.dto.ProjectDto;
-import com.elca.internship.server.models.entity.Employee;
-import com.elca.internship.server.repositories.EmployeeRepository;
-import com.elca.internship.server.repositories.ProjectRepository;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @RunWith(value= SpringRunner.class)
 @SpringBootTest
 public class ProjectServiceTest {
 
-    @Autowired
+    /*@Autowired
     private EmployeeRepository employeeRepository;
     @Autowired
     private ProjectService projectService;
@@ -120,6 +110,6 @@ public class ProjectServiceTest {
 
     @Test
     public void getAllProjectWithPagination(){
-    }
+    }*/
 
 }

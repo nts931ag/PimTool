@@ -1,4 +1,4 @@
-package com.elca.internship.client.models.entity;
+package com.elca.internship.client.models;
 
 
 import lombok.Data;

@@ -1,6 +1,8 @@
-package com.elca.internship.client.api.news;
+package com.elca.internship.client.api;
 
-import com.elca.internship.client.models.entity.Project;
+import com.elca.internship.client.models.Project;
+import com.elca.internship.client.models.ProjectFormRecord;
+import com.elca.internship.client.models.ProjectPageRecord;
 import javafx.collections.ObservableSet;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,9 +18,11 @@ public interface ProjectRest {
 
     Mono<Project> getProjectByProjectNumber(Integer projectNumber);
 
-    void createNewProject(String jsonObject);
+    void createNewProject(ProjectFormRecord projectFormRecord);
 
-    void updateProject(String jsonObject);
+    void updateProject(ProjectFormRecord projectFormRecord);
 
     ObservableSet<Project> getProjectWithPagination(String tfSearchValue, String cbStatusValue, int limit, int offset);
+
+    ProjectPageRecord searchProjectByCriteriaAndStatusWithPagination(String tfSearchValue, String status, long limit, long offset);
 }
