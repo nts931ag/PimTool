@@ -38,9 +38,8 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -85,7 +84,7 @@ public class ViewListProjectController implements Initializable, ApplicationList
     @FXML
     public Label lbBtnResetSearch;
 
-    private ObservableList<ProjectTable> dataProjects;
+    private ObservableList<ProjectTable> dataProjects = FXCollections.observableArrayList();
     private final ObservableSet<CheckBox> selectedCheckBoxes = FXCollections.observableSet();
     private final IntegerBinding numCheckBoxesSelected = Bindings.size(selectedCheckBoxes);
     private FxControllerAndView<RemoveItemPaneController, Node> removeItemPaneCV;
@@ -333,9 +332,8 @@ public class ViewListProjectController implements Initializable, ApplicationList
         });
     }
 
-    private List<Project> projectSet;
+    private ObservableSet<ProjectTable> projectSet = FXCollections.observableSet();
     private final ProjectRest projectRest;
-
 
     @FXML
     public void onBtnSearchClicked() {
@@ -348,18 +346,55 @@ public class ViewListProjectController implements Initializable, ApplicationList
             status = Project.Status.convertStringStatusToStatus(cbStatusValue, i18nManager).toString();
         }
 
+
 //        fillDataProjectToTable(tfSearchValue, status);
 
 //        projectAdapter.retrieveProjectWithCriteriaAndStatusSpecified(tfSearchValue,status,20, 0);
         var result = projectRest.searchProjectByCriteriaAndStatusWithPagination(tfSearchValue,status,20, 0);
-        long totalPage = result.totalElements()/5;
-        paginationTableProject.setPageCount((int) totalPage);
-        projectSet = result.projectRecordList();
-
-
-
         log.info("size of page: {}", result.totalElements());
         log.info("list project: {}", result.projectRecordList());
+
+        long totalPage = result.totalElements()/5;
+        paginationTableProject.setPageCount((int) totalPage);
+        ObservableSet<ProjectTable> projectTableSet = FXCollections.observableSet();
+        var listProject = result.projectRecordList();
+            listProject.forEach(project ->{
+                var projectTable = new ProjectTable(
+                        new CheckBox(),
+                        project.getId(),
+                        project.getGroupId(),
+                        project.getProjectNumber(),
+                        project.getName(),
+                        project.getCustomer(),
+                        project.getStatus(),
+                        project.getStartDate(),
+                        project.getEndDate(),
+                        project.getVersion(),
+                        new IconNode(GoogleMaterialDesignIcons.DELETE)
+                );
+
+                if (projectTable.getStatus().toString().equalsIgnoreCase("new")) {
+                    projectTable.getIcDelete().getStyleClass().add("icon-node");
+                    projectTable.getIcDelete().setOnMouseClicked(this.deleteItemHandler());
+                    this.configureCheckBox(projectTable.getCheckBox());
+                } else {
+                    projectTable.setIcDelete(null);
+                    projectTable.getCheckBox().setDisable(true);
+                }
+                projectTable.getLbProNumLink().getStyleClass().add("lb-super-link");
+                projectTable.getLbProNumLink().setOnMouseClicked(event -> {
+                    DashboardController.navigationHandler.handleNavigateToEditProject(projectTable);
+                });
+                projectTableSet.add(projectTable);
+        });
+
+
+        projectSet.addAll(projectTableSet);
+
+        dataProjects.setAll(projectSet.stream()/*.skip(0).limit(3)*/.collect(Collectors.toList()));
+        tbProject.setItems(dataProjects);
+
+
     }
 
     @FXML

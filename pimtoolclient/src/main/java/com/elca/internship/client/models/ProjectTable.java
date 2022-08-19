@@ -4,12 +4,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import jiconfont.javafx.IconNode;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
 
 @Data
-
+@EqualsAndHashCode(of = {"lbProNumLink"})
 public class ProjectTable extends Project{
 
     private CheckBox checkBox;
