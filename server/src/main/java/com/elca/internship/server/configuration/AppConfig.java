@@ -13,22 +13,4 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class AppConfig {
 
-    @Bean
-    @Scope("prototype")
-    SimpleJdbcInsert getSimpleJdbcInsert(JdbcTemplate jdbcTemplate){
-        return new SimpleJdbcInsert(jdbcTemplate);
-    }
-
-    @Bean
-    @Scope("prototype")
-    NamedParameterJdbcTemplate getNamedParameterJdbcTemplate(JdbcTemplate jdbcTemplate){
-        return new NamedParameterJdbcTemplate(jdbcTemplate);
-    }
-
-    @Bean
-    ObjectMapper objectMapper(){
-        return new ObjectMapper()
-                .registerModule(new JavaTimeModule());
-    }
-
 }

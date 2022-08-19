@@ -3,11 +3,11 @@ package com.elca.internship.server.controllers;
 import com.elca.internship.server.mappers.PageProjectMapperCustom;
 import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.Status;
-import com.elca.internship.server.models.dto.PageProjectDto;
-import com.elca.internship.server.models.dto.ProjectDto;
-import com.elca.internship.server.models.dto.ProjectForm;
-import com.elca.internship.server.models.dto.SearchProjectForm;
-import com.elca.internship.server.services.news.ProjectService;
+import com.elca.internship.server.models.record.ProjectFormRecord;
+import com.elca.internship.server.models.record.ProjectPageRecord;
+import com.elca.internship.server.models.record.ProjectRecord;
+import com.elca.internship.server.models.record.SearchProjectFormRecord;
+import com.elca.internship.server.services.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -33,12 +33,12 @@ public class ProjectController {
     private final PageProjectMapperCustom pageProjectMapperCustom;
 
     @GetMapping
-    public List<ProjectDto> getAllProjectExisted(){
-        return projectMapperCustom.listEntityToListDto(projectService.getAllProject());
+    public List<ProjectRecord> getAllProjectExisted(){
+        return projectMapperCustom.listEntityToListRecord(projectService.getAllProject());
     }
 
     @GetMapping("/search")
-    public PageProjectDto searchProjectByCriteriaAndStatusSpecified(SearchProjectForm searchForm){
+    public ProjectPageRecord searchProjectByCriteriaAndStatusSpecified(SearchProjectFormRecord searchForm){
 
         Pageable page = PageRequest.of(searchForm.offset(), searchForm.limit(), Sort.by("projectNumber").ascending());
         Status status = null;
@@ -50,7 +50,7 @@ public class ProjectController {
         }
 
         var pageProjectDto = projectService.getAllProjectByCriteriaAndStatusWithPagination(searchForm.proCriteria(), status, page);
-        return pageProjectMapperCustom.pageProjectToPageProjectDto(pageProjectDto);
+        return pageProjectMapperCustom.projectPageToProjectPageRecord(pageProjectDto);
     }
 
 
@@ -67,21 +67,21 @@ public class ProjectController {
     }
 
     @GetMapping(value = "/{projectNumber}")
-    public ProjectDto getProjectByProjectNumber(@PathVariable("projectNumber") Integer projectNumber){
+    public ProjectRecord getProjectByProjectNumber(@PathVariable("projectNumber") Integer projectNumber){
         var project = projectService.getProjectByProjectNumber(projectNumber);
-        return projectMapperCustom.entityToDto(project);
+        return projectMapperCustom.entityToRecord(project);
     }
 
     @PostMapping(value = "/save", consumes = "application/json")
-    public ResponseEntity<String> createNewProjectTest(@RequestBody ProjectForm projectForm){
-        projectService.createNewProject(projectForm.project(), projectForm.listMember());
+    public ResponseEntity<String> createNewProjectTest(@RequestBody ProjectFormRecord projectFormRecord){
+        projectService.createNewProject(projectFormRecord.project(), projectFormRecord.listMember());
 
         return ResponseEntity.status(HttpStatus.OK).body("Create project Success");
     }
 
     @PutMapping(value = "/update", consumes = "application/json")
-    public ResponseEntity<String> updateProject(@RequestBody ProjectForm projectForm) {
-        projectService.updateProject(projectForm.project(), projectForm.listMember());
+    public ResponseEntity<String> updateProject(@RequestBody ProjectFormRecord projectFormRecord) {
+        projectService.updateProject(projectFormRecord.project(), projectFormRecord.listMember());
         return ResponseEntity.status(HttpStatus.OK).body("update project Success");
     }
 }

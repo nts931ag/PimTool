@@ -1,12 +1,12 @@
-package com.elca.internship.server.services.news.impl;
+package com.elca.internship.server.services.impl;
 
 import com.elca.internship.server.exceptions.GroupWithoutGroupLeaderException;
 import com.elca.internship.server.mappers.ProjectMapperCustom;
 import com.elca.internship.server.models.Status;
-import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.*;
+import com.elca.internship.server.models.record.ProjectRecord;
 import com.elca.internship.server.repositories.ProjectRepository;
-import com.elca.internship.server.services.news.ProjectService;
+import com.elca.internship.server.services.ProjectService;
 import com.elca.internship.server.validator.EmployeeValidator;
 import com.elca.internship.server.validator.GroupValidator;
 import com.elca.internship.server.validator.ProjectValidator;
@@ -23,7 +23,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
-    private final ProjectMapperCustom projectMapperCustom;
     private final EmployeeValidator employeeValidator;
     private final ProjectValidator projectValidator;
     private final GroupValidator groupValidator;
@@ -41,16 +40,16 @@ public class ProjectServiceImpl implements ProjectService {
 
 
     @Override
-    @Transactional
-    public Project createNewProject(ProjectDto projectDto, List<String> listVisaEmployee) {
+    @Transactional(rollbackFor = Exception.class)
+    public Project createNewProject(ProjectRecord projectRecord, List<String> listVisaEmployee) {
 
         // validate project number already existed
-        projectValidator.validateProjectNumberAlreadyExisted(projectDto.getProjectNumber());
+        projectValidator.validateProjectNumberAlreadyExisted(projectRecord.projectNumber());
         // validate project member
         var listEmployeeExisted = employeeValidator.validateAndGetEmployeesIfExisted(listVisaEmployee);
         Group group;
         // validate project group
-        var groupId = projectDto.getGroupId();
+        var groupId = projectRecord.groupId();
         if(groupId!=0){
             group = groupValidator.validateAndGetGroupIfExisted(groupId);
         }else{
@@ -65,12 +64,12 @@ public class ProjectServiceImpl implements ProjectService {
                 null,
                 null,
                 null,
-                projectDto.getProjectNumber(),
-                projectDto.getName(),
-                projectDto.getCustomer(),
-                projectDto.getStatus(),
-                projectDto.getStartDate(),
-                projectDto.getEndDate(),
+                projectRecord.projectNumber(),
+                projectRecord.name(),
+                projectRecord.customer(),
+                projectRecord.status(),
+                projectRecord.startDate(),
+                projectRecord.endDate(),
                 null
         );
         newProject.setGroup(group);
@@ -82,15 +81,15 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project updateProject(ProjectDto projectDto, List<String> listVisaEmployee) {
-        // bun thit nuong chay
+    @Transactional(rollbackFor = Exception.class)
+    public Project updateProject(ProjectRecord projectRecord, List<String> listVisaEmployee) {
         // validate Project existed
-        var projectUpdate = projectValidator.validateProjectIfExisted(projectDto.getId());
+        var projectUpdate = projectValidator.validateProjectIfExisted(projectRecord.id());
         // validate project member
         var listEmployeeExisted = employeeValidator.validateAndGetEmployeesIfExisted(listVisaEmployee);
         Group group;
         // validate project group
-        var groupId = projectDto.getGroupId();
+        var groupId = projectRecord.groupId();
         if(groupId!=0){
             group = groupValidator.validateAndGetGroupIfExisted(groupId);
         }else{
@@ -107,11 +106,11 @@ public class ProjectServiceImpl implements ProjectService {
         // create setProjectEmployee
         var setProjectEmployee = createSetProjectEmployee(projectUpdate, listEmployeeExisted);
 
-        projectUpdate.setCustomer(projectDto.getCustomer());
-        projectUpdate.setEndDate(projectDto.getEndDate());
-        projectUpdate.setStartDate(projectDto.getStartDate());
-        projectUpdate.setStatus(projectDto.getStatus());
-        projectUpdate.setName(projectDto.getName());
+        projectUpdate.setCustomer(projectRecord.customer());
+        projectUpdate.setEndDate(projectRecord.endDate());
+        projectUpdate.setStartDate(projectRecord.startDate());
+        projectUpdate.setStatus(projectRecord.status());
+        projectUpdate.setName(projectRecord.name());
         projectUpdate.getProjectEmployee().clear();
         projectUpdate.getProjectEmployee().addAll(setProjectEmployee);
         // save new project
@@ -119,7 +118,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional
     public void deleteProject(Long id) {
         var isProjectExisted = projectRepository.existsById(id);
         if(isProjectExisted){
@@ -144,9 +142,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional
     public void deleteProjects(List<Long> ids){
         projectRepository.deleteAllById(ids);
-//        projectRepository.deleteAllByIdInBatch(ids);
     }
 }

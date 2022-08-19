@@ -1,8 +1,8 @@
-package com.elca.internship.server.services.news;
+package com.elca.internship.server.services;
 
 import com.elca.internship.server.models.Status;
-import com.elca.internship.server.models.dto.ProjectDto;
 import com.elca.internship.server.models.entity.Project;
+import com.elca.internship.server.models.record.ProjectRecord;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface ProjectService {
 
-    Project createNewProject(ProjectDto projectDto, List<String> listVisaEmployee);
-    Project updateProject(ProjectDto projectDto, List<String> listVisaEmployee);
+    Project createNewProject(ProjectRecord projectRecord, List<String> listVisaEmployee);
+    Project updateProject(ProjectRecord projectRecord, List<String> listVisaEmployee);
     void deleteProjects(List<Long> ids);
     void deleteProject(Long id);
     Page<Project> getAllProjectByCriteriaAndStatusWithPagination(String criteria, Status Status, Pageable pageable);

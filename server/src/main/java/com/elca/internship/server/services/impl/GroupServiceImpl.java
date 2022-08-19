@@ -1,10 +1,9 @@
-package com.elca.internship.server.services.news.impl;
+package com.elca.internship.server.services.impl;
 
 import com.elca.internship.server.models.entity.BaseEntity;
 import com.elca.internship.server.repositories.GroupRepository;
-import com.elca.internship.server.services.news.GroupService;
+import com.elca.internship.server.services.GroupService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

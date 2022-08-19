@@ -2,8 +2,8 @@ package com.elca.internship.server.controllers;
 
 
 import com.elca.internship.server.mappers.EmployeeMapperCustom;
-import com.elca.internship.server.models.dto.EmployeeDto;
-import com.elca.internship.server.services.news.EmployeeService;
+import com.elca.internship.server.models.record.EmployeeRecord;
+import com.elca.internship.server.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +22,14 @@ public class EmployeeController {
     private final EmployeeMapperCustom employeeMapperCustom;
 
     @GetMapping
-    public List<EmployeeDto> getAllEmployees(){
+    public List<EmployeeRecord> getAllEmployees(){
         var listEmployee = employeeService.getAllEmployee();
-        return employeeMapperCustom.listEntityToListDto(listEmployee);
+        return employeeMapperCustom.listEntityToListRecord(listEmployee);
     }
 
     @GetMapping("/{projectId}")
-    public List<EmployeeDto> getAllEmployeesByProjectId(@PathVariable("projectId") Long projectId) {
-        return employeeMapperCustom.listEntityToListDto(employeeService.getAllEmployeeByProjectId(projectId));
+    public List<EmployeeRecord> getAllEmployeesByProjectId(@PathVariable("projectId") Long projectId) {
+        return employeeMapperCustom.listEntityToListRecord(employeeService.getAllEmployeeByProjectId(projectId));
     }
 
 }

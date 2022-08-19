@@ -1,20 +1,21 @@
 package com.elca.internship.server.mappers;
 
-import com.elca.internship.server.models.dto.EmployeeDto;
 import com.elca.internship.server.models.entity.Employee;
+import com.elca.internship.server.models.record.EmployeeRecord;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
 public class EmployeeMapperCustom {
 
-    public EmployeeDto entityToDto(Employee entity){
+    public EmployeeRecord entityToRecord(Employee entity){
         if(entity == null){
             return null;
         }
-        return new EmployeeDto(
+        return new EmployeeRecord(
                 entity.getId(),
                 entity.getVersion(),
                 entity.getVisa(),
@@ -24,16 +25,16 @@ public class EmployeeMapperCustom {
         );
     }
 
-    public List<EmployeeDto> listEntityToListDto(List<Employee> listEntity){
+    public List<EmployeeRecord> listEntityToListRecord(List<Employee> listEntity){
         if(listEntity == null){
-            return null;
+            return Collections.emptyList();
         }
-        var listDto = new ArrayList<EmployeeDto>();
-        listEntity.stream().forEach(Employee -> {
-            listDto.add(
-                    this.entityToDto(Employee)
-            );
-        });
-        return listDto;
+
+        var listRecord = new ArrayList<EmployeeRecord>();
+
+        listEntity.forEach(employee -> listRecord.add(
+                this.entityToRecord(employee)
+        ));
+        return listRecord;
     }
 }

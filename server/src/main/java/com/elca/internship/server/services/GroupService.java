@@ -1,4 +1,4 @@
-package com.elca.internship.server.services.news;
+package com.elca.internship.server.services;
 
 import java.util.List;
 
