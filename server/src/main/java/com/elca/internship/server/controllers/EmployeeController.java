@@ -1,9 +1,9 @@
 package com.elca.internship.server.controllers;
 
 
-import com.elca.internship.server.adapter.EmployeeAdapter;
+import com.elca.internship.server.mappers.EmployeeMapperCustom;
 import com.elca.internship.server.models.dto.EmployeeDto;
-import com.elca.internship.server.models.entity.Employee;
+import com.elca.internship.server.services.news.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,27 +18,18 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/employees")
 public class EmployeeController {
-    /*private final EmployeeService employeeService;
-
-    @GetMapping()
-    public List<Employee> getAllEmployees(){
-        return employeeService.getAll();
-    }
-
-    @GetMapping("/visa-name")
-    public List<String> getVisaAndNameOfAllEmployees(){
-        return employeeService.getVisaAndNameOfAllEmployees();
-    }*/
-    private final EmployeeAdapter employeeAdapter;
+    private final EmployeeService employeeService;
+    private final EmployeeMapperCustom employeeMapperCustom;
 
     @GetMapping
     public List<EmployeeDto> getAllEmployees(){
-        return employeeAdapter.getAllEmployees();
+        var listEmployee = employeeService.getAllEmployee();
+        return employeeMapperCustom.listEntityToListDto(listEmployee);
     }
 
     @GetMapping("/{projectId}")
     public List<EmployeeDto> getAllEmployeesByProjectId(@PathVariable("projectId") Long projectId) {
-        return employeeAdapter.getAllEmployeesByProjectId(projectId);
+        return employeeMapperCustom.listEntityToListDto(employeeService.getAllEmployeeByProjectId(projectId));
     }
 
 }
